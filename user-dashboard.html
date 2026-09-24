@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Atelier — stackly. User Dashboard</title>
+    <meta name="description" content="Manage your bespoke tailoring orders, private fitting appointments, measurements, and curated wishlist at the stackly. atelier.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <script src="validations.js"></script>
+
+    <style>
+        :root {
+            --sidebar-w: 260px;
+            --sidebar-collapsed: 72px;
+            --accent: #dc2626;
+            --accent-dark: #b91c1c;
+            --accent-light: #fef2f2;
+            --accent-muted: rgba(220, 38, 38, 0.08);
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-sidebar: #ffffff;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .font-serif-luxury { font-family: 'Playfair Display', serif; }
+
+        /* SIDEBAR */
+        #sidebar {
+            position: fixed; top: 0; left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: width 0.35s cubic-bezier(0.16,1,0.3,1);
+            z-index: 100;
+            overflow: hidden;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+        }
+        #sidebar.collapsed { width: var(--sidebar-collapsed); }
+        #sidebar.collapsed .nav-label,
+        #sidebar.collapsed .brand-name,
+        #sidebar.collapsed .vip-tag,
+        #sidebar.collapsed .user-info { 
+            opacity: 0; width: 0; overflow: hidden; white-space: nowrap;
+        }
+        #sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; }
+        #sidebar.collapsed .nav-badge { opacity: 0; width: 0; }
+
+        .brand-area {
+            padding: 24px 20px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 12px;
+            min-height: 76px;
+            background: #ffffff;
+        }
+        .brand-logo-dot {
+            width: 36px; height: 36px; min-width: 36px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px; color: white;
+            letter-spacing: -1px;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+        }
+        .brand-name {
+            font-weight: 900; font-size: 18px; letter-spacing: -0.5px;
+            transition: opacity 0.25s, width 0.35s;
+            white-space: nowrap;
+            color: #0f172a;
+        }
+        .brand-name span { color: var(--accent); }
+        .vip-tag {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(220,38,38,0.2);
+            margin-top: 2px;
+        }
+
+        .nav-section-label {
+            font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--text-muted);
+            padding: 16px 20px 6px;
+            transition: opacity 0.25s;
+        }
+        #sidebar.collapsed .nav-section-label { opacity: 0; height: 0; padding: 0; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 16px;
+            margin: 2px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 13px; font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+        }
+        .nav-item svg { min-width: 20px; transition: transform 0.2s; }
+        .nav-item:hover { background: #fef2f2; color: var(--accent); }
+        .nav-item:hover svg { transform: scale(1.08); }
+        .nav-item.active {
+            background: #fef2f2;
+            color: var(--accent);
+            font-weight: 700;
+            border: 1px solid rgba(220, 38, 38, 0.25);
+        }
+        .nav-badge {
+            margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px;
+            background: var(--accent); color: white;
+            border-radius: 10px; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.25s, width 0.35s;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+        }
+        .nav-label { transition: opacity 0.25s; }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding: 16px 10px;
+            background: #ffffff;
+        }
+        .user-pill {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+        .user-avatar {
+            width: 34px; height: 34px; min-width: 34px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px; color: white;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
+        }
+        .user-info { transition: opacity 0.25s; overflow: hidden; }
+        .user-info .user-name { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+        .user-info .user-role { font-size: 10px; color: var(--accent); font-weight: 600; }
+
+        /* TOPBAR */
+        #topbar {
+            position: fixed; top: 0; left: var(--sidebar-w);
+            right: 0; height: 64px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px;
+            z-index: 90;
+            transition: left 0.35s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+        #topbar.collapsed { left: var(--sidebar-collapsed); }
+
+        .topbar-left { display: flex; align-items: center; gap: 16px; }
+        #toggle-sidebar {
+            width: 36px; height: 36px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, color 0.2s; flex-shrink: 0;
+            color: #0f172a;
+        }
+        #toggle-sidebar:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.3); }
+
+        #page-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: #0f172a; }
+        #page-breadcrumb { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        .search-box {
+            display: flex; align-items: center; gap: 8px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: 8px 14px;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus-within { border-color: var(--accent); }
+        .search-box input {
+            background: none; border: none; outline: none;
+            color: var(--text-primary); font-size: 13px; width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+        .search-box input::placeholder { color: var(--text-muted); }
+
+        .topbar-right { display: flex; align-items: center; gap: 10px; }
+        .icon-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.2s; position: relative; text-decoration: none;
+        }
+        .icon-btn:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.3); }
+        .notif-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 7px; height: 7px; background: var(--accent); border-radius: 50%;
+            border: 1.5px solid white;
+        }
+
+        /* MAIN CONTENT */
+        #main-content {
+            margin-left: var(--sidebar-w);
+            margin-top: 64px;
+            padding: 28px;
+            min-height: calc(100vh - 64px);
+            transition: margin-left 0.35s cubic-bezier(0.16,1,0.3,1);
+            background: var(--bg-main);
+        }
+        #main-content.collapsed { margin-left: var(--sidebar-collapsed); }
+
+        /* SECTIONS */
+        .section { display: none; animation: sectionIn 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+        .section.active { display: block; }
+        @keyframes sectionIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 22px 24px;
+            position: relative; overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+        .kpi-card:hover { 
+            border-color: rgba(220, 38, 38, 0.3); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.08); 
+        }
+        .kpi-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(220,38,38,0.03) 0%, transparent 60%);
+            border-radius: 16px; pointer-events: none;
+        }
+        .kpi-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px;
+        }
+        .kpi-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; color: #0f172a; }
+        .kpi-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .kpi-change { 
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 11px; font-weight: 700; margin-top: 10px;
+            padding: 3px 8px; border-radius: 6px;
+        }
+        .kpi-change.up { color: #16a34a; background: #dcfce7; }
+        .kpi-change.down { color: #dc2626; background: #fee2e2; }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent); color: white;
+            border: none; padding: 10px 20px;
+            border-radius: 10px; font-size: 12px; font-weight: 700;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+        }
+        .btn-primary:hover { background: #b91c1c; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
+        .btn-ghost {
+            background: #ffffff; color: var(--text-secondary);
+            border: 1px solid var(--border); padding: 10px 20px;
+            border-radius: 10px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-ghost:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.25); }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th {
+            font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--text-muted);
+            padding: 12px 16px; text-align: left;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table td {
+            padding: 14px 16px; font-size: 13px; font-weight: 500;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: #fffbfb; }
+
+        /* Badges */
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; white-space: nowrap;
+        }
+        .badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink: 0; }
+        .badge.shipped   { background: #dcfce7; color: #15803d; } .badge.shipped::before   { background: #16a34a; }
+        .badge.pending   { background: #fef9c3; color: #a16207; } .badge.pending::before   { background: #ca8a04; }
+        .badge.processing{ background: #dbeafe; color: #1d4ed8; } .badge.processing::before{ background: #2563eb; }
+        .badge.cancelled { background: #fee2e2; color: #b91c1c; } .badge.cancelled::before { background: #dc2626; }
+        .badge.confirmed { background: #dcfce7; color: #15803d; } .badge.confirmed::before { background: #16a34a; }
+        .badge.requested { background: #fef9c3; color: #a16207; } .badge.requested::before { background: #ca8a04; }
+        .badge.active    { background: #dcfce7; color: #15803d; } .badge.active::before    { background: #16a34a; }
+
+        /* Order Progress Tracker Bar */
+        .progress-step {
+            display: flex; flex-direction: column; align-items: center; position: relative; flex: 1; text-align: center;
+        }
+        .progress-step::before {
+            content: ''; position: absolute; top: 12px; left: -50%; width: 100%; height: 2px;
+            background: #e2e8f0; z-index: 1;
+        }
+        .progress-step:first-child::before { display: none; }
+        .progress-step.done::before { background: #dc2626; }
+        .progress-step.current::before { background: linear-gradient(90deg, #dc2626 50%, #e2e8f0 50%); }
+        .step-dot {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: #ffffff; border: 2px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; z-index: 2; color: #94a3b8;
+            transition: all 0.3s ease;
+        }
+        .progress-step.done .step-dot {
+            background: #dc2626; border-color: #dc2626; color: white;
+        }
+        .progress-step.current .step-dot {
+            background: #ffffff; border-color: #dc2626; color: #dc2626; box-shadow: 0 0 0 4px rgba(220,38,38,0.15);
+        }
+
+        /* Wishlist Grid */
+        .wishlist-card {
+            background: #ffffff; border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+        .wishlist-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(220,38,38,0.3);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+        }
+
+        /* Settings Inputs */
+        .settings-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px; }
+        .settings-input {
+            width: 100%; background: #f8fafc;
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 12px 14px; color: var(--text-primary);
+            font-size: 13px; font-family: 'Inter', sans-serif;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .settings-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); background: #ffffff; }
+        .settings-toggle {
+            width: 42px; height: 24px; background: #cbd5e1;
+            border-radius: 12px; cursor: pointer; position: relative;
+            transition: background 0.3s; border: none; flex-shrink: 0;
+        }
+        .settings-toggle::after {
+            content: ''; position: absolute;
+            width: 18px; height: 18px; background: white; border-radius: 50%;
+            top: 3px; left: 3px; transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .settings-toggle.on { background: var(--accent); }
+        .settings-toggle.on::after { transform: translateX(18px); }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem; }
+        .toast {
+            display: flex; align-items: center; gap: 12px;
+            background: #ffffff; border: 1px solid var(--border);
+            padding: 14px 20px; border-radius: 12px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+            font-size: 13px; font-weight: 600; color: var(--text-primary);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            min-width: 260px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+        .toast.success .toast-dot { background:#16a34a; }
+        .toast.error   .toast-dot { background:#dc2626; }
+        .toast.info    .toast-dot { background:var(--accent); }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #ffffff; border: 1px solid var(--border); border-radius: 20px; padding: 32px; width: 480px; max-width: 95vw; animation: sectionIn 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
+        .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; color: #0f172a; }
+        .modal p { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+        /* Sidebar tooltip on collapsed hover */
+        #sidebar.collapsed .nav-item { position: relative; }
+        #sidebar.collapsed .nav-item:hover::after {
+            content: attr(data-tip);
+            position: absolute; left: calc(100% + 12px); top: 50%;
+            transform: translateY(-50%);
+            background: #0f172a; border: 1px solid #1e293b;
+            border-radius: 8px; padding: 6px 12px;
+            font-size: 12px; font-weight: 600; color: #ffffff;
+            white-space: nowrap; pointer-events: none; z-index: 300;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Cards and Tables */
+        .card, .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100%;
+        }
+        .data-table {
+            min-width: 520px;
+        }
+
+        /* Grid */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        @media(max-width:1280px){ .grid-4{grid-template-columns:repeat(2,1fr);} }
+        @media(max-width:900px) { .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;} #main-content{padding:16px;} }
+        @media(max-width:768px){
+            #sidebar{transform:translateX(-100%); width:var(--sidebar-w) !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15);}
+            #sidebar.mobile-open{transform:translateX(0);}
+            #topbar,#main-content{left:0!important;margin-left:0!important;}
+            #topbar { padding: 0 12px; height: 56px; }
+            #main-content { margin-top: 56px; padding: 14px 10px !important; }
+            .search-box { display: none !important; }
+            #page-breadcrumb { display: none !important; }
+        }
+        @media(max-width:480px){
+            #topbar { padding: 0 8px; }
+            .topbar-left { gap: 8px; }
+            #page-title { font-size: 13px !important; max-width: 85px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .topbar-right { gap: 4px !important; }
+            .icon-btn span { display: none !important; }
+            .icon-btn { width: 30px !important; height: 30px !important; padding: 0 !important; }
+            #toggle-sidebar { width: 30px !important; height: 30px !important; }
+            #topbar-avatar { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+            #main-content { padding: 12px 6px !important; }
+            .card { padding: 14px 10px !important; border-radius: 12px !important; }
+            .section-header { margin-bottom: 16px; gap: 8px; }
+            .section-header h2 { font-size: 18px !important; }
+            .kpi-card { padding: 14px 12px !important; }
+            .kpi-value { font-size: 20px !important; }
+            .modal { padding: 20px 14px !important; border-radius: 16px !important; width: calc(100vw - 20px) !important; }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // AUTH GUARD
+    (function() {
+        const auth = sessionStorage.getItem('stackly_auth');
+        if (!auth) {
+            sessionStorage.setItem('stackly_redirect', 'user-dashboard.html');
+            window.location.replace('login.html');
+        }
+    })();
+</script>
+
+<div id="toast-container"></div>
+
+<!-- Logout Modal -->
+<div class="modal-overlay" id="logout-modal">
+    <div class="modal">
+        <h3>Sign Out of Atelier?</h3>
+        <p>You are about to securely exit your stackly. client profile.</p>
+        <div style="display:flex;gap:12px;">
+            <button class="btn-ghost" onclick="document.getElementById('logout-modal').classList.remove('open')" style="flex:1">Cancel</button>
+            <button class="btn-primary" onclick="doLogout()" style="flex:1">Sign Out</button>
+        </div>
+    </div>
+</div>
+
+<!-- Book Appointment Modal -->
+<div class="modal-overlay" id="book-modal">
+    <div class="modal">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold">Book Private Fitting</h3>
+            <button onclick="document.getElementById('book-modal').classList.remove('open')" class="text-gray-400 hover:text-black">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <p>Select your preferred atelier location and private bespoke master tailor.</p>
+        <form id="book-fitting-form" onsubmit="handleBookFitting(event)" class="flex flex-col gap-4">
+            <div>
+                <label class="settings-label">Atelier Salon</label>
+                <select id="book-salon" class="settings-input" required>
+                    <option value="Salem Flagship Atelier, Chinnathirupathi">Salem Flagship Atelier — Chinnathirupathi</option>
+                    <option value="Milan Galleria Salon, Via Montenapoleone">Milan Galleria Salon — Via Montenapoleone</option>
+                    <option value="Paris Atelier, Rue du Faubourg Saint-Honoré">Paris Atelier — Rue du Faubourg Saint-Honoré</option>
+                    <option value="Virtual Bespoke Video Consultation">Virtual Bespoke Video Consultation</option>
+                </select>
+            </div>
+            <div>
+                <label class="settings-label">Service Type</label>
+                <select id="book-service" class="settings-input" required>
+                    <option value="Bespoke Suit & Coat Fitting">Bespoke Suit & Coat Fitting (90 min)</option>
+                    <option value="Salem Silk Saree & Gown Drape">Salem Silk Saree & Gown Drape (60 min)</option>
+                    <option value="Complete Capsule Wardrobe Consultation">Complete Capsule Wardrobe Consultation (120 min)</option>
+                    <option value="Fabric Vault Inspection & Sourcing">Fabric Vault Inspection & Sourcing (45 min)</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="settings-label">Date</label>
+                    <input type="date" id="book-date" class="settings-input" required value="2026-09-28" min="2026-09-23">
+                </div>
+                <div>
+                    <label class="settings-label">Time Slot</label>
+                    <select id="book-time" class="settings-input" required>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:30 AM">11:30 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="04:30 PM">04:30 PM</option>
+                        <option value="06:00 PM">06:00 PM (VIP Evening)</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="settings-label">Special Requests / Garment Reference</label>
+                <textarea id="book-notes" class="settings-input" rows="2" placeholder="e.g. Bring mulberry silk swatch samples, alteration on Cape..."></textarea>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button type="button" class="btn-ghost flex-1" onclick="document.getElementById('book-modal').classList.remove('open')">Cancel</button>
+                <button type="submit" class="btn-primary flex-1">Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Measurements Modal -->
+<div class="modal-overlay" id="measurements-modal">
+    <div class="modal">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold">Update Bespoke Measurements</h3>
+            <button onclick="document.getElementById('measurements-modal').classList.remove('open')" class="text-gray-400 hover:text-black">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <p>Ensure precision for your handcrafted garments. Values are recorded in inches.</p>
+        <form id="measurements-form" onsubmit="handleSaveMeasurements(event)" class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="settings-label">Chest / Bust (in)</label>
+                    <input type="number" step="0.5" id="meas-chest" class="settings-input" value="38.5" required>
+                </div>
+                <div>
+                    <label class="settings-label">Waist (in)</label>
+                    <input type="number" step="0.5" id="meas-waist" class="settings-input" value="31.0" required>
+                </div>
+                <div>
+                    <label class="settings-label">Shoulder Width (in)</label>
+                    <input type="number" step="0.5" id="meas-shoulder" class="settings-input" value="17.5" required>
+                </div>
+                <div>
+                    <label class="settings-label">Sleeve Length (in)</label>
+                    <input type="number" step="0.5" id="meas-sleeve" class="settings-input" value="24.0" required>
+                </div>
+                <div>
+                    <label class="settings-label">Inseam (in)</label>
+                    <input type="number" step="0.5" id="meas-inseam" class="settings-input" value="32.0" required>
+                </div>
+                <div>
+                    <label class="settings-label">Neck Collar (in)</label>
+                    <input type="number" step="0.5" id="meas-neck" class="settings-input" value="15.5" required>
+                </div>
+            </div>
+            <div>
+                <label class="settings-label">Fit Preference</label>
+                <select id="meas-fit" class="settings-input">
+                    <option value="Sartorial Slim (Milanese Taper)">Sartorial Slim (Milanese Taper)</option>
+                    <option value="Architectural Structured Relaxed" selected>Architectural Structured Relaxed</option>
+                    <option value="Classic Heritage Tailored">Classic Heritage Tailored</option>
+                </select>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button type="button" class="btn-ghost flex-1" onclick="document.getElementById('measurements-modal').classList.remove('open')">Cancel</button>
+                <button type="submit" class="btn-primary flex-1">Save Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside id="sidebar">
+    <div class="brand-area">
+        <a href="index.html" class="flex items-center gap-2" aria-label="stackly home">
+            <img src="assets/images/stackly logo.webp" alt="stackly." class="h-7 w-auto object-contain brightness-0">
+        </a>
+        <div class="vip-tag ml-auto">VIP Haute Circle</div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0;">
+        <div class="nav-section-label">Client Portal</div>
+
+        <a class="nav-item active" id="nav-overview" data-section="overview" data-tip="Overview" onclick="navigateUser('overview',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="nav-label">My Atelier</span>
+        </a>
+
+        <a class="nav-item" id="nav-orders" data-section="orders" data-tip="My Orders" onclick="navigateUser('orders',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="nav-label">Orders &amp; Tailoring</span>
+            <span class="nav-badge" id="sidebar-order-badge">2</span>
+        </a>
+
+        <a class="nav-item" id="nav-wishlist" data-section="wishlist" data-tip="Wishlist" onclick="navigateUser('wishlist',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="nav-label">Saved Runway Looks</span>
+            <span class="nav-badge" id="sidebar-wish-badge">4</span>
+        </a>
+
+        <a class="nav-item" id="nav-fittings" data-section="fittings" data-tip="Fittings" onclick="navigateUser('fittings',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="nav-label">Private Fittings</span>
+            <span class="nav-badge">1</span>
+        </a>
+
+        <div class="nav-section-label">Bespoke Profile</div>
+
+        <a class="nav-item" id="nav-measurements" data-section="measurements" data-tip="Measurements" onclick="navigateUser('measurements',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            <span class="nav-label">My Measurements</span>
+        </a>
+
+        <a class="nav-item" id="nav-concierge" data-section="concierge" data-tip="Concierge" onclick="navigateUser('concierge',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span class="nav-label">VIP Concierge &amp; Salon</span>
+        </a>
+
+        <div class="nav-section-label">Preferences</div>
+
+        <a class="nav-item" id="nav-settings" data-section="settings" data-tip="Settings" onclick="navigateUser('settings',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span class="nav-label">Account Settings</span>
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-pill">
+            <div class="user-avatar overflow-hidden" id="sidebar-avatar"><img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera"></div>
+            <div class="user-info">
+                <div class="user-name" id="sidebar-uname">Meera Sundaram</div>
+                <div class="user-role">Haute VIP Client</div>
+            </div>
+        </div>
+        <a class="nav-item" style="color:#dc2626;" data-tip="Sign Out" onclick="document.getElementById('logout-modal').classList.add('open')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">Sign Out</span>
+        </a>
+    </div>
+</aside>
+
+<!-- ═══════ TOPBAR ═══════ -->
+<header id="topbar">
+    <div class="topbar-left">
+        <button id="toggle-sidebar" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+            <div id="page-title">My Atelier</div>
+            <div id="page-breadcrumb">stackly. Atelier › Private Client Suite</div>
+        </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--text-muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search orders, looks…" id="global-search">
+        </div>
+        <div class="topbar-right">
+            <!-- Fitting Bag Notification -->
+            <button class="icon-btn" onclick="showToast('Fitting Bag','3 bespoke garments prepared for your private trial.','info')" title="Shopping Bag">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <div class="notif-dot"></div>
+            </button>
+
+            <!-- Runway Looks Switcher -->
+            <button class="icon-btn" onclick="navigateUser('wishlist', document.getElementById('nav-wishlist'))" title="Saved Runway Looks">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </button>
+
+            <!-- User Avatar -->
+            <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(220,38,38,0.25);" id="topbar-avatar" onclick="navigateUser('settings',document.getElementById('nav-settings'))" title="Account Settings"><img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera"></div>
+        </div>
+    </div>
+</header>
+
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<main id="main-content">
+
+    <!-- ──── SECTION 1: OVERVIEW / MY ATELIER ──── -->
+    <section class="section active" id="section-overview">
+        <!-- Hero Client Banner -->
+        <div class="card mb-6 relative overflow-hidden bg-gradient-to-r from-white via-red-50/40 to-white border-red-100 shadow-sm">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+                        <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-red-600">Haute Circle Diamond Member</span>
+                    </div>
+                    <h1 class="text-3xl lg:text-4xl font-bold tracking-tight text-slate-900 mb-2">
+                        Bienvenue, <span class="font-serif-luxury italic text-red-600 font-normal" id="hero-client-name">Meera</span>
+                    </h1>
+                    <p class="text-sm text-slate-500 max-w-xl">
+                        Your private atelier dashboard is ready. Your bespoke Salem Mulberry Silk gown is currently at the hand-finishing stage with Master Tailor Ramanathan.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <button class="btn-primary" onclick="document.getElementById('book-modal').classList.add('open')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Book Fitting
+                    </button>
+                    <button class="btn-ghost" onclick="showToast('Piece Progress','Active stage: Hand Stitching (70% finished by Salem artisans).','info')">Track Bespoke Piece →</button>
+                </div>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-red-100/50 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="grid-4 mb-6">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fee2e2;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-active-orders">2</div>
+                <div class="kpi-label">Active Commissions</div>
+                <div class="kpi-change up">Handcrafted In Salem</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fee2e2;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-wishlist-count">4</div>
+                <div class="kpi-label">Saved Runway Pieces</div>
+                <div class="kpi-change up">2 in Salem Vault</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#dcfce7;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div class="kpi-value">Sep 28</div>
+                <div class="kpi-label">Next Salon Fitting</div>
+                <div class="kpi-change up">11:30 AM • Confirmed</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fef9c3;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-vip-points">14,850</div>
+                <div class="kpi-label">Atelier Privilege Pts</div>
+                <div class="kpi-change up">Diamond Tier Benefit</div>
+            </div>
+        </div>
+
+        <!-- Active Order Spotlight Card -->
+        <div class="card mb-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+                <div>
+                    <span class="badge processing mb-2">In Bespoke Crafting</span>
+                    <h2 class="text-xl font-bold">Commission #STK-4891 — Noir Cocoon Cape</h2>
+                    <p class="text-xs text-gray-500">Handwoven Mulberry Silk with Hand-Rolled Milanese Lapel • Master Tailor Ramanathan</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-semibold text-gray-400 block">Estimated Completion</span>
+                    <span class="text-sm font-bold text-slate-900">Oct 04, 2026</span>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="py-4 px-2 overflow-x-auto">
+                <div class="flex items-center justify-between min-w-[480px] sm:min-w-0 pb-2">
+                    <div class="progress-step done">
+                        <div class="step-dot">✓</div>
+                        <span class="text-[11px] font-bold mt-2 text-slate-800">Fabric Sourcing</span>
+                        <span class="text-[10px] text-gray-400">Salem Silk Weavers</span>
+                    </div>
+                    <div class="progress-step done">
+                        <div class="step-dot">✓</div>
+                        <span class="text-[11px] font-bold mt-2 text-slate-800">Precision Pattern</span>
+                        <span class="text-[10px] text-gray-400">Arch. Draft Approved</span>
+                    </div>
+                    <div class="progress-step current">
+                        <div class="step-dot">3</div>
+                        <span class="text-[11px] font-bold mt-2 text-red-600">Hand Stitching</span>
+                        <span class="text-[10px] text-gray-400">Current Stage (70%)</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-dot">4</div>
+                        <span class="text-[11px] font-bold mt-2 text-gray-400">Fitting &amp; Press</span>
+                        <span class="text-[10px] text-gray-400">Sep 28 Session</span>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-dot">5</div>
+                        <span class="text-[11px] font-bold mt-2 text-gray-400">White Glove Delivery</span>
+                        <span class="text-[10px] text-gray-400">Express Courier</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between flex-wrap gap-4 text-xs">
+                <span class="text-gray-500">Need adjustments to this commission? Contact your personal stylist anytime.</span>
+                <div class="flex gap-2">
+                    <button class="btn-ghost" onclick="showToast('Invoice Downloaded','Digital invoice PDF saved to downloads.','success')">Download Invoice</button>
+                    <button class="btn-primary" onclick="showToast('Stylist Alerted','Your personal tailor has been notified.','success')">Message Tailor</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Split View: Upcoming Appointment & Curated Picks -->
+        <div class="grid-2">
+            <!-- Appointment Card -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold">Upcoming Atelier Consultation</h3>
+                    <span class="badge confirmed">Confirmed</span>
+                </div>
+                <div class="p-4 bg-red-50/50 border border-red-100 rounded-xl mb-4">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-bold text-sm">
+                            28
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-900">Monday, Sep 28, 2026 • 11:30 AM</div>
+                            <div class="text-xs text-gray-500">Salem Flagship Atelier, Chinnathirupathi Salon</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed mt-2">
+                        Session: <strong>Bespoke Fitting &amp; Hemming</strong> with Master Tailor Ramanathan. Garment piece will be pinned and tailored directly to your measurements.
+                    </p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn-ghost flex-1 text-center" onclick="showToast('Reschedule Requested','Our concierge will call you within 2 hours.','info')">Reschedule</button>
+                    <button class="btn-primary flex-1 text-center" onclick="showToast('Directions','Salem Atelier: 4/112 Chinnathirupathi Main Rd, Salem.','info')">View Map</button>
+                </div>
+            </div>
+
+            <!-- Tailored Recommendations -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold">Curated for Your Silhouette</h3>
+                    <button onclick="navigateUser('wishlist', document.getElementById('nav-wishlist'))" class="text-xs font-bold text-red-600 hover:text-red-700">View Runway →</button>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <div class="flex items-center gap-3 p-2 hover:bg-red-50/40 rounded-xl transition-colors">
+                        <img src="assets/images/Double-Breasted Cashmere Trench.webp" class="w-14 h-16 object-cover rounded-lg" alt="Cashmere Coat">
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold">Virgin Cashmere Drape Coat</h4>
+                            <p class="text-[11px] text-gray-500">Matches your bespoke charcoal cape</p>
+                            <span class="text-xs font-bold text-red-600">₹42,000</span>
+                        </div>
+                        <button class="btn-ghost py-1.5 px-3 text-[11px]" onclick="addToBag('Virgin Cashmere Drape Coat')">Add</button>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 hover:bg-red-50/40 rounded-xl transition-colors">
+                        <img src="assets/images/Milanese Structure x Salem Silk.webp" class="w-14 h-16 object-cover rounded-lg" alt="Architectural Trench">
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold">Architectural Wool Trench</h4>
+                            <p class="text-[11px] text-gray-500">New AW26 Milanese Collection</p>
+                            <span class="text-xs font-bold text-red-600">₹67,500</span>
+                        </div>
+                        <button class="btn-ghost py-1.5 px-3 text-[11px]" onclick="addToBag('Architectural Wool Trench')">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 2: MY ORDERS & TAILORING ──── -->
+    <section class="section" id="section-orders">
+        <div class="section-header">
+            <div>
+                <h2>My Orders &amp; Bespoke Commissions</h2>
+                <p>Track tailoring progress, view past purchases, and download official invoices.</p>
+            </div>
+            <button class="btn-primary" onclick="navigateUser('wishlist', document.getElementById('nav-wishlist'))">
+                + Commission From Wishlist
+            </button>
+        </div>
+
+        <div class="flex gap-2 mb-4 flex-wrap">
+            <button class="btn-primary text-xs py-1.5 px-4" id="order-filter-all" onclick="filterUserOrders('all', this)">All (3)</button>
+            <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-active" onclick="filterUserOrders('active', this)">In Production (1)</button>
+            <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-shipped" onclick="filterUserOrders('shipped', this)">Shipped (1)</button>
+            <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-delivered" onclick="filterUserOrders('delivered', this)">Delivered (1)</button>
+        </div>
+
+        <div class="card p-0 overflow-hidden">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order Ref</th>
+                        <th>Garment / Silhouette</th>
+                        <th>Commission Date</th>
+                        <th>Specialist</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="user-orders-tbody">
+                    <tr data-status="active">
+                        <td class="font-bold text-red-600">#STK-4891</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <img src="assets/images/Double-Breasted Cashmere Trench.webp" class="w-10 h-10 object-cover rounded-lg">
+                                <div>
+                                    <div class="font-bold text-xs">Noir Cocoon Cape</div>
+                                    <div class="text-[11px] text-gray-500">Handwoven Salem Silk • Custom Fit</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-xs text-gray-500">Sep 20, 2026</td>
+                        <td class="text-xs font-medium">Master Ramanathan</td>
+                        <td class="font-bold text-slate-900">₹18,500</td>
+                        <td><span class="badge processing">In Stitching</span></td>
+                        <td>
+                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Commission #4891','Stage: Hand-finishing in progress. Next fitting Sep 28.','info')">Track</button>
+                        </td>
+                    </tr>
+                    <tr data-status="shipped">
+                        <td class="font-bold text-slate-800">#STK-4812</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <img src="assets/images/bags.webp" class="w-10 h-10 object-cover rounded-lg">
+                                <div>
+                                    <div class="font-bold text-xs">Tuscan Calfskin Tote</div>
+                                    <div class="text-[11px] text-gray-500">Noir Box Calf • Hand burnished</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-xs text-gray-500">Sep 14, 2026</td>
+                        <td class="text-xs font-medium">Leather Atelier</td>
+                        <td class="font-bold text-slate-900">₹23,400</td>
+                        <td><span class="badge shipped">In Transit</span></td>
+                        <td>
+                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Courier Tracking','Airway Bill: BLUEDART-99214. Arriving Tomorrow.','info')">Track</button>
+                        </td>
+                    </tr>
+                    <tr data-status="delivered">
+                        <td class="font-bold text-slate-800">#STK-4750</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <img src="assets/images/Milanese Structure x Salem Silk.webp" class="w-10 h-10 object-cover rounded-lg">
+                                <div>
+                                    <div class="font-bold text-xs">Salem Mulberry Stole</div>
+                                    <div class="text-[11px] text-gray-500">Organic Silk • Hand dyed</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-xs text-gray-500">Aug 29, 2026</td>
+                        <td class="text-xs font-medium">Artisan Weavers</td>
+                        <td class="font-bold text-slate-900">₹9,800</td>
+                        <td><span class="badge confirmed">Delivered</span></td>
+                        <td>
+                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Invoice Downloaded','Invoice #STK-4750 downloaded successfully.','success')">Invoice</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 3: CURATED WISHLIST ──── -->
+    <section class="section" id="section-wishlist">
+        <div class="section-header">
+            <div>
+                <h2>Saved Runway Looks &amp; Pieces</h2>
+                <p>Pieces you have saved for upcoming seasonal collections and private fitting trials.</p>
+            </div>
+            <button class="btn-ghost" onclick="showToast('Runway Catalogue','All seasonal creations are synchronized with your salon profile.','info')">Runway Sync ✓</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="wishlist-grid">
+            <!-- Wishlist item 1 -->
+            <div class="wishlist-card" id="wish-item-1">
+                <div class="h-64 relative overflow-hidden">
+                    <img src="assets/images/Double-Breasted Cashmere Trench.webp" class="w-full h-full object-cover" alt="Virgin Cashmere Coat">
+                    <button onclick="removeWishItem('wish-item-1', 'Virgin Cashmere Drape Coat')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-red-600 hover:text-white flex items-center justify-center text-slate-700 transition-colors shadow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    <span class="badge lowstock absolute bottom-3 left-3">2 Left in Salon</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-1">Virgin Cashmere Drape Coat</h3>
+                    <p class="text-xs text-gray-500 mb-3">Italian Double-Faced Cashmere • Camel</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-base font-black text-slate-900">₹42,000</span>
+                        <span class="text-[11px] text-gray-400 font-semibold">Custom Size</span>
+                    </div>
+                    <button class="btn-primary w-full justify-center" onclick="addToBag('Virgin Cashmere Drape Coat')">Move to Bag</button>
+                </div>
+            </div>
+
+            <!-- Wishlist item 2 -->
+            <div class="wishlist-card" id="wish-item-2">
+                <div class="h-64 relative overflow-hidden">
+                    <img src="assets/images/Milanese Structure x Salem Silk.webp" class="w-full h-full object-cover" alt="Architectural Trench">
+                    <button onclick="removeWishItem('wish-item-2', 'Architectural Wool Trench')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-red-600 hover:text-white flex items-center justify-center text-slate-700 transition-colors shadow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    <span class="badge instock absolute bottom-3 left-3">Runway Sample</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-1">Architectural Wool Trench</h3>
+                    <p class="text-xs text-gray-500 mb-3">Biella Virgin Wool • Charcoal Noir</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-base font-black text-slate-900">₹67,500</span>
+                        <span class="text-[11px] text-gray-400 font-semibold">Ready for Fitting</span>
+                    </div>
+                    <button class="btn-primary w-full justify-center" onclick="addToBag('Architectural Wool Trench')">Move to Bag</button>
+                </div>
+            </div>
+
+            <!-- Wishlist item 3 -->
+            <div class="wishlist-card" id="wish-item-3">
+                <div class="h-64 relative overflow-hidden">
+                    <img src="assets/images/home dress.webp" class="w-full h-full object-cover" alt="Saffron Raw Silk Sari">
+                    <button onclick="removeWishItem('wish-item-3', 'Salem Gold-Zari Silk Ensemble')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-red-600 hover:text-white flex items-center justify-center text-slate-700 transition-colors shadow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    <span class="badge instock absolute bottom-3 left-3">In Stock</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-1">Salem Gold-Zari Silk Ensemble</h3>
+                    <p class="text-xs text-gray-500 mb-3">Heritage Weave • Limited 10 Pieces</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-base font-black text-slate-900">₹36,000</span>
+                        <span class="text-[11px] text-gray-400 font-semibold">Bespoke Drape</span>
+                    </div>
+                    <button class="btn-primary w-full justify-center" onclick="addToBag('Salem Gold-Zari Silk Ensemble')">Move to Bag</button>
+                </div>
+            </div>
+
+            <!-- Wishlist item 4 -->
+            <div class="wishlist-card" id="wish-item-4">
+                <div class="h-64 relative overflow-hidden">
+                    <img src="assets/images/Tailored Tuxedo Blazer.webp" class="w-full h-full object-cover" alt="Sculpted Blazer">
+                    <button onclick="removeWishItem('wish-item-4', 'Sculpted Minimalist Blazer')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 hover:bg-red-600 hover:text-white flex items-center justify-center text-slate-700 transition-colors shadow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    <span class="badge lowstock absolute bottom-3 left-3">Bespoke Made</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm mb-1">Sculpted Minimalist Blazer</h3>
+                    <p class="text-xs text-gray-500 mb-3">Crepe de Chine Collar • Raw Silk Base</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-base font-black text-slate-900">₹54,000</span>
+                        <span class="text-[11px] text-gray-400 font-semibold">Made to Measure</span>
+                    </div>
+                    <button class="btn-primary w-full justify-center" onclick="addToBag('Sculpted Minimalist Blazer')">Move to Bag</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 4: PRIVATE FITTINGS & APPOINTMENTS ──── -->
+    <section class="section" id="section-fittings">
+        <div class="section-header">
+            <div>
+                <h2>Private Fittings &amp; Salon Sessions</h2>
+                <p>Reserve exclusive salon time at our Salem, Milan, or Paris atelier houses.</p>
+            </div>
+            <button class="btn-primary" onclick="document.getElementById('book-modal').classList.add('open')">
+                + Book New Consultation
+            </button>
+        </div>
+
+        <div class="grid-3 mb-6">
+            <div class="card border-l-4 border-l-red-600">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-red-600">Next Upcoming</span>
+                <h3 class="text-base font-bold mt-1">Bespoke Fit Session</h3>
+                <p class="text-xs text-gray-500 mb-3">Salem Flagship Atelier</p>
+                <div class="text-sm font-extrabold text-slate-900">Monday, Sep 28 • 11:30 AM</div>
+                <div class="text-xs text-gray-500 mt-1">Master Ramanathan (90 min)</div>
+            </div>
+            <div class="card">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Past Fitting</span>
+                <h3 class="text-base font-bold mt-1">Initial Silhouette Consult</h3>
+                <p class="text-xs text-gray-500 mb-3">Virtual Bespoke Salon</p>
+                <div class="text-sm font-extrabold text-slate-900">Aug 14, 2026 • 04:00 PM</div>
+                <div class="text-xs text-emerald-600 font-semibold mt-1">Completed ✓</div>
+            </div>
+            <div class="card">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Atelier Salon Pass</span>
+                <h3 class="text-base font-bold mt-1">VIP Walk-In Privileges</h3>
+                <p class="text-xs text-gray-500 mb-3">Worldwide Access</p>
+                <div class="text-sm font-extrabold text-slate-900">Salem • Milan • Paris</div>
+                <div class="text-xs text-red-600 font-semibold mt-1">Dedicated Stylist on Call</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-base font-bold mb-4">Booked Sessions Log</h3>
+            <table class="data-table" id="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Salon Location</th>
+                        <th>Session Type</th>
+                        <th>Date &amp; Time</th>
+                        <th>Master Tailor</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="user-fittings-tbody">
+                    <tr>
+                        <td class="font-semibold text-xs">Salem Flagship Atelier</td>
+                        <td class="text-xs">Bespoke Suit &amp; Coat Fitting</td>
+                        <td class="text-xs font-bold text-slate-900">Sep 28, 2026 • 11:30 AM</td>
+                        <td class="text-xs text-gray-600">Master Ramanathan</td>
+                        <td><span class="badge confirmed">Confirmed</span></td>
+                        <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Fitting Reminder','SMS & Calendar invite sent.','info')">Details</button></td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold text-xs">Virtual Bespoke Video</td>
+                        <td class="text-xs">Fabric Vault Inspection</td>
+                        <td class="text-xs font-bold text-slate-900">Aug 14, 2026 • 04:00 PM</td>
+                        <td class="text-xs text-gray-600">Lead Stylist Aarthi</td>
+                        <td><span class="badge confirmed">Completed</span></td>
+                        <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Notes','Session summary: Noir Silk Cape selected.','info')">View Notes</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 5: BESPOKE MEASUREMENTS ──── -->
+    <section class="section" id="section-measurements">
+        <div class="section-header">
+            <div>
+                <h2>My Sizing &amp; Anatomical Measurements</h2>
+                <p>Master tailor reference records for all bespoke, made-to-measure commissions.</p>
+            </div>
+            <button class="btn-primary" onclick="document.getElementById('measurements-modal').classList.add('open')">
+                Edit Sizing Profile
+            </button>
+        </div>
+
+        <div class="grid-2 mb-6">
+            <!-- Measurement Specs -->
+            <div class="card">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
+                    <div>
+                        <h3 class="font-bold text-base">Recorded Proportions</h3>
+                        <span class="text-xs text-gray-400">Last verified: Aug 14, 2026 by Master Ramanathan</span>
+                    </div>
+                    <span class="badge confirmed">Verified Profile</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Chest / Bust</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-chest">38.5"</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Natural Waist</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-waist">31.0"</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Shoulders</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-shoulder">17.5"</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Sleeve Length</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-sleeve">24.0"</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Inseam</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-inseam">32.0"</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl text-center">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Neck Collar</span>
+                        <div class="text-xl font-black text-slate-900 mt-1" id="disp-neck">15.5"</div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-100">
+                    <div class="text-xs font-bold text-slate-700 mb-1">Tailor Fit Notes:</div>
+                    <p class="text-xs text-gray-500 leading-relaxed italic" id="disp-notes">
+                        "Client prefers structured architectural drape with generous shoulder padding and clean, fluid fall through the body."
+                    </p>
+                </div>
+            </div>
+
+            <!-- How We Measure Guide -->
+            <div class="card bg-red-50/30 border-red-100">
+                <h3 class="font-bold text-base text-red-600 mb-2">The Salem Sartorial Standard</h3>
+                <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                    Every garment commissioned at stackly. undergoes triple fitting tolerances. Before cutting into raw Salem Mulberry Silk or virgin Italian Cashmere, a muslin toile prototype is constructed to guarantee drape accuracy.
+                </p>
+                <div class="space-y-3 text-xs">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</div>
+                        <p class="text-slate-700"><strong>Muslin Fitting:</strong> We drape an unbleached cotton prototype to test silhouette posture.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</div>
+                        <p class="text-slate-700"><strong>Baste Stage:</strong> Hand-basted stitching allows adjustments along armhole and hemline.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</div>
+                        <p class="text-slate-700"><strong>Final Hand Press:</strong> Hand-ironed with traditional steam presses in Salem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 6: ADDRESSES & CONCIERGE ──── -->
+    <section class="section" id="section-concierge">
+        <div class="section-header">
+            <div>
+                <h2>VIP Concierge &amp; Private Addresses</h2>
+                <p>Manage your luxury shipping addresses and connect directly with your dedicated atelier stylist.</p>
+            </div>
+            <button class="btn-primary" onclick="showToast('Address','Add address form opening…','info')">
+                + Add New Address
+            </button>
+        </div>
+
+        <div class="grid-2 mb-6">
+            <!-- Dedicated Stylist Card -->
+            <div class="card border-red-100 bg-gradient-to-br from-white to-red-50/40">
+                <div class="flex items-center gap-4 mb-4">
+                    <img src="assets/images/p1.webp" class="w-16 h-16 rounded-full object-cover border-2 border-red-600 shadow-md" alt="Stylist">
+                    <div>
+                        <div class="text-[10px] uppercase font-bold tracking-widest text-red-600">Your Dedicated Stylist</div>
+                        <h3 class="text-lg font-bold text-slate-900">Aarthi V.</h3>
+                        <p class="text-xs text-gray-500">Senior Fashion Curator • Salem &amp; Milan Maison</p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    Available for fabric swatch requests, styling advice, private appointment scheduling, and custom look curation.
+                </p>
+                <div class="flex gap-2">
+                    <button class="btn-primary flex-1 justify-center" onclick="showToast('Concierge Message','Opening VIP Concierge chat session…','success')">
+                        Chat on WhatsApp
+                    </button>
+                    <button class="btn-ghost flex-1 justify-center" onclick="showToast('Concierge Email','Email sent to concierge@stackly.in','info')">
+                        Send Brief
+                    </button>
+                </div>
+            </div>
+
+            <!-- Saved Addresses -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-base">Primary Atelier Delivery Address</h3>
+                    <span class="badge active">Default</span>
+                </div>
+                <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl mb-4 text-xs space-y-1">
+                    <div class="font-bold text-slate-900 text-sm mb-1" id="disp-addr-name">Meera Sundaram</div>
+                    <div class="text-gray-600" id="disp-addr-line1">Villa 14, Orchid Garden Estate, Fairlands</div>
+                    <div class="text-gray-600" id="disp-addr-line2">Salem, Tamil Nadu — 636016</div>
+                    <div class="text-gray-600" id="disp-addr-phone">Phone: +91 94432 XXXXX</div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn-ghost text-xs flex-1" onclick="showToast('Edit Address','Address editor opened.','info')">Edit Address</button>
+                    <button class="btn-ghost text-xs flex-1" onclick="showToast('Delivery Options','White-glove courier preference active.','info')">Delivery Preferences</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── SECTION 7: ACCOUNT SETTINGS ──── -->
+    <section class="section" id="section-settings">
+        <div class="section-header">
+            <div>
+                <h2>Account Settings &amp; Security</h2>
+                <p>Manage your contact information, password, and communication preferences.</p>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <!-- Profile Info Form -->
+            <div class="card">
+                <h3 class="font-bold text-base mb-4 pb-3 border-b border-gray-100">Personal Details</h3>
+                <form id="user-profile-form" onsubmit="handleSaveUserProfile(event)" class="flex flex-col gap-4">
+                    <div>
+                        <label class="settings-label">Full Name</label>
+                        <input type="text" id="user-set-name" class="settings-input" value="Meera Sundaram" required>
+                    </div>
+                    <div>
+                        <label class="settings-label">Email Address</label>
+                        <input type="email" id="user-set-email" class="settings-input" value="meera@example.com" required>
+                    </div>
+                    <div>
+                        <label class="settings-label">Contact Phone</label>
+                        <input type="text" id="user-set-phone" class="settings-input" value="+91 94432 XXXXX">
+                    </div>
+                    <div>
+                        <label class="settings-label">Preferred Currency</label>
+                        <input type="text" class="settings-input" value="INR (₹) — Indian Rupee" readonly>
+                    </div>
+                    <button type="submit" class="btn-primary mt-2">Save Profile Updates</button>
+                </form>
+            </div>
+
+            <!-- Password & Preferences -->
+            <div class="card">
+                <h3 class="font-bold text-base mb-4 pb-3 border-b border-gray-100">Security &amp; Password</h3>
+                <form id="user-password-form" onsubmit="handleSaveUserPassword(event)" class="flex flex-col gap-4 mb-6">
+                    <div>
+                        <label class="settings-label">Current Password</label>
+                        <input type="password" id="user-old-pw" class="settings-input" placeholder="••••••••">
+                    </div>
+                    <div>
+                        <label class="settings-label">New Password</label>
+                        <input type="password" id="user-new-pw" class="settings-input" placeholder="Min. 8 characters">
+                    </div>
+                    <div>
+                        <label class="settings-label">Confirm New Password</label>
+                        <input type="password" id="user-confirm-pw" class="settings-input" placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn-ghost">Update Password</button>
+                </form>
+
+                <h3 class="font-bold text-base mb-3 pt-3 border-t border-gray-100">Atelier Alerts</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Order Progress SMS</div>
+                            <div class="text-[11px] text-gray-500">Live tailoring milestone notifications</div>
+                        </div>
+                        <button class="settings-toggle on" onclick="this.classList.toggle('on');showToast('Preference','SMS updates toggled.','info')"></button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Private Fitting Reminders</div>
+                            <div class="text-[11px] text-gray-500">24-hour advance salon notification</div>
+                        </div>
+                        <button class="settings-toggle on" onclick="this.classList.toggle('on');showToast('Preference','Fitting reminders toggled.','info')"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // ── AUTHENTICATION & USER STATE ──
+    const authData = JSON.parse(sessionStorage.getItem('stackly_auth') || '{}');
+    const clientName = authData.name || 'Meera Sundaram';
+    const clientFirstName = clientName.split(' ')[0] || 'Meera';
+    const clientInitial = clientFirstName.charAt(0).toUpperCase();
+    const clientEmail = authData.email || 'meera@example.com';
+
+    document.getElementById('sidebar-uname').textContent = clientName;
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera">';
+    document.getElementById('topbar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera">';
+    const heroName = document.getElementById('hero-client-name');
+    if (heroName) heroName.textContent = clientFirstName;
+    const setN = document.getElementById('user-set-name');
+    if (setN) setN.value = clientName;
+    const setE = document.getElementById('user-set-email');
+    if (setE) setE.value = clientEmail;
+    const addrN = document.getElementById('disp-addr-name');
+    if (addrN) addrN.textContent = clientName;
+
+    // ── SIDEBAR TOGGLE ──
+    let isCollapsed = false;
+    function toggleSidebar() {
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        } else {
+            isCollapsed = !isCollapsed;
+            document.getElementById('sidebar').classList.toggle('collapsed', isCollapsed);
+            document.getElementById('topbar').classList.toggle('collapsed', isCollapsed);
+            document.getElementById('main-content').classList.toggle('collapsed', isCollapsed);
+        }
+    }
+
+    // ── NAVIGATION ──
+    const userSectionMeta = {
+        overview:     ['My Atelier',               'stackly. Atelier › Private Client Suite'],
+        orders:       ['Orders & Tailoring',       'stackly. Atelier › Bespoke Commissions'],
+        wishlist:     ['Saved Runway Looks',       'stackly. Atelier › Curated Wishlist'],
+        fittings:     ['Private Fittings',         'stackly. Atelier › Consultation Calendar'],
+        measurements: ['My Measurements',          'stackly. Atelier › Bespoke Sizing Profile'],
+        concierge:    ['VIP Concierge & Salon',    'stackly. Atelier › Personal Stylist'],
+        settings:     ['Account Settings',         'stackly. Atelier › Client Settings'],
+    };
+
+    function navigateUser(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        const sec = document.getElementById('section-' + id);
+        if (sec) sec.classList.add('active');
+        if (el) el.classList.add('active');
+        const meta = userSectionMeta[id] || [id, ''];
+        document.getElementById('page-title').textContent = meta[0];
+        document.getElementById('page-breadcrumb').textContent = meta[1];
+        if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('mobile-open');
+    }
+
+    // ── KPI ANIMATIONS ──
+    function animateCount(id, from, to, duration, fmt) {
+        const el = document.getElementById(id); if(!el) return;
+        const start = performance.now();
+        (function tick(now) {
+            const p = Math.min((now - start)/duration, 1);
+            el.textContent = fmt(Math.round(from + (to-from) * (1 - Math.pow(1-p,3))));
+            if (p < 1) requestAnimationFrame(tick);
+        })(performance.now());
+    }
+    setTimeout(() => {
+        animateCount('kpi-vip-points', 0, 14850, 1200, v => v.toLocaleString());
+    }, 300);
+
+    // ── FILTER USER ORDERS ──
+    function filterUserOrders(status, btn) {
+        ['all', 'active', 'shipped', 'delivered'].forEach(s => {
+            const b = document.getElementById('order-filter-' + s);
+            if (b) {
+                b.className = (s === status) ? 'btn-primary text-xs py-1.5 px-4' : 'btn-ghost text-xs py-1.5 px-4';
+            }
+        });
+        document.querySelectorAll('#user-orders-tbody tr').forEach(row => {
+            row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+        });
+    }
+
+    // ── WISHLIST ACTIONS ──
+    function removeWishItem(id, name) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.transition = 'all 0.3s ease';
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.9)';
+            setTimeout(() => el.remove(), 300);
+            showToast('Item Removed', `${name} removed from your saved runway looks.`, 'info');
+        }
+    }
+
+    function addToBag(productName) {
+        showToast('Added to Fitting Bag', `${productName} added to your private salon trial bag.`, 'success');
+    }
+
+    // ── BOOK FITTING FORM ──
+    function handleBookFitting(event) {
+        event.preventDefault();
+        const salonEl = document.getElementById('book-salon');
+        const serviceEl = document.getElementById('book-service');
+        const dateEl = document.getElementById('book-date');
+        const timeEl = document.getElementById('book-time');
+        const notesEl = document.getElementById('book-notes');
+
+        const salon = salonEl ? salonEl.value : '';
+        const service = serviceEl ? serviceEl.value : '';
+        const date = dateEl ? dateEl.value : '';
+        const time = timeEl ? timeEl.value : '';
+        const notes = notesEl ? notesEl.value.trim() : '';
+
+        if (!salon || !service || !date || !time) {
+            showToast('Validation Error', 'Please complete all required consultation fields.', 'error');
+            return;
+        }
+
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+            showToast('Validation Error', 'Appointment date cannot be in the past.', 'error');
+            if (dateEl) dateEl.focus();
+            return;
+        }
+
+        if (notes.length > 300) {
+            showToast('Validation Error', 'Special requests must be within 300 characters.', 'error');
+            if (notesEl) notesEl.focus();
+            return;
+        }
+
+        const tbody = document.getElementById('fittings-tbody');
+        if (tbody) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><span style="font-weight:700;">SALON-${Math.floor(100+Math.random()*900)}</span></td>
+                <td class="text-xs font-semibold">${salon.split('—')[0]}</td>
+                <td class="text-xs">${service.split('(')[0]}</td>
+                <td class="text-xs font-bold text-red-600">${date} • ${time}</td>
+                <td class="text-xs text-gray-600">Senior Stylist</td>
+                <td><span class="badge pending">Requested</span></td>
+                <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Fitting Request','Status: Requested for ' + '${date}' + '. Salon will confirm shortly.','info')">Details</button></td>
+            `;
+            tbody.prepend(tr);
+        }
+
+        document.getElementById('book-modal').classList.remove('open');
+        
+        if (typeof window.showReservationSuccessModal === 'function') {
+            window.showReservationSuccessModal({
+                name: 'VIP Client',
+                service: service.split('(')[0],
+                date: date,
+                time: time,
+                location: salon
+            });
+        }
+
+        showToast('Consultation Booked ✓', `Private fitting scheduled for ${date} at ${time}. Our concierge will confirm via SMS.`, 'success');
+        document.getElementById('book-fitting-form').reset();
+    }
+
+    // ── MEASUREMENTS FORM ──
+    function handleSaveMeasurements(event) {
+        event.preventDefault();
+        const chest = parseFloat(document.getElementById('meas-chest').value);
+        const waist = parseFloat(document.getElementById('meas-waist').value);
+        const shoulder = parseFloat(document.getElementById('meas-shoulder').value);
+        const sleeve = parseFloat(document.getElementById('meas-sleeve').value);
+        const inseam = parseFloat(document.getElementById('meas-inseam').value);
+        const neck = parseFloat(document.getElementById('meas-neck').value);
+        const fit = document.getElementById('meas-fit').value;
+
+        if (isNaN(chest) || chest < 10 || chest > 80 ||
+            isNaN(waist) || waist < 10 || waist > 80 ||
+            isNaN(shoulder) || shoulder < 5 || shoulder > 40 ||
+            isNaN(sleeve) || sleeve < 5 || sleeve > 50 ||
+            isNaN(inseam) || inseam < 10 || inseam > 60 ||
+            isNaN(neck) || neck < 5 || neck > 30) {
+            showToast('Validation Error', 'Please enter realistic anatomical measurements (inches).', 'error');
+            return;
+        }
+
+        document.getElementById('disp-chest').textContent = chest + '"';
+        document.getElementById('disp-waist').textContent = waist + '"';
+        document.getElementById('disp-shoulder').textContent = shoulder + '"';
+        document.getElementById('disp-sleeve').textContent = sleeve + '"';
+        document.getElementById('disp-inseam').textContent = inseam + '"';
+        document.getElementById('disp-neck').textContent = neck + '"';
+        document.getElementById('disp-notes').textContent = `"Client preference updated to: ${fit}. Measurements recorded in Salem bespoke ledger."`;
+
+        document.getElementById('measurements-modal').classList.remove('open');
+        showToast('Measurements Saved ✓', 'Your bespoke profile has been updated for all future tailoring.', 'success');
+    }
+
+    // ── PROFILE FORM ──
+    function handleSaveUserProfile(event) {
+        event.preventDefault();
+        const nameEl = document.getElementById('user-set-name');
+        const emailEl = document.getElementById('user-set-email');
+        const phoneEl = document.getElementById('user-set-phone');
+
+        const name = nameEl ? nameEl.value.trim() : '';
+        const email = emailEl ? emailEl.value.trim() : '';
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+
+        if (!name || name.length < 2) { 
+            showToast('Validation Error', 'Please enter your full name (minimum 2 characters).', 'error'); 
+            if (nameEl) nameEl.focus();
+            return; 
+        }
+        
+        const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+        if (!email || !emailRe.test(email)) { 
+            showToast('Validation Error', 'Please enter a valid email address.', 'error'); 
+            if (emailEl) emailEl.focus();
+            return; 
+        }
+
+        const cleanPhone = phone.replace(/[^0-9]/g, '');
+        if (phone && cleanPhone.length !== 10) {
+            showToast('Validation Error', 'Phone number must be exactly 10 digits.', 'error');
+            if (phoneEl) phoneEl.focus();
+            return;
+        }
+
+        const data = JSON.parse(sessionStorage.getItem('stackly_auth') || '{}');
+        data.name = name;
+        data.email = email;
+        sessionStorage.setItem('stackly_auth', JSON.stringify(data));
+
+        document.getElementById('sidebar-uname').textContent = name;
+        document.getElementById('sidebar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera">';
+        document.getElementById('topbar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Meera">';
+        const heroName = document.getElementById('hero-client-name');
+        if (heroName) heroName.textContent = name.split(' ')[0];
+        const addrN = document.getElementById('disp-addr-name');
+        if (addrN) addrN.textContent = name;
+
+        showToast('Profile Updated ✓', 'Your client profile information has been saved.', 'success');
+    }
+
+    // ── PASSWORD FORM ──
+    function handleSaveUserPassword(event) {
+        event.preventDefault();
+        const oldPw = document.getElementById('user-old-pw').value;
+        const pw1 = document.getElementById('user-new-pw').value;
+        const pw2 = document.getElementById('user-confirm-pw').value;
+
+        if (!oldPw || oldPw.length < 6) {
+            showToast('Validation Error', 'Please enter your current password.', 'error');
+            document.getElementById('user-old-pw').focus();
+            return;
+        }
+
+        if (pw1.length < 8) { 
+            showToast('Validation Error', 'New password must be at least 8 characters.', 'error'); 
+            document.getElementById('user-new-pw').focus();
+            return; 
+        }
+        if (pw1 !== pw2) { 
+            showToast('Validation Error', 'New passwords do not match.', 'error'); 
+            document.getElementById('user-confirm-pw').focus();
+            return; 
+        }
+
+        document.getElementById('user-old-pw').value = '';
+        document.getElementById('user-new-pw').value = '';
+        document.getElementById('user-confirm-pw').value = '';
+        showToast('Password Updated ✓', 'Your atelier password has been securely updated.', 'success');
+    }
+
+    // ── LOGOUT ──
+    function doLogout() {
+        sessionStorage.removeItem('stackly_auth');
+        showToast('Signed Out', 'You have been safely signed out of your client suite.', 'info');
+        setTimeout(() => window.location.replace('login.html'), 1000);
+    }
+
+    // ── GLOBAL SEARCH (In-Dashboard Only) ──
+    document.getElementById('global-search').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const q = this.value.trim();
+            if (q) {
+                showToast('Search Filter', `Filtered client suite and tailoring records for "${q}".`, 'info');
+            } else {
+                showToast('Search', 'Please enter a search query.', 'error');
+            }
+        }
+    });
+
+    // ── KEYBOARD SHORTCUTS ──
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('global-search').focus(); }
+        if (e.key === 'Escape') {
+            document.getElementById('logout-modal').classList.remove('open');
+            document.getElementById('book-modal').classList.remove('open');
+            document.getElementById('measurements-modal').classList.remove('open');
+        }
+    });
+
+    // ── MOBILE MENU TOGGLE ──
+    if (window.innerWidth < 768) {
+        document.getElementById('toggle-sidebar').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        });
+    }
+
+    // Toast fallback
+    if (!window.showToast) {
+        window.showToast = function(title, message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.innerHTML = `<div class="toast-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">${title}</div><div style="font-size:11px;color:#64748b;font-weight:500;">${message}</div></div>`;
+            container.appendChild(t);
+            requestAnimationFrame(() => t.classList.add('show'));
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 4000);
+        };
+    }
+</script>
+</body>
+</html>

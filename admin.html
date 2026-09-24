@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — stackly. Atelier</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-w: 260px;
+            --sidebar-collapsed: 72px;
+            --accent: #dc2626;
+            --accent-dark: #b91c1c;
+            --accent-light: #fef2f2;
+            --accent-muted: rgba(220, 38, 38, 0.08);
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-sidebar: #ffffff;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        #sidebar {
+            position: fixed; top: 0; left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: width 0.35s cubic-bezier(0.16,1,0.3,1);
+            z-index: 100;
+            overflow: hidden;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+        }
+        #sidebar.collapsed { width: var(--sidebar-collapsed); }
+        #sidebar.collapsed .nav-label,
+        #sidebar.collapsed .brand-name,
+        #sidebar.collapsed .user-info { 
+            opacity: 0; width: 0; overflow: hidden; white-space: nowrap;
+        }
+        #sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; }
+        #sidebar.collapsed .nav-badge { opacity: 0; width: 0; }
+
+        .brand-area {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 12px;
+            min-height: 76px;
+            background: #ffffff;
+        }
+        .brand-logo-dot {
+            width: 36px; height: 36px; min-width: 36px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px; color: white;
+            letter-spacing: -1px;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+        }
+        .brand-name {
+            font-weight: 900; font-size: 18px; letter-spacing: -0.5px;
+            transition: opacity 0.25s, width 0.35s;
+            white-space: nowrap;
+            color: #0f172a;
+        }
+        .brand-name span { color: var(--accent); }
+
+        .nav-section-label {
+            font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--text-muted);
+            padding: 18px 20px 6px;
+            transition: opacity 0.25s;
+        }
+        #sidebar.collapsed .nav-section-label { opacity: 0; height: 0; padding: 0; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 16px;
+            margin: 2px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 13px; font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+        }
+        .nav-item svg { min-width: 20px; transition: transform 0.2s; }
+        .nav-item:hover { background: #fef2f2; color: var(--accent); }
+        .nav-item:hover svg { transform: scale(1.08); }
+        .nav-item.active {
+            background: #fef2f2;
+            color: var(--accent);
+            font-weight: 700;
+            border: 1px solid rgba(220, 38, 38, 0.25);
+        }
+        .nav-badge {
+            margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px;
+            background: var(--accent); color: white;
+            border-radius: 10px; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.25s, width 0.35s;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+        }
+        .nav-label { transition: opacity 0.25s; }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding: 16px 10px;
+            background: #ffffff;
+        }
+        .user-pill {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 10px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+        .user-avatar {
+            width: 34px; height: 34px; min-width: 34px;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px; color: white;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
+        }
+        .user-info { transition: opacity 0.25s; overflow: hidden; }
+        .user-info .user-name { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+        .user-info .user-role { font-size: 10px; color: var(--accent); font-weight: 600; }
+
+        /* TOPBAR */
+        #topbar {
+            position: fixed; top: 0; left: var(--sidebar-w);
+            right: 0; height: 64px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px;
+            z-index: 90;
+            transition: left 0.35s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+        #topbar.collapsed { left: var(--sidebar-collapsed); }
+
+        .topbar-left { display: flex; align-items: center; gap: 16px; }
+        #toggle-sidebar {
+            width: 36px; height: 36px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, color 0.2s; flex-shrink: 0;
+            color: #0f172a;
+        }
+        #toggle-sidebar:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.3); }
+
+        #page-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: #0f172a; }
+        #page-breadcrumb { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        .search-box {
+            display: flex; align-items: center; gap: 8px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: 8px 14px;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus-within { border-color: var(--accent); }
+        .search-box input {
+            background: none; border: none; outline: none;
+            color: var(--text-primary); font-size: 13px; width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+        .search-box input::placeholder { color: var(--text-muted); }
+
+        .topbar-right { display: flex; align-items: center; gap: 10px; }
+        .icon-btn {
+            width: 36px; height: 36px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.2s; position: relative; text-decoration: none;
+        }
+        .icon-btn:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.3); }
+        .notif-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 7px; height: 7px; background: var(--accent); border-radius: 50%;
+            border: 1.5px solid white;
+        }
+
+        /* MAIN CONTENT */
+        #main-content {
+            margin-left: var(--sidebar-w);
+            margin-top: 64px;
+            padding: 28px;
+            min-height: calc(100vh - 64px);
+            transition: margin-left 0.35s cubic-bezier(0.16,1,0.3,1);
+            background: var(--bg-main);
+        }
+        #main-content.collapsed { margin-left: var(--sidebar-collapsed); }
+
+        /* SECTIONS */
+        .section { display: none; animation: sectionIn 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+        .section.active { display: block; }
+        @keyframes sectionIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 22px 24px;
+            position: relative; overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+        .kpi-card:hover { 
+            border-color: rgba(220, 38, 38, 0.3); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.08); 
+        }
+        .kpi-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(220,38,38,0.03) 0%, transparent 60%);
+            border-radius: 16px; pointer-events: none;
+        }
+        .kpi-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px;
+        }
+        .kpi-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; color: #0f172a; }
+        .kpi-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .kpi-change { 
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 11px; font-weight: 700; margin-top: 10px;
+            padding: 3px 8px; border-radius: 6px;
+        }
+        .kpi-change.up { color: #16a34a; background: #dcfce7; }
+        .kpi-change.down { color: #dc2626; background: #fee2e2; }
+        .sparkline { width: 100%; height: 40px; margin-top: 12px; }
+
+        /* Section Headers */
+        .section-header { 
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: #0f172a; }
+        .section-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent); color: white;
+            border: none; padding: 10px 20px;
+            border-radius: 10px; font-size: 12px; font-weight: 700;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+        }
+        .btn-primary:hover { background: #b91c1c; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35); }
+        .btn-ghost {
+            background: #ffffff; color: var(--text-secondary);
+            border: 1px solid var(--border); padding: 10px 20px;
+            border-radius: 10px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-ghost:hover { background: #fef2f2; color: var(--accent); border-color: rgba(220,38,38,0.25); }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th {
+            font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--text-muted);
+            padding: 12px 16px; text-align: left;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table td {
+            padding: 13px 16px; font-size: 13px; font-weight: 500;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: #fffbfb; }
+
+        /* Badges */
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; white-space: nowrap;
+        }
+        .badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink: 0; }
+        .badge.shipped   { background: #dcfce7; color: #15803d; } .badge.shipped::before   { background: #16a34a; }
+        .badge.pending   { background: #fef9c3; color: #a16207; } .badge.pending::before   { background: #ca8a04; }
+        .badge.processing{ background: #dbeafe; color: #1d4ed8; } .badge.processing::before{ background: #2563eb; }
+        .badge.cancelled { background: #fee2e2; color: #b91c1c; } .badge.cancelled::before { background: #dc2626; }
+        .badge.published { background: #dcfce7; color: #15803d; } .badge.published::before { background: #16a34a; }
+        .badge.draft     { background: #f1f5f9; color: #64748b; } .badge.draft::before { background: #94a3b8; }
+        .badge.confirmed { background: #dcfce7; color: #15803d; } .badge.confirmed::before { background: #16a34a; }
+        .badge.requested { background: #fef9c3; color: #a16207; } .badge.requested::before { background: #ca8a04; }
+        .badge.active    { background: #dcfce7; color: #15803d; } .badge.active::before    { background: #16a34a; }
+        .badge.inactive  { background: #f1f5f9; color: #64748b; } .badge.inactive::before  { background: #94a3b8; }
+        .badge.instock   { background: #dcfce7; color: #15803d; } .badge.instock::before   { background: #16a34a; }
+        .badge.lowstock  { background: #fef9c3; color: #a16207; } .badge.lowstock::before  { background: #ca8a04; }
+        .badge.outofstock{ background: #fee2e2; color: #b91c1c; } .badge.outofstock::before{ background: #dc2626; }
+
+        /* Avatar */
+        .avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        /* Bar chart */
+        .chart-bar-track { height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
+        .chart-bar-fill  { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.16,1,0.3,1); }
+
+        /* Settings */
+        .settings-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px; }
+        .settings-input {
+            width: 100%; background: #f8fafc;
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 12px 14px; color: var(--text-primary);
+            font-size: 13px; font-family: 'Inter', sans-serif;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .settings-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); background: #ffffff; }
+        .settings-toggle {
+            width: 42px; height: 24px; background: #cbd5e1;
+            border-radius: 12px; cursor: pointer; position: relative;
+            transition: background 0.3s; border: none; flex-shrink: 0;
+        }
+        .settings-toggle::after {
+            content: ''; position: absolute;
+            width: 18px; height: 18px; background: white; border-radius: 50%;
+            top: 3px; left: 3px; transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .settings-toggle.on { background: var(--accent); }
+        .settings-toggle.on::after { transform: translateX(18px); }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem; }
+        .toast {
+            display: flex; align-items: center; gap: 12px;
+            background: #ffffff; border: 1px solid var(--border);
+            padding: 14px 20px; border-radius: 12px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+            font-size: 13px; font-weight: 600; color: var(--text-primary);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            min-width: 260px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+        .toast.success .toast-dot { background:#16a34a; }
+        .toast.error   .toast-dot { background:#dc2626; }
+        .toast.info    .toast-dot { background:var(--accent); }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #ffffff; border: 1px solid var(--border); border-radius: 20px; padding: 32px; width: 440px; max-width: 95vw; animation: sectionIn 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; color: #0f172a; }
+        .modal p { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+
+        /* Sidebar tooltip on collapsed hover */
+        #sidebar.collapsed .nav-item { position: relative; }
+        #sidebar.collapsed .nav-item:hover::after {
+            content: attr(data-tip);
+            position: absolute; left: calc(100% + 12px); top: 50%;
+            transform: translateY(-50%);
+            background: #0f172a; border: 1px solid #1e293b;
+            border-radius: 8px; padding: 6px 12px;
+            font-size: 12px; font-weight: 600; color: #ffffff;
+            white-space: nowrap; pointer-events: none; z-index: 300;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Cards and Tables */
+        .card, .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100%;
+        }
+        .data-table {
+            min-width: 520px;
+        }
+
+        /* Grid */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        @media(max-width:1280px){ .grid-4{grid-template-columns:repeat(2,1fr);} }
+        @media(max-width:900px) { .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;} #main-content{padding:16px;} }
+
+        /* Stagger */
+        .stagger > * { animation: sectionIn 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+        .stagger > *:nth-child(1){animation-delay:0.05s}
+        .stagger > *:nth-child(2){animation-delay:0.10s}
+        .stagger > *:nth-child(3){animation-delay:0.15s}
+        .stagger > *:nth-child(4){animation-delay:0.20s}
+
+        @media(max-width:768px){
+            #sidebar{transform:translateX(-100%); width:var(--sidebar-w) !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15);}
+            #sidebar.mobile-open{transform:translateX(0);}
+            #topbar,#main-content{left:0!important;margin-left:0!important;}
+            #topbar { padding: 0 12px; height: 56px; }
+            #main-content { margin-top: 56px; padding: 14px 10px !important; }
+            .search-box { display: none !important; }
+            #page-breadcrumb { display: none !important; }
+        }
+        @media(max-width:480px){
+            #topbar { padding: 0 8px; }
+            .topbar-left { gap: 8px; }
+            #page-title { font-size: 13px !important; max-width: 85px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            .topbar-right { gap: 4px !important; }
+            .icon-btn span { display: none !important; }
+            .icon-btn { width: 30px !important; height: 30px !important; padding: 0 !important; }
+            #toggle-sidebar { width: 30px !important; height: 30px !important; }
+            #topbar-avatar { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+            #main-content { padding: 12px 6px !important; }
+            .card { padding: 14px 10px !important; border-radius: 12px !important; }
+            .section-header { margin-bottom: 16px; gap: 8px; }
+            .section-header h2 { font-size: 18px !important; }
+            .kpi-card { padding: 14px 12px !important; }
+            .kpi-value { font-size: 20px !important; }
+            .modal { padding: 20px 14px !important; border-radius: 16px !important; width: calc(100vw - 20px) !important; }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // AUTH GUARD
+    (function() {
+        const auth = sessionStorage.getItem('stackly_auth');
+        if (!auth) {
+            sessionStorage.setItem('stackly_redirect', 'admin.html');
+            window.location.replace('login.html');
+        }
+    })();
+</script>
+
+<div id="toast-container"></div>
+
+<!-- Logout Modal -->
+<div class="modal-overlay" id="logout-modal">
+    <div class="modal">
+        <h3>Sign Out?</h3>
+        <p>You're about to sign out of the stackly. admin dashboard. Any unsaved changes will be lost.</p>
+        <div style="display:flex;gap:12px;">
+            <button class="btn-ghost" onclick="document.getElementById('logout-modal').classList.remove('open')" style="flex:1">Cancel</button>
+            <button class="btn-primary" onclick="doLogout()" style="flex:1">Sign Out</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside id="sidebar">
+    <div class="brand-area">
+        <a href="index.html" class="flex items-center gap-2" aria-label="stackly home">
+            <img src="assets/images/stackly logo.webp" alt="stackly." class="h-7 w-auto object-contain brightness-0">
+        </a>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0;">
+        <div class="nav-section-label">Main</div>
+
+        <a class="nav-item active" id="nav-dashboard" data-section="dashboard" data-tip="Dashboard" onclick="navigate('dashboard',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="nav-label">Dashboard</span>
+        </a>
+
+        <a class="nav-item" id="nav-orders" data-section="orders" data-tip="Orders" onclick="navigate('orders',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="nav-label">Orders</span>
+            <span class="nav-badge">12</span>
+        </a>
+
+        <a class="nav-item" id="nav-products" data-section="products" data-tip="Products" onclick="navigate('products',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span class="nav-label">Products</span>
+        </a>
+
+        <a class="nav-item" id="nav-customers" data-section="customers" data-tip="Customers" onclick="navigate('customers',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-label">Customers</span>
+        </a>
+
+        <div class="nav-section-label">Content</div>
+
+        <a class="nav-item" id="nav-blog" data-section="blog" data-tip="Blog Posts" onclick="navigate('blog',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <span class="nav-label">Blog Posts</span>
+            <span class="nav-badge">3</span>
+        </a>
+
+        <a class="nav-item" id="nav-appointments" data-section="appointments" data-tip="Appointments" onclick="navigate('appointments',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="nav-label">Appointments</span>
+            <span class="nav-badge">5</span>
+        </a>
+
+        <div class="nav-section-label">Insights</div>
+
+        <a class="nav-item" id="nav-analytics" data-section="analytics" data-tip="Analytics" onclick="navigate('analytics',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span class="nav-label">Analytics</span>
+        </a>
+
+        <div class="nav-section-label">System</div>
+
+        <a class="nav-item" id="nav-settings" data-section="settings" data-tip="Settings" onclick="navigate('settings',this)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span class="nav-label">Settings</span>
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-pill">
+            <div class="user-avatar overflow-hidden" id="sidebar-avatar"><img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin"></div>
+            <div class="user-info">
+                <div class="user-name" id="sidebar-uname">Admin</div>
+                <div class="user-role" id="sidebar-urole">Administrator</div>
+            </div>
+        </div>
+        <a class="nav-item" style="color:#ef4444;" data-tip="Logout" onclick="document.getElementById('logout-modal').classList.add('open')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span class="nav-label">Logout</span>
+        </a>
+    </div>
+</aside>
+
+<!-- ═══════ TOPBAR ═══════ -->
+<header id="topbar">
+    <div class="topbar-left">
+        <button id="toggle-sidebar" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+            <div id="page-title">Dashboard</div>
+            <div id="page-breadcrumb">stackly. Admin › Dashboard</div>
+        </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--text-muted);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search… (Ctrl+K)" id="global-search">
+        </div>
+        <div class="topbar-right">
+            <button class="icon-btn" onclick="showToast('Notifications','5 new orders awaiting approval.','info')" title="Notifications">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <div class="notif-dot"></div>
+            </button>
+            <button class="icon-btn" onclick="showToast('Store Status','Live Atelier Store is operational in Salem.','success')" title="Store Status">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </button>
+            <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(220,38,38,0.25);" id="topbar-avatar" onclick="navigate('settings',document.getElementById('nav-settings'))" title="Admin Settings"><img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin"></div>
+        </div>
+    </div>
+</header>
+
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<main id="main-content">
+
+    <!-- ──── DASHBOARD ──── -->
+    <section class="section active" id="section-dashboard">
+        <div class="section-header">
+            <div><h2>Overview</h2><p>Welcome back. Here's what's happening at the atelier.</p></div>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <span style="font-size:11px;color:var(--text-muted);" id="last-update">Updated just now</span>
+                <button class="btn-primary" onclick="refreshDashboard()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="grid-4 stagger" style="margin-bottom:24px;">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fee2e2;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-revenue">₹0</div>
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-change up">▲ 12.4% vs last month</div>
+                <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,35 20,28 40,30 60,20 80,18 100,10 120,8" fill="none" stroke="#dc2626" stroke-width="2"/><polyline points="0,35 20,28 40,30 60,20 80,18 100,10 120,8 120,40 0,40" fill="rgba(220,38,38,0.06)" stroke="none"/></svg>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fee2e2;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-orders">0</div>
+                <div class="kpi-label">Total Orders</div>
+                <div class="kpi-change up">▲ 8.1% vs last month</div>
+                <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,38 20,32 40,36 60,22 80,25 100,15 120,12" fill="none" stroke="#dc2626" stroke-width="2"/><polyline points="0,38 20,32 40,36 60,22 80,25 100,15 120,12 120,40 0,40" fill="rgba(220,38,38,0.06)" stroke="none"/></svg>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#dcfce7;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-customers">0</div>
+                <div class="kpi-label">Total Customers</div>
+                <div class="kpi-change up">▲ 5.2% vs last month</div>
+                <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,36 20,30 40,28 60,24 80,20 100,14 120,10" fill="none" stroke="#16a34a" stroke-width="2"/><polyline points="0,36 20,30 40,28 60,24 80,20 100,14 120,10 120,40 0,40" fill="rgba(22,163,74,0.06)" stroke="none"/></svg>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background:#fef9c3;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div class="kpi-value" id="kpi-appointments">0</div>
+                <div class="kpi-label">Appointments</div>
+                <div class="kpi-change down">▼ 2.3% vs last month</div>
+                <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,10 20,14 40,12 60,20 80,16 100,24 120,28" fill="none" stroke="#ca8a04" stroke-width="2"/><polyline points="0,10 20,14 40,12 60,20 80,16 100,24 120,28 120,40 0,40" fill="rgba(202,138,4,0.06)" stroke="none"/></svg>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:24px;">
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <div><div style="font-size:14px;font-weight:700;margin-bottom:2px;color:#0f172a;">Revenue Overview</div><div style="font-size:11px;color:var(--text-muted);">Monthly — AW26 Season</div></div>
+                    <span class="badge shipped">+12.4%</span>
+                </div>
+                <svg viewBox="0 0 340 120" style="width:100%;height:120px;">
+                    <defs><linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dc2626" stop-opacity="1"/><stop offset="100%" stop-color="#dc2626" stop-opacity="0.2"/></linearGradient></defs>
+                    <rect x="10" y="90" width="28" height="30" fill="url(#barGrad)" rx="4" opacity="0.6"/>
+                    <rect x="52" y="70" width="28" height="50" fill="url(#barGrad)" rx="4" opacity="0.7"/>
+                    <rect x="94" y="55" width="28" height="65" fill="url(#barGrad)" rx="4" opacity="0.75"/>
+                    <rect x="136" y="40" width="28" height="80" fill="url(#barGrad)" rx="4" opacity="0.85"/>
+                    <rect x="178" y="60" width="28" height="60" fill="url(#barGrad)" rx="4" opacity="0.75"/>
+                    <rect x="220" y="25" width="28" height="95" fill="url(#barGrad)" rx="4" opacity="0.9"/>
+                    <rect x="262" y="10" width="28" height="110" fill="#dc2626" rx="4"/>
+                    <rect x="304" y="35" width="28" height="85" fill="url(#barGrad)" rx="4" opacity="0.7"/>
+                    <text x="24"  y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Apr</text>
+                    <text x="66"  y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">May</text>
+                    <text x="108" y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Jun</text>
+                    <text x="150" y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Jul</text>
+                    <text x="192" y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Aug</text>
+                    <text x="234" y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Sep</text>
+                    <text x="276" y="118" text-anchor="middle" fill="#dc2626" font-size="8" font-family="Inter" font-weight="700">Oct</text>
+                    <text x="318" y="118" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="Inter">Nov</text>
+                </svg>
+            </div>
+            <div class="card" style="padding:20px;">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Recent Orders</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">Latest transactions</div>
+                <table class="data-table">
+                    <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>#4891</td><td>Meera S.</td><td>₹18,500</td><td><span class="badge shipped">Shipped</span></td></tr>
+                        <tr><td>#4890</td><td>Arjun K.</td><td>₹42,000</td><td><span class="badge processing">Processing</span></td></tr>
+                        <tr><td>#4889</td><td>Lakshmi R.</td><td>₹9,800</td><td><span class="badge pending">Pending</span></td></tr>
+                        <tr><td>#4888</td><td>Vikram M.</td><td>₹67,500</td><td><span class="badge shipped">Shipped</span></td></tr>
+                        <tr><td>#4887</td><td>Priya N.</td><td>₹23,400</td><td><span class="badge cancelled">Cancelled</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Top Products</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">By revenue this season</div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Noir Cocoon Cape</span><span style="color:var(--text-muted);">₹1,84,000</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:88%;background:#cc0000;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Cashmere Drape Coat</span><span style="color:var(--text-muted);">₹1,52,000</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:73%;background:#3b82f6;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Salem Mulberry Stole</span><span style="color:var(--text-muted);">₹98,500</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:58%;background:#22c55e;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Architectural Trench</span><span style="color:var(--text-muted);">₹76,000</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:42%;background:#fbbf24;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Tuscan Calfskin Tote</span><span style="color:var(--text-muted);">₹58,000</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:30%;background:#a855f7;"></div></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Store Health</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">Current status at a glance</div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><span style="font-size:13px;font-weight:600;">Pending Orders</span><span class="badge pending">12 New</span></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><span style="font-size:13px;font-weight:600;">Low Stock Items</span><span class="badge lowstock">4 Items</span></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><span style="font-size:13px;font-weight:600;">Upcoming Appointments</span><span class="badge confirmed">5 Today</span></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><span style="font-size:13px;font-weight:600;">Draft Blog Posts</span><span class="badge draft">3 Drafts</span></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f0fdf4;border-radius:10px;border:1px solid #bbf7d0;"><span style="font-size:13px;font-weight:600;color:#15803d;">Store Status</span><span class="badge active">Live</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── ORDERS ──── -->
+    <section class="section" id="section-orders">
+        <div class="section-header">
+            <div><h2>Orders</h2><p>Manage and track all customer orders.</p></div>
+            <div style="display:flex;gap:10px;">
+                <button class="btn-ghost" onclick="showToast('Export','Exporting order data as CSV…','info')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export
+                </button>
+                <button class="btn-primary" onclick="showToast('New Order','Order creation form opening…','info')">+ New Order</button>
+            </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+            <button id="filter-all" class="btn-primary" style="font-size:11px;padding:7px 16px;" onclick="filterOrders('all',this)">All</button>
+            <button id="filter-pending" class="btn-ghost" style="font-size:11px;padding:7px 16px;" onclick="filterOrders('pending',this)">Pending</button>
+            <button id="filter-processing" class="btn-ghost" style="font-size:11px;padding:7px 16px;" onclick="filterOrders('processing',this)">Processing</button>
+            <button id="filter-shipped" class="btn-ghost" style="font-size:11px;padding:7px 16px;" onclick="filterOrders('shipped',this)">Shipped</button>
+            <button id="filter-cancelled" class="btn-ghost" style="font-size:11px;padding:7px 16px;" onclick="filterOrders('cancelled',this)">Cancelled</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <table class="data-table">
+                <thead><tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="orders-tbody">
+                    <tr data-status="shipped"><td><span style="font-weight:700;">#4891</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">M</div>Meera Sundaram</div></td><td style="color:var(--text-muted);font-size:12px;">Noir Cocoon Cape</td><td style="font-size:12px;color:var(--text-muted);">Sep 20, 2026</td><td style="font-weight:700;">₹18,500</td><td><span class="badge shipped">Shipped</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4891','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="processing"><td><span style="font-weight:700;">#4890</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">A</div>Arjun Krishnan</div></td><td style="color:var(--text-muted);font-size:12px;">Cashmere Drape Coat</td><td style="font-size:12px;color:var(--text-muted);">Sep 20, 2026</td><td style="font-weight:700;">₹42,000</td><td><span class="badge processing">Processing</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4890','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="pending"><td><span style="font-weight:700;">#4889</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">L</div>Lakshmi Rajan</div></td><td style="color:var(--text-muted);font-size:12px;">Salem Mulberry Stole</td><td style="font-size:12px;color:var(--text-muted);">Sep 19, 2026</td><td style="font-weight:700;">₹9,800</td><td><span class="badge pending">Pending</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4889','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="shipped"><td><span style="font-weight:700;">#4888</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">V</div>Vikram Menon</div></td><td style="color:var(--text-muted);font-size:12px;">Architectural Trench</td><td style="font-size:12px;color:var(--text-muted);">Sep 19, 2026</td><td style="font-weight:700;">₹67,500</td><td><span class="badge shipped">Shipped</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4888','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="cancelled"><td><span style="font-weight:700;">#4887</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">P</div>Priya Nair</div></td><td style="color:var(--text-muted);font-size:12px;">Tuscan Calfskin Tote</td><td style="font-size:12px;color:var(--text-muted);">Sep 18, 2026</td><td style="font-weight:700;">₹23,400</td><td><span class="badge cancelled">Cancelled</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4887','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="shipped"><td><span style="font-weight:700;">#4886</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">R</div>Ravi Shankar</div></td><td style="color:var(--text-muted);font-size:12px;">Biella Wool Blazer</td><td style="font-size:12px;color:var(--text-muted);">Sep 18, 2026</td><td style="font-weight:700;">₹54,000</td><td><span class="badge shipped">Shipped</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4886','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="pending"><td><span style="font-weight:700;">#4885</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">S</div>Sneha Iyer</div></td><td style="color:var(--text-muted);font-size:12px;">Silk Organza Evening Set</td><td style="font-size:12px;color:var(--text-muted);">Sep 17, 2026</td><td style="font-weight:700;">₹36,000</td><td><span class="badge pending">Pending</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4885','Viewing order details…','info')">View</button></td></tr>
+                    <tr data-status="processing"><td><span style="font-weight:700;">#4884</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">K</div>Karthik Bose</div></td><td style="color:var(--text-muted);font-size:12px;">Draped Jersey Wrap</td><td style="font-size:12px;color:var(--text-muted);">Sep 17, 2026</td><td style="font-weight:700;">₹14,200</td><td><span class="badge processing">Processing</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Order #4884','Viewing order details…','info')">View</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── PRODUCTS ──── -->
+    <section class="section" id="section-products">
+        <div class="section-header">
+            <div><h2>Products</h2><p>Manage your complete collection inventory.</p></div>
+            <button class="btn-primary" onclick="showToast('Add Product','Product editor opening…','info')">+ Add Product</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
+            <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Noir Cocoon Cape','Opening product editor…','info')">
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Double-Breasted Cashmere Trench.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;transition:transform 0.4s;" alt="Noir Cocoon Cape"/><span class="badge instock" style="position:absolute;top:12px;right:12px;">In Stock</span></div>
+                <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Noir Cocoon Cape</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Salem Handwoven Silk</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹18,500</span><span style="font-size:11px;color:var(--text-muted);">12 units</span></div></div>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Cashmere Drape Coat','Opening product editor…','info')">
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Double-Breasted Cashmere Trench.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Cashmere Drape Coat"/><span class="badge lowstock" style="position:absolute;top:12px;right:12px;">Low Stock</span></div>
+                <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Cashmere Drape Coat</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Virgin Italian Cashmere</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹42,000</span><span style="font-size:11px;color:#ca8a04;font-weight:700;">3 units</span></div></div>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Architectural Trench','Opening product editor…','info')">
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Milanese Structure x Salem Silk.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Architectural Trench"/><span class="badge instock" style="position:absolute;top:12px;right:12px;">In Stock</span></div>
+                <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Architectural Trench</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Biella Virgin Wool</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹67,500</span><span style="font-size:11px;color:var(--text-muted);">8 units</span></div></div>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Salem Mulberry Stole','Opening product editor…','info')">
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Experience the Atelier In Salem..webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Salem Mulberry Stole"/><span class="badge outofstock" style="position:absolute;top:12px;right:12px;">Out of Stock</span></div>
+                <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Salem Mulberry Stole</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Organic Mulberry Silk</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹9,800</span><span style="font-size:11px;color:#dc2626;font-weight:700;">0 units</span></div></div>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Tuscan Calfskin Tote','Opening product editor…','info')">
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/bags.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Tuscan Calfskin Tote"/><span class="badge instock" style="position:absolute;top:12px;right:12px;">In Stock</span></div>
+                <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Tuscan Calfskin Tote</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Tuscan Box Calfskin</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹23,400</span><span style="font-size:11px;color:var(--text-muted);">6 units</span></div></div>
+            </div>
+            <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270px;cursor:pointer;border-style:dashed;border-color:#cbd5e1;background:#f8fafc;transition:border-color 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='#dc2626';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#cbd5e1';this.style.transform=''" onclick="showToast('New Product','Opening product creation form…','info')">
+                <div style="width:48px;height:48px;background:#ffffff;border:1px solid #e2e8f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+                <div style="font-size:13px;font-weight:700;color:#0f172a;">Add New Product</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── CUSTOMERS ──── -->
+    <section class="section" id="section-customers">
+        <div class="section-header">
+            <div><h2>Customers</h2><p>View and manage your atelier clientele.</p></div>
+            <div style="display:flex;gap:10px;">
+                <button class="btn-ghost" onclick="showToast('Export','Exporting customer list…','info')">Export</button>
+                <button class="btn-primary" onclick="showToast('Invite','Client invite form opening…','info')">+ Invite Client</button>
+            </div>
+        </div>
+        <div class="grid-3" style="margin-bottom:24px;">
+            <div class="card" style="text-align:center;"><div style="font-size:28px;font-weight:800;margin-bottom:4px;">4,310</div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">Total Clients</div></div>
+            <div class="card" style="text-align:center;"><div style="font-size:28px;font-weight:800;color:#dc2626;margin-bottom:4px;">187</div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">VIP Members</div></div>
+            <div class="card" style="text-align:center;"><div style="font-size:28px;font-weight:800;color:#16a34a;margin-bottom:4px;">+42</div><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">New This Month</div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <table class="data-table">
+                <thead><tr><th>Client</th><th>Email</th><th>Joined</th><th>Orders</th><th>Total Spent</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">M</div><div><div style="font-size:13px;font-weight:600;">Meera Sundaram</div><div style="font-size:10px;color:var(--accent);font-weight:700;">VIP Member</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">meera@example.com</td><td style="font-size:12px;color:var(--text-muted);">Jan 2025</td><td style="font-weight:600;">14</td><td style="font-weight:700;">₹2,84,000</td><td><span class="badge active">Active</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">V</div><div><div style="font-size:13px;font-weight:600;">Vikram Menon</div><div style="font-size:10px;color:var(--accent);font-weight:700;">VIP Member</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">vikram@example.com</td><td style="font-size:12px;color:var(--text-muted);">Feb 2024</td><td style="font-weight:600;">22</td><td style="font-weight:700;">₹5,12,000</td><td><span class="badge active">Active</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">A</div><div><div style="font-size:13px;font-weight:600;">Arjun Krishnan</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">arjun@example.com</td><td style="font-size:12px;color:var(--text-muted);">Mar 2025</td><td style="font-weight:600;">9</td><td style="font-weight:700;">₹1,68,000</td><td><span class="badge active">Active</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">L</div><div><div style="font-size:13px;font-weight:600;">Lakshmi Rajan</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">lakshmi@example.com</td><td style="font-size:12px;color:var(--text-muted);">Jun 2025</td><td style="font-weight:600;">5</td><td style="font-weight:700;">₹74,000</td><td><span class="badge active">Active</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">S</div><div><div style="font-size:13px;font-weight:600;">Sneha Iyer</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">sneha@example.com</td><td style="font-size:12px;color:var(--text-muted);">Jul 2026</td><td style="font-weight:600;">3</td><td style="font-weight:700;">₹54,200</td><td><span class="badge active">Active</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">P</div><div><div style="font-size:13px;font-weight:600;">Priya Nair</div></div></div></td><td style="color:var(--text-muted);font-size:12px;">priya@example.com</td><td style="font-size:12px;color:var(--text-muted);">Sep 2026</td><td style="font-weight:600;">1</td><td style="font-weight:700;">₹23,400</td><td><span class="badge inactive">Inactive</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Client Profile','Loading client profile…','info')">View</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── BLOG ──── -->
+    <section class="section" id="section-blog">
+        <div class="section-header">
+            <div><h2>Blog Posts</h2><p>Manage editorial content and publications.</p></div>
+            <button class="btn-primary" onclick="showToast('New Post','Blog editor opening…','info')">+ New Post</button>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <table class="data-table">
+                <thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Date</th><th>Views</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Architecture of Form: AW26 Runway Report</div><div style="font-size:11px;color:var(--text-muted);">22 silhouettes that redefined couture…</div></td><td style="color:var(--text-muted);font-size:12px;">Admin</td><td><span style="font-size:10px;background:#fef2f2;color:#dc2626;padding:3px 8px;border-radius:6px;font-weight:700;">Runway</span></td><td style="font-size:12px;color:var(--text-muted);">Sep 18, 2026</td><td style="font-weight:600;">4,812</td><td><span class="badge published">Published</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Salem's Mulberry Silk: The Thread That Binds</div><div style="font-size:11px;color:var(--text-muted);">Cultivation, hand-reeling, and dyeing…</div></td><td style="color:var(--text-muted);font-size:12px;">Aarthi V.</td><td><span style="font-size:10px;background:#fef2f2;color:#dc2626;padding:3px 8px;border-radius:6px;font-weight:700;">Craft</span></td><td style="font-size:12px;color:var(--text-muted);">Sep 15, 2026</td><td style="font-weight:600;">3,241</td><td><span class="badge published">Published</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">The Geometry of Grief: A Minimalist Manifesto</div><div style="font-size:11px;color:var(--text-muted);">Why subtraction is the most revolutionary act…</div></td><td style="color:var(--text-muted);font-size:12px;">Lead Designer</td><td><span style="font-size:10px;background:#fef2f2;color:#dc2626;padding:3px 8px;border-radius:6px;font-weight:700;">Philosophy</span></td><td style="font-size:12px;color:var(--text-muted);">Sep 10, 2026</td><td style="font-weight:600;">2,098</td><td><span class="badge published">Published</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Bespoke vs. Ready-to-Wear: A Client's Guide</div><div style="font-size:11px;color:var(--text-muted);">Draft — awaiting review…</div></td><td style="color:var(--text-muted);font-size:12px;">Admin</td><td><span style="font-size:10px;background:#f8fafc;padding:3px 8px;border-radius:6px;font-weight:600;">Guide</span></td><td style="font-size:12px;color:var(--text-muted);">—</td><td style="color:var(--text-muted);">—</td><td><span class="badge draft">Draft</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Winter 2026: Material Forecast</div><div style="font-size:11px;color:var(--text-muted);">Fabric research in progress…</div></td><td style="color:var(--text-muted);font-size:12px;">Aarthi V.</td><td><span style="font-size:10px;background:#f8fafc;padding:3px 8px;border-radius:6px;font-weight:600;">Forecast</span></td><td style="font-size:12px;color:var(--text-muted);">—</td><td style="color:var(--text-muted);">—</td><td><span class="badge draft">Draft</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                    <tr><td style="max-width:200px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">The Pattern Masters of Chinnatirupathi</div><div style="font-size:11px;color:var(--text-muted);">Artisan chronicles draft…</div></td><td style="color:var(--text-muted);font-size:12px;">Admin</td><td><span style="font-size:10px;background:#f8fafc;padding:3px 8px;border-radius:6px;font-weight:600;">Chronicle</span></td><td style="font-size:12px;color:var(--text-muted);">—</td><td style="color:var(--text-muted);">—</td><td><span class="badge draft">Draft</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Blog Post','Opening blog editor…','info')">Edit</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── APPOINTMENTS ──── -->
+    <section class="section" id="section-appointments">
+        <div class="section-header">
+            <div><h2>Appointments</h2><p>Private consultations and bespoke fitting sessions.</p></div>
+            <button class="btn-primary" onclick="showToast('New Appointment','Booking form opening…','info')">+ Schedule</button>
+        </div>
+        <div class="grid-4" style="margin-bottom:24px;">
+            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:800;color:#dc2626;">5</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;">Today</div></div>
+            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:800;">12</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;">This Week</div></div>
+            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:800;color:#16a34a;">8</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;">Confirmed</div></div>
+            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:800;color:#ca8a04;">4</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;">Requested</div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <table class="data-table">
+                <thead><tr><th>Client</th><th>Service</th><th>Date &amp; Time</th><th>Stylist</th><th>Duration</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">M</div>Meera Sundaram</div></td><td style="font-size:12px;">Bespoke Fitting</td><td style="font-size:12px;font-weight:600;">Sep 22, 10:00 AM</td><td style="font-size:12px;color:var(--text-muted);">Master Tailor</td><td style="font-size:12px;color:var(--text-muted);">90 min</td><td><span class="badge confirmed">Confirmed</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Appointment','Viewing session details…','info')">Manage</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">V</div>Vikram Menon</div></td><td style="font-size:12px;">Private Consultation</td><td style="font-size:12px;font-weight:600;">Sep 22, 12:00 PM</td><td style="font-size:12px;color:var(--text-muted);">Senior Stylist</td><td style="font-size:12px;color:var(--text-muted);">60 min</td><td><span class="badge confirmed">Confirmed</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Appointment','Viewing session details…','info')">Manage</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">S</div>Sneha Iyer</div></td><td style="font-size:12px;">Capsule Wardrobe</td><td style="font-size:12px;font-weight:600;">Sep 22, 2:30 PM</td><td style="font-size:12px;color:var(--text-muted);">Lead Designer</td><td style="font-size:12px;color:var(--text-muted);">120 min</td><td><span class="badge confirmed">Confirmed</span></td><td><button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="showToast('Appointment','Viewing session details…','info')">Manage</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">R</div>Ravi Shankar</div></td><td style="font-size:12px;">Bespoke Commission</td><td style="font-size:12px;font-weight:600;">Sep 23, 11:00 AM</td><td style="font-size:12px;color:var(--text-muted);">Master Tailor</td><td style="font-size:12px;color:var(--text-muted);">90 min</td><td><span class="badge requested">Requested</span></td><td><button class="btn-primary" style="padding:5px 12px;font-size:11px;" onclick="this.closest('tr').querySelector('.badge').className='badge confirmed';this.className='btn-ghost';this.style.padding='5px 12px';this.style.fontSize='11px';this.textContent='Manage';showToast('Confirmed','Appointment approved for Ravi Shankar.','success')">Confirm</button></td></tr>
+                    <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar">A</div>Arjun Krishnan</div></td><td style="font-size:12px;">Fabric Vault Tour</td><td style="font-size:12px;font-weight:600;">Sep 23, 3:00 PM</td><td style="font-size:12px;color:var(--text-muted);">Fabric Curator</td><td style="font-size:12px;color:var(--text-muted);">45 min</td><td><span class="badge requested">Requested</span></td><td><button class="btn-primary" style="padding:5px 12px;font-size:11px;" onclick="this.closest('tr').querySelector('.badge').className='badge confirmed';this.className='btn-ghost';this.style.padding='5px 12px';this.style.fontSize='11px';this.textContent='Manage';showToast('Confirmed','Appointment approved for Arjun Krishnan.','success')">Confirm</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ──── ANALYTICS ──── -->
+    <section class="section" id="section-analytics">
+        <div class="section-header">
+            <div><h2>Analytics</h2><p>Traffic, revenue, and engagement metrics.</p></div>
+            <button class="btn-ghost" onclick="showToast('Report','Generating PDF report…','info')">Download Report</button>
+        </div>
+        <div class="grid-2" style="margin-bottom:24px;">
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Traffic Sources</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">Last 30 days</div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Organic Search</span><span style="font-weight:700;">42%</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:42%;background:#dc2626;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Direct</span><span style="font-weight:700;">28%</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:28%;background:#3b82f6;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Social Media</span><span style="font-weight:700;">18%</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:18%;background:#a855f7;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Referral</span><span style="font-weight:700;">8%</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:8%;background:#16a34a;"></div></div></div>
+                    <div><div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;"><span>Email Campaign</span><span style="font-weight:700;">4%</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:4%;background:#ca8a04;"></div></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Key Metrics</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">Sep 2026 performance</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    <div style="background:#fef2f2;border-radius:12px;padding:16px;text-align:center;border:1px solid #fee2e2;"><div style="font-size:22px;font-weight:800;color:#dc2626;">3.8%</div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">Conversion Rate</div></div>
+                    <div style="background:#f8fafc;border-radius:12px;padding:16px;text-align:center;border:1px solid #f1f5f9;"><div style="font-size:22px;font-weight:800;color:#0f172a;">₹4,280</div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">Avg. Order Value</div></div>
+                    <div style="background:#f0fdf4;border-radius:12px;padding:16px;text-align:center;border:1px solid #bbf7d0;"><div style="font-size:22px;font-weight:800;color:#16a34a;">15.2K</div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">Monthly Visits</div></div>
+                    <div style="background:#f8fafc;border-radius:12px;padding:16px;text-align:center;border:1px solid #f1f5f9;"><div style="font-size:22px;font-weight:800;color:#ca8a04;">2m 34s</div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;">Avg. Session</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Revenue by Category</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">AW26 Season — All Collections</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+                <div style="text-align:center;padding:20px;background:#fef2f2;border-radius:12px;border:1px solid #fee2e2;"><div style="font-size:22px;font-weight:800;color:#dc2626;">38%</div><div style="font-size:11px;font-weight:700;margin-top:6px;">Outerwear</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">₹7,02,000</div></div>
+                <div style="text-align:center;padding:20px;background:#eff6ff;border-radius:12px;border:1px solid #dbeafe;"><div style="font-size:22px;font-weight:800;color:#2563eb;">26%</div><div style="font-size:11px;font-weight:700;margin-top:6px;">Occasionwear</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">₹4,81,000</div></div>
+                <div style="text-align:center;padding:20px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0;"><div style="font-size:22px;font-weight:800;color:#16a34a;">21%</div><div style="font-size:11px;font-weight:700;margin-top:6px;">Accessories</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">₹3,88,000</div></div>
+                <div style="text-align:center;padding:20px;background:#faf5ff;border-radius:12px;border:1px solid #f3e8ff;"><div style="font-size:22px;font-weight:800;color:#9333ea;">15%</div><div style="font-size:11px;font-weight:700;margin-top:6px;">Bespoke</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">₹2,78,000</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ──── SETTINGS ──── -->
+    <section class="section" id="section-settings">
+        <div class="section-header">
+            <div><h2>Settings</h2><p>Manage store configuration and admin preferences.</p></div>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">Store Information</div>
+                <form onsubmit="event.preventDefault(); validateStoreSettings(this);">
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                        <div><div class="settings-label">Store Name</div><input type="text" id="store-name-val" required minlength="2" maxlength="50" class="settings-input" value="stackly. Atelier"></div>
+                        <div><div class="settings-label">Contact Email</div><input type="email" id="store-email-val" required minlength="5" maxlength="100" class="settings-input" value="hello@stackly.in"></div>
+                        <div><div class="settings-label">Phone</div><input type="tel" id="store-phone-val" pattern="[0-9+ \-()]{7,20}" maxlength="20" class="settings-input" value="+91 94432 12345"></div>
+                        <div><div class="settings-label">Currency</div><input type="text" required class="settings-input" value="INR — Indian Rupee (₹)"></div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">Notification Preferences</div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><div><div style="font-size:13px;font-weight:600;">New Orders</div><div style="font-size:11px;color:var(--text-muted);">Email on every new order</div></div><button class="settings-toggle on" onclick="this.classList.toggle('on');showToast('Preference','Setting updated.','info')"></button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><div><div style="font-size:13px;font-weight:600;">Appointments</div><div style="font-size:11px;color:var(--text-muted);">Reminders before each session</div></div><button class="settings-toggle on" onclick="this.classList.toggle('on');showToast('Preference','Setting updated.','info')"></button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><div><div style="font-size:13px;font-weight:600;">Low Stock Alerts</div><div style="font-size:11px;color:var(--text-muted);">Alert below 5 units</div></div><button class="settings-toggle on" onclick="this.classList.toggle('on');showToast('Preference','Setting updated.','info')"></button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:10px;"><div><div style="font-size:13px;font-weight:600;">Weekly Reports</div><div style="font-size:11px;color:var(--text-muted);">Summary every Monday</div></div><button class="settings-toggle" onclick="this.classList.toggle('on');showToast('Preference','Setting updated.','info')"></button></div>
+                </div>
+            </div>
+            <div class="card">
+                <div style="font-size:14px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">Admin Account</div>
+                <form onsubmit="event.preventDefault(); validateSettingsSave();">
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                        <div><div class="settings-label">Full Name</div><input type="text" class="settings-input" id="settings-name" required minlength="2" maxlength="50" value=""></div>
+                        <div><div class="settings-label">Email</div><input type="email" class="settings-input" id="settings-email" required minlength="5" maxlength="100" value=""></div>
+                        <div><div class="settings-label">New Password</div><input type="password" class="settings-input" id="settings-new-pw" minlength="8" maxlength="64" placeholder="Leave blank to keep current"></div>
+                        <div><div class="settings-label">Confirm Password</div><input type="password" class="settings-input" id="settings-confirm-pw" minlength="8" maxlength="64" placeholder="Confirm new password"></div>
+                        <button type="submit" class="btn-primary">Update Account</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card" style="border-color:rgba(239,68,68,0.2);">
+                <div style="font-size:14px;font-weight:700;margin-bottom:4px;color:#dc2626;">Danger Zone</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(239,68,68,0.15);">These actions are irreversible.</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:13px;background:#fef2f2;border-radius:10px;border:1px solid #fecaca;"><div><div style="font-size:13px;font-weight:600;">Clear All Sessions</div><div style="font-size:11px;color:var(--text-muted);">Sign out all active sessions</div></div><button class="btn-ghost" style="border-color:rgba(239,68,68,0.3);color:#dc2626;padding:7px 14px;font-size:11px;" onclick="showToast('Sessions Cleared','All active sessions terminated.','error')">Clear</button></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:13px;background:#fef2f2;border-radius:10px;border:1px solid #fecaca;"><div><div style="font-size:13px;font-weight:600;">Reset Store Data</div><div style="font-size:11px;color:var(--text-muted);">Reset all demo data to defaults</div></div><button class="btn-ghost" style="border-color:rgba(239,68,68,0.3);color:#dc2626;padding:7px 14px;font-size:11px;" onclick="showToast('Action Blocked','Requires superadmin credentials.','error')">Reset</button></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // ── AUTH & USER ──
+    const authData = JSON.parse(sessionStorage.getItem('stackly_auth') || '{}');
+    const adminName = authData.name || 'Admin';
+    const adminInitial = adminName.charAt(0).toUpperCase();
+
+    document.getElementById('sidebar-uname').textContent = adminName;
+    document.getElementById('sidebar-urole').textContent = authData.role || 'Administrator';
+    document.getElementById('sidebar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin">';
+    document.getElementById('topbar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin">';
+    const sn = document.getElementById('settings-name'); if(sn) sn.value = adminName;
+    const se = document.getElementById('settings-email'); if(se) se.value = authData.email || '';
+
+    // ── SIDEBAR TOGGLE ──
+    let collapsed = false;
+    function toggleSidebar() {
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        } else {
+            collapsed = !collapsed;
+            document.getElementById('sidebar').classList.toggle('collapsed', collapsed);
+            document.getElementById('topbar').classList.toggle('collapsed', collapsed);
+            document.getElementById('main-content').classList.toggle('collapsed', collapsed);
+        }
+    }
+
+    // ── NAVIGATION ──
+    const sectionMeta = {
+        dashboard:    ['Dashboard',    'stackly. Admin › Dashboard'],
+        orders:       ['Orders',       'stackly. Admin › Orders'],
+        products:     ['Products',     'stackly. Admin › Products'],
+        customers:    ['Customers',    'stackly. Admin › Customers'],
+        blog:         ['Blog Posts',   'stackly. Admin › Blog Posts'],
+        appointments: ['Appointments', 'stackly. Admin › Appointments'],
+        analytics:    ['Analytics',    'stackly. Admin › Analytics'],
+        settings:     ['Settings',     'stackly. Admin › Settings'],
+    };
+
+    function navigate(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        const sec = document.getElementById('section-' + id);
+        if (sec) sec.classList.add('active');
+        if (el) el.classList.add('active');
+        const meta = sectionMeta[id] || [id,''];
+        document.getElementById('page-title').textContent = meta[0];
+        document.getElementById('page-breadcrumb').textContent = meta[1];
+        if (id === 'dashboard') animateKPIs();
+        if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('mobile-open');
+    }
+
+    // ── KPI COUNTERS ──
+    function animateKPIs() {
+        animateCount('kpi-revenue', 0, 1845920, 1400, v => '₹' + v.toLocaleString('en-IN'));
+        animateCount('kpi-orders', 0, 987, 1200, v => v.toLocaleString());
+        animateCount('kpi-customers', 0, 4310, 1300, v => v.toLocaleString());
+        animateCount('kpi-appointments', 0, 46, 1000, v => String(v));
+    }
+    function animateCount(id, from, to, duration, fmt) {
+        const el = document.getElementById(id); if(!el) return;
+        const start = performance.now();
+        (function tick(now) {
+            const p = Math.min((now - start)/duration, 1);
+            el.textContent = fmt(Math.round(from + (to-from) * (1 - Math.pow(1-p,3))));
+            if (p < 1) requestAnimationFrame(tick);
+        })(performance.now());
+    }
+    setTimeout(animateKPIs, 400);
+
+    // ── ORDER FILTER ──
+    function filterOrders(status, btn) {
+        ['all','pending','processing','shipped','cancelled'].forEach(s => {
+            const b = document.getElementById('filter-'+s);
+            if(b) b.className = (s === status) ? 'btn-primary' : 'btn-ghost';
+            if(b && s !== 'all') { b.style.fontSize='11px'; b.style.padding='7px 16px'; }
+        });
+        if(btn){ btn.style.fontSize='11px'; btn.style.padding='7px 16px'; }
+        document.querySelectorAll('#orders-tbody tr').forEach(row => {
+            row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+        });
+    }
+
+    // ── STORE SETTINGS SAVE ──
+    function validateStoreSettings(form) {
+        const name = document.getElementById('store-name-val').value.trim();
+        const email = document.getElementById('store-email-val').value.trim();
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (name.length < 2) { showToast('Validation Error', 'Store name must be at least 2 characters.', 'error'); return; }
+        if (!emailRe.test(email)) { showToast('Validation Error', 'Please enter a valid store email address.', 'error'); return; }
+        showToast('Settings Saved', 'Store configuration updated successfully.', 'success');
+    }
+
+    // ── ADMIN ACCOUNT SAVE ──
+    function validateSettingsSave() {
+        const name = document.getElementById('settings-name').value.trim();
+        const email = document.getElementById('settings-email').value.trim();
+        const pw1 = document.getElementById('settings-new-pw').value;
+        const pw2 = document.getElementById('settings-confirm-pw').value;
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (name.length < 2) { showToast('Validation Error','Please enter your full name (minimum 2 characters).','error'); return; }
+        if (!emailRe.test(email)) { showToast('Validation Error','Please enter a valid email address.','error'); return; }
+        if (pw1 && pw1.length < 8) { showToast('Validation Error','New password must be at least 8 characters.','error'); return; }
+        if (pw1 && pw1 !== pw2) { showToast('Validation Error','Passwords do not match.','error'); return; }
+        const data = JSON.parse(sessionStorage.getItem('stackly_auth')||'{}');
+        data.name = name; data.email = email;
+        sessionStorage.setItem('stackly_auth', JSON.stringify(data));
+        document.getElementById('sidebar-uname').textContent = name;
+        document.getElementById('sidebar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin">';
+        document.getElementById('topbar-avatar').innerHTML = '<img src="assets/images/p1.webp" class="w-full h-full object-cover rounded-full" alt="Admin">';
+        showToast('Account Updated','Your admin profile has been saved successfully.','success');
+    }
+
+    // ── REFRESH ──
+    function refreshDashboard() {
+        animateKPIs();
+        document.getElementById('last-update').textContent = 'Updated just now';
+        showToast('Refreshed','All metrics are up to date.','success');
+    }
+
+    // ── LOGOUT ──
+    function doLogout() {
+        sessionStorage.removeItem('stackly_auth');
+        showToast('Signed Out','You have been logged out safely.','info');
+        setTimeout(() => window.location.replace('login.html'), 1000);
+    }
+
+    // ── TOAST ──
+    function showToast(title, message, type='info') {
+        const container = document.getElementById('toast-container');
+        const t = document.createElement('div');
+        t.className = 'toast ' + type;
+        t.innerHTML = `<div class="toast-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">${title}</div><div style="font-size:11px;color:var(--text-secondary);font-weight:500;">${message}</div></div>`;
+        container.appendChild(t);
+        requestAnimationFrame(() => t.classList.add('show'));
+        setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 500); }, 3500);
+    }
+
+    // ── GLOBAL SEARCH (In-Dashboard Only) ──
+    document.getElementById('global-search').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const q = this.value.trim();
+            if (q) {
+                showToast('Search Filter', `Filtered overview records for "${q}".`, 'info');
+            } else {
+                showToast('Search', 'Please enter a search query.', 'error');
+            }
+        }
+    });
+
+    // ── KEYBOARD ──
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey||e.metaKey) && e.key==='k') { e.preventDefault(); document.getElementById('global-search').focus(); }
+        if (e.key === 'Escape') document.getElementById('logout-modal').classList.remove('open');
+    });
+
+    // ── MOBILE ──
+    if (window.innerWidth < 768) {
+        document.getElementById('toggle-sidebar').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        });
+    }
+</script>
+</body>
+</html>

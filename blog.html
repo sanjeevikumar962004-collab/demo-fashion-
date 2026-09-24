@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Atelier Gazette — stackly. Editorial & Fashion Stories</title>
+    <meta name="description" content="Explore the stackly. editorial universe — runway reports, material philosophies, artisan chronicles, and the intersection of Salem's heritage with Milanese precision.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <script src="validations.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .font-serif-luxury {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px black;
+        }
+
+        .text-outline-light {
+            color: transparent;
+            -webkit-text-stroke: 1.5px #e5e7eb;
+        }
+
+        .text-outline-white {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee {
+            animation: marquee 24s linear infinite;
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        .animate-marquee-slow {
+            animation: marquee 40s linear infinite;
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 999px;
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Blog card hover effects */
+        .blog-card-img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .blog-card:hover .blog-card-img {
+            transform: scale(1.07);
+        }
+
+        .blog-card-featured-img {
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .blog-card-featured:hover .blog-card-featured-img {
+            transform: scale(1.05);
+        }
+
+        /* Category pill active state */
+        .cat-pill.active {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Tag hover underline */
+        .tag-hover {
+            position: relative;
+            display: inline-block;
+        }
+        .tag-hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+        .tag-hover:hover::after {
+            width: 100%;
+        }
+
+        /* Quote decoration */
+        .editorial-quote::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            line-height: 0;
+            position: absolute;
+            top: 3rem;
+            left: -1rem;
+            color: #f3f4f6;
+        }
+
+        /* Stagger delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+        .delay-600 { transition-delay: 600ms; }
+
+        /* Newsletter input focus */
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        /* Cursor dot for featured post */
+        .cursor-editorial {
+            cursor: none;
+        }
+
+        /* Hero text reveal */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-title-1 { animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+        .hero-title-2 { animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+        .hero-subtitle { animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+        .hero-meta { animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both; }
+
+        /* Reading time bar */
+        .reading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: #000;
+            z-index: 100;
+            transition: width 0.1s linear;
+        }
+
+        /* Glassmorphic sidebar card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        /* Image overlay text reveal */
+        .overlay-reveal {
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+        }
+
+        /* Filter bar scroll shadow */
+        .filter-sticky {
+            position: sticky;
+            top: 72px;
+            z-index: 30;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Pagination hover */
+        .page-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Search modal */
+        #search-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #search-modal.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Toast */
+        #toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-width: calc(100vw - 2rem);
+        }
+        @media (max-width: 480px) {
+            #toast-container {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 14px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            font-size: 13px;
+            font-weight: 600;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            min-width: 200px;
+            max-width: 100%;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+        .toast.success .toast-icon { background: #16a34a; }
+        .toast.error .toast-icon { background: #dc2626; }
+        .toast.info .toast-icon { background: #000; }
+
+        /* Big number counter */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Category label */
+        .cat-label {
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* Hover border underline for post titles */
+        .post-title-link {
+            background: linear-gradient(currentColor, currentColor) no-repeat 0 100%;
+            background-size: 0% 1px;
+            transition: background-size 0.4s ease;
+            padding-bottom: 2px;
+        }
+        .post-title-link:hover {
+            background-size: 100% 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reading progress bar -->
+    <div class="reading-bar" id="reading-bar" style="width:0%"></div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- =========================================================================
+         NAVIGATION HEADER
+         ========================================================================= -->
+    <header class="fixed top-0 w-full px-6 md:px-16 py-5 flex justify-between items-center z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300" id="main-header">
+        <a href="index.html" class="flex items-center select-none" aria-label="stackly home">
+            <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0">
+        </a>
+        
+        <nav class="hidden lg:flex gap-8 text-xs font-semibold uppercase tracking-widest items-center">
+            <a href="index.html" class="text-gray-500 hover:text-black transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-black transition-colors">About</a>
+            <a href="products.html" class="text-gray-500 hover:text-black transition-colors">Products</a>
+            <a href="blog.html" class="text-black font-extrabold border-b-2 border-black pb-0.5">Blog</a>
+            <a href="contact.html" class="text-gray-500 hover:text-black transition-colors">Contact</a>
+            <a href="login.html" class="text-gray-500 hover:text-black transition-colors">Login</a>
+        </nav>
+        
+        <div class="flex items-center gap-5 md:gap-7">
+            <!-- Search Icon -->
+            <button id="search-nav-btn" class="hover:opacity-60 transition-opacity" title="Search Articles" aria-label="Search Blog">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+
+            <!-- Wishlist -->
+            <button id="open-wishlist-btn" class="relative p-1 hover:opacity-60 transition-opacity" title="Saved Wishlist" aria-label="Open Wishlist">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span id="wishlist-count-badge" class="absolute -top-1.5 -right-1.5 bg-[#cc0000] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold scale-0 transition-transform duration-200">0</span>
+            </button>
+
+            <!-- Cart -->
+            <button id="open-cart-btn" class="relative p-1 hover:opacity-60 transition-opacity flex items-center gap-2 group" title="Shopping Bag" aria-label="Open Shopping Bag">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span id="cart-count-badge" class="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold scale-0 transition-transform duration-200">0</span>
+            </button>
+
+            <!-- Fullscreen Menu Button -->
+            <button id="menu-btn" class="w-11 h-11 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
+                <div class="flex flex-col gap-[4px] items-center">
+                    <div class="w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
+                    <div class="w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         FULLSCREEN SLIDE-DOWN MENU
+         ========================================================================= -->
+    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full transition-transform duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-8 md:p-16">
+        <div class="flex justify-between items-start">
+            <a href="index.html" class="flex items-center" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert">
+            </a>
+            <button id="close-menu" class="w-12 h-12 border border-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300" aria-label="Close Menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-10 gap-16 lg:gap-10 mt-20 lg:mt-0">
+            <nav class="flex flex-col gap-4 md:gap-6 text-5xl sm:text-6xl md:text-[80px] lg:text-[92px] font-bold lowercase tracking-tight leading-none">
+                <a href="index.html" class="menu-nav-link group flex items-center gap-6 hover:text-gray-300 transition-colors w-max">
+                    home
+                    <span class="w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="about.html" class="menu-nav-link group flex items-center gap-6 hover:text-gray-300 transition-colors w-max">
+                    about
+                    <span class="w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="products.html" class="menu-nav-link group flex items-center gap-6 hover:text-gray-300 transition-colors w-max">
+                    products
+                    <span class="w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="blog.html" class="menu-nav-link group flex items-center gap-6 text-gray-300 transition-colors w-max">
+                    blog
+                    <span class="w-4 h-4 bg-white rounded-full opacity-100 transition-opacity"></span>
+                </a>
+                <a href="contact.html" class="menu-nav-link group flex items-center gap-6 hover:text-gray-300 transition-colors w-max">
+                    contact
+                    <span class="w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="login.html" class="menu-nav-link group flex items-center gap-6 hover:text-gray-300 transition-colors w-max">
+                    login
+                    <span class="w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+            </nav>
+            <div class="w-full lg:w-1/4 text-xs md:text-sm text-gray-300 text-left uppercase tracking-widest leading-loose font-medium pb-4">
+                HIGH FASHION TAILORING.<br>
+                EDITORIAL CHRONICLES.<br>
+                AUTUMN / WINTER 2026 EDITION.
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         HERO: FEATURED EDITORIAL
+         ========================================================================= -->
+    <section class="relative w-full h-screen min-h-[700px] overflow-hidden flex items-end bg-black" id="blog-hero">
+        <div class="absolute inset-0">
+            <img 
+                src="assets/images/blog hero.webp" 
+                class="w-full h-full object-cover opacity-60 blog-card-featured-img blog-card-featured"
+                alt="Featured editorial — The Architecture of Light"
+            />
+            <div class="absolute inset-0 overlay-reveal"></div>
+        </div>
+
+        <!-- Breadcrumb & Badge -->
+        <div class="absolute top-24 sm:top-28 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 flex items-center justify-between gap-2 hero-meta flex-wrap">
+            <div class="flex items-center gap-2 text-white/60 text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <span>/</span>
+                <span class="text-white">Gazette</span>
+            </div>
+            <div>
+                <span class="inline-block bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold px-3 py-1.5 rounded-full">
+                    Cover Story
+                </span>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 w-full container mx-auto px-4 sm:px-8 md:px-16 pb-14 sm:pb-16 md:pb-20">
+            <div class="max-w-4xl">
+                <p class="cat-label text-white/60 mb-3 sm:mb-5 hero-subtitle text-[11px] sm:text-xs">Runway Review · Sep 2026 · 8 min read</p>
+                <h1 class="font-serif-luxury text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white leading-[0.95] sm:leading-[0.9] mb-5 sm:mb-7 break-words">
+                    <span class="block hero-title-1">The Architecture</span>
+                    <span class="block text-outline-white italic hero-title-2">of Light & Drape</span>
+                </h1>
+                <p class="text-white/70 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed hero-subtitle font-light mb-8 sm:mb-10">
+                    How stackly.'s Autumn/Winter 2026 silhouettes redefined structural couture through the unexpected vocabulary of Salem's ancient handloom traditions.
+                </p>
+                <div class="flex items-center gap-4 sm:gap-6 hero-meta flex-wrap">
+                    <a href="#featured-post" class="group flex items-center gap-3 bg-white text-black px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-xs uppercase tracking-widest hover:bg-gray-100 transition-colors">
+                        Read Story
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <div class="flex items-center gap-3">
+                        <img src="assets/images/p1.webp" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-white/30" alt="Author">
+                        <div>
+                            <p class="text-white text-xs font-semibold">Priya Muthukrishnan</p>
+                            <p class="text-white/50 text-[10px] uppercase tracking-wider">Creative Director</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="absolute bottom-8 right-8 md:right-16 flex flex-col items-center gap-3 text-white/40 hero-meta">
+            <span class="text-[10px] uppercase tracking-[0.2em] rotate-90 origin-center translate-y-4">Scroll</span>
+            <div class="w-px h-12 bg-white/20 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full bg-white/60" style="height:40%;animation:scrollBar 2s ease-in-out infinite"></div>
+            </div>
+        </div>
+    </section>
+    <style>
+        @keyframes scrollBar { 0%,100%{top:-40%}50%{top:100%} }
+    </style>
+
+    <!-- =========================================================================
+         MARQUEE TAPE: EDITORIAL TAGS
+         ========================================================================= -->
+    <div class="w-full border-y border-gray-200 py-4 overflow-hidden bg-white">
+        <div class="animate-marquee">
+            <span class="flex items-center gap-10 px-10">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Runway</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Material Studies</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Artisan Chronicles</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Couture Dialogues</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Salem × Milan</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Seasonal Manifesto</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Fabric Philosophy</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Style Intelligence</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Runway</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Material Studies</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Artisan Chronicles</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Couture Dialogues</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Salem × Milan</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Seasonal Manifesto</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Fabric Philosophy</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-800">Style Intelligence</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+            </span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         CATEGORY FILTER BAR
+         ========================================================================= -->
+    <div class="filter-sticky border-b border-gray-100 shadow-sm" id="filter-bar">
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 py-4 flex items-center gap-3 overflow-x-auto scrollbar-none">
+            <span class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mr-2 shrink-0">Filter:</span>
+            <button class="cat-pill active shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('all', this)">All</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('runway', this)">Runway</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('material', this)">Materials</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('artisan', this)">Artisans</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('style', this)">Style</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('interview', this)">Interviews</button>
+            <button class="cat-pill shrink-0 px-5 py-2 rounded-full border border-gray-200 text-xs font-semibold uppercase tracking-widest transition-all hover:border-black" onclick="filterPosts('travel', this)">Travel</button>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MAIN BLOG GRID
+         ========================================================================= -->
+    <section class="container mx-auto px-4 sm:px-8 md:px-16 py-16 sm:py-20 md:py-28" id="blog-grid">
+
+        <!-- Section Title -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 reveal">
+            <div>
+                <p class="cat-label text-gray-400 mb-3">The Atelier Gazette</p>
+                <h2 class="text-4xl sm:text-6xl md:text-[80px] font-bold uppercase leading-[0.88] tracking-tight break-words">
+                    LATEST<br><span class="text-outline">STORIES</span>
+                </h2>
+            </div>
+            <p class="text-gray-500 text-sm max-w-xs leading-relaxed md:text-right">
+                Curated perspectives on craft, identity, and the evolving language of architectural fashion from Salem.
+            </p>
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16" id="posts-grid">
+
+            <!-- Post 1 — Featured Wide (span 2) -->
+            <div class="blog-card col-span-1 lg:col-span-2 group cursor-pointer reveal" data-category="runway" id="featured-post" onclick="openPost(1)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[16/9]">
+                    <img src="assets/images/The Architecture of Light & Drape — AW26 Unveiled.webp" 
+                         class="blog-card-img w-full h-full object-cover" 
+                         alt="Runway Review — AW26" />
+                </div>
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="cat-label text-gray-400">Runway Review</span>
+                            <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                            <span class="cat-label text-gray-400">8 min read</span>
+                        </div>
+                        <h3 class="font-serif-luxury text-3xl md:text-4xl italic leading-tight mb-4 post-title-link group-hover:text-gray-700 transition-colors">
+                            The Architecture of Light & Drape — AW26 Unveiled
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed max-w-xl">
+                            stackly.'s most ambitious collection to date dissolves the boundary between sculpture and garment. Each piece carries the weight of both Salem's loom masters and Milan's geometric precision.
+                        </p>
+                    </div>
+                    <button class="shrink-0 w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-black group-hover:text-white group-hover:border-black transition-all duration-300 mt-1">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </div>
+                <div class="flex items-center gap-4 mt-5 pt-5 border-t border-gray-100">
+                    <img src="assets/images/p1.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Priya Muthukrishnan</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Sep 18, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 2 -->
+            <div class="blog-card group cursor-pointer reveal delay-100" data-category="material" onclick="openPost(2)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[3/4]">
+                    <img src="assets/images/The Dual-Heritage Manifesto.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Material — Mulberry Silk Origins" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Material Study</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">5 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    Salem's Mulberry Silk: The Thread That Binds Two Worlds
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    A deep dive into the cultivation, hand-reeling, and dyeing rituals that make Salem's sericulture the finest raw material for stackly.'s evening silhouettes.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/p2.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Aarthi Selvam</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Sep 12, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 3 -->
+            <div class="blog-card group cursor-pointer reveal delay-200" data-category="artisan" onclick="openPost(3)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[4/3]">
+                    <img src="assets/images/photo-1553361371-9b22f78e8b1d.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Master tailor at work" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Artisan Chronicle</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">6 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    Master Krishnamurthy: 40 Years Behind the Shears
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    The patriarch of stackly.'s in-house atelier shares how pattern-cutting became the meditative art that defined a generation of Salem tailors.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/p3.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Rajan Iyer</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Sep 7, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 4 -->
+            <div class="blog-card group cursor-pointer reveal delay-300" data-category="style" onclick="openPost(4)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[4/3]">
+                    <img src="assets/images/photo-1469334031218-e382a71b716b.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Style intelligence" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Style Intelligence</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">4 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    Dressing with Intent: The Quiet Power of Neutral Architecture
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    When wardrobe language speaks in restraint — how the stackly. woman uses proportion and silhouette as her most powerful expression.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/c1.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Priya Muthukrishnan</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Sep 2, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 5 — Full width editorial quote break -->
+            <div class="blog-card col-span-1 lg:col-span-3 reveal delay-100" data-category="all">
+                <div class="relative bg-black text-white p-12 md:p-16 flex flex-col md:flex-row items-center gap-10 overflow-hidden">
+                    <div class="absolute inset-0 opacity-10">
+                        <img src="assets/images/Experience the Atelier In Salem..webp" class="w-full h-full object-cover" alt="">
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <p class="cat-label text-gray-400 mb-5">Seasonal Manifesto</p>
+                        <blockquote class="font-serif-luxury text-3xl md:text-4xl italic leading-tight text-white mb-6">
+                            "Fashion is not about being seen — it is about being felt. Every seam is a word in a sentence no one reads but everyone understands."
+                        </blockquote>
+                        <p class="text-gray-400 text-xs uppercase tracking-[0.2em] font-semibold">— Priya Muthukrishnan, Creative Director, stackly.</p>
+                    </div>
+                    <div class="relative z-10 shrink-0">
+                        <div class="text-outline-white font-black text-[120px] leading-none select-none opacity-30">AW</div>
+                        <div class="text-white font-black text-[120px] leading-none -mt-10 select-none">26</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 6 -->
+            <div class="blog-card group cursor-pointer reveal" data-category="interview" onclick="openPost(6)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[3/4]">
+                    <img src="assets/images/Biella Virgin Wool.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Interview with the designer" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Interview</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">10 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    In Conversation: The Philosophy of Doing Less, Better
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    stackly.'s lead designer on why subtraction is the most revolutionary act in contemporary couture, and why Salem demands it.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/c2.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Kavya Nair</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Aug 28, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 7 -->
+            <div class="blog-card group cursor-pointer reveal delay-100" data-category="travel" onclick="openPost(7)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[4/3]">
+                    <img src="assets/images/photo-1582719508461-905c673771fd.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Travel — Milan atelier visit" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Travel & Ateliers</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">7 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    Navigating Milan's Hidden Fabric Districts: A stackly. Sourcing Diary
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    Behind every exceptional suit lies a sourcing journey. We follow stackly.'s fabric scouts through the lesser-known textile houses of Corso Como.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/p3.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Rajan Iyer</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Aug 20, 2026</p>
+                </div>
+            </div>
+
+            <!-- Post 8 -->
+            <div class="blog-card group cursor-pointer reveal delay-200" data-category="material" onclick="openPost(8)">
+                <div class="overflow-hidden bg-gray-100 mb-6 aspect-[4/3]">
+                    <img src="assets/images/photo-1445205170230-053b83016050.webp" 
+                         class="blog-card-img w-full h-full object-cover"
+                         alt="Cashmere material study" />
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="cat-label text-gray-400">Material Study</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">5 min read</span>
+                </div>
+                <h3 class="font-serif-luxury text-2xl italic leading-tight mb-3 post-title-link">
+                    Why Virgin Italian Cashmere Is stackly.'s Non-Negotiable
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    From Himalayan plateaus to Milan's spinning mills — understanding the unbroken chain of custody that makes our cashmere worth its weight in trust.
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <img src="assets/images/c3.webp" class="w-8 h-8 rounded-full object-cover" alt="Author">
+                    <p class="text-xs font-semibold">Aarthi Selvam</p>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <p class="text-xs text-gray-400">Aug 14, 2026</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Load More -->
+        <div class="flex justify-center mt-20 reveal">
+            <button id="load-more-btn" onclick="loadMore()" class="group flex items-center gap-4 border border-gray-300 px-10 py-4 text-xs font-semibold uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all duration-300">
+                Load More Stories
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:translate-y-1 transition-transform"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         EDITORIAL NUMBERS SECTION
+         ========================================================================= -->
+    <section class="bg-black text-white py-24 overflow-hidden">
+        <div class="container mx-auto px-8 md:px-16">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-0 divide-y-2 divide-gray-800 lg:divide-y-0 lg:divide-x-2 lg:divide-gray-800">
+                <div class="flex flex-col items-center text-center py-8 lg:py-0 reveal">
+                    <p class="text-6xl md:text-8xl font-black mb-2">48</p>
+                    <p class="text-xs uppercase tracking-[0.2em] font-semibold text-gray-400">Stories Published</p>
+                </div>
+                <div class="flex flex-col items-center text-center py-8 lg:py-0 lg:pl-12 reveal delay-100">
+                    <p class="text-6xl md:text-8xl font-black mb-2">6</p>
+                    <p class="text-xs uppercase tracking-[0.2em] font-semibold text-gray-400">Contributors</p>
+                </div>
+                <div class="flex flex-col items-center text-center py-8 lg:py-0 lg:pl-12 reveal delay-200">
+                    <p class="text-6xl md:text-8xl font-black mb-2">12K+</p>
+                    <p class="text-xs uppercase tracking-[0.2em] font-semibold text-gray-400">Monthly Readers</p>
+                </div>
+                <div class="flex flex-col items-center text-center py-8 lg:py-0 lg:pl-12 reveal delay-300">
+                    <p class="text-6xl md:text-8xl font-black mb-2">AW26</p>
+                    <p class="text-xs uppercase tracking-[0.2em] font-semibold text-gray-400">Current Season</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         MARQUEE TAPE 2: LARGE OUTLINE TEXT
+         ========================================================================= -->
+    <div class="overflow-hidden py-8 border-b border-gray-100">
+        <div class="animate-marquee-slow">
+            <span class="flex items-center gap-8 pr-8 text-[80px] md:text-[120px] font-black uppercase tracking-tighter leading-none select-none">
+                <span class="text-outline">EDITORIAL</span>
+                <span class="text-gray-100">·</span>
+                <span>GAZETTE</span>
+                <span class="text-gray-100">·</span>
+                <span class="text-outline">STACKLY.</span>
+                <span class="text-gray-100">·</span>
+                <span>AW2026</span>
+                <span class="text-gray-100">·</span>
+                <span class="text-outline">EDITORIAL</span>
+                <span class="text-gray-100">·</span>
+                <span>GAZETTE</span>
+                <span class="text-gray-100">·</span>
+                <span class="text-outline">STACKLY.</span>
+                <span class="text-gray-100">·</span>
+                <span>AW2026</span>
+                <span class="text-gray-100">·</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         FEATURED WRITERS
+         ========================================================================= -->
+    <section class="container mx-auto px-8 md:px-16 py-24 md:py-32">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 reveal">
+            <div>
+                <p class="cat-label text-gray-400 mb-3">The Voices</p>
+                <h2 class="text-5xl md:text-6xl font-bold uppercase leading-[0.9] tracking-tight">
+                    OUR<br><span class="text-outline">CONTRIBUTORS</span>
+                </h2>
+            </div>
+            <p class="text-gray-500 text-sm max-w-xs leading-relaxed md:text-right">A collective of writers, stylists, artisan chroniclers, and material scientists united by craft.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Writer 1 -->
+            <div class="group border border-gray-100 p-8 hover:border-black transition-colors duration-300 reveal">
+                <div class="flex items-center gap-5 mb-6">
+                    <div class="relative shrink-0">
+                        <img src="assets/images/p1.webp" 
+                             class="w-16 h-16 rounded-full object-cover" alt="Priya Muthukrishnan" />
+                        <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-black rounded-full flex items-center justify-center">
+                            <svg width="8" height="8" viewBox="0 0 24 24" fill="white"><path d="M12 2l2.09 6.26L21 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Priya Muthukrishnan</h4>
+                        <p class="text-gray-500 text-xs">Creative Director & Lead Writer</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    A graduate of NIFT Chennai and Marangoni Milano, Priya bridges Indian textile culture with European architectural sensibility.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Runway</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Style</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Manifestos</span>
+                </div>
+            </div>
+
+            <!-- Writer 2 -->
+            <div class="group border border-gray-100 p-8 hover:border-black transition-colors duration-300 reveal delay-100">
+                <div class="flex items-center gap-5 mb-6">
+                    <div class="relative shrink-0">
+                        <img src="assets/images/p3.webp" 
+                             class="w-16 h-16 rounded-full object-cover" alt="Aarthi Selvam" />
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Aarthi Selvam</h4>
+                        <p class="text-gray-500 text-xs">Textile & Material Correspondent</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    A material scientist and former sericulture researcher from Salem, Aarthi writes with unparalleled depth on fabric, fiber, and sustainability.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Materials</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Sustainability</span>
+                </div>
+            </div>
+
+            <!-- Writer 3 -->
+            <div class="group border border-gray-100 p-8 hover:border-black transition-colors duration-300 reveal delay-200">
+                <div class="flex items-center gap-5 mb-6">
+                    <div class="relative shrink-0">
+                        <img src="assets/images/p2.webp" 
+                             class="w-16 h-16 rounded-full object-cover" alt="Rajan Iyer" />
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Rajan Iyer</h4>
+                        <p class="text-gray-500 text-xs">Travel & Artisan Chronicler</p>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    Rajan documents artisan stories across India and Europe, preserving the oral traditions of craftspeople whose work feeds into stackly.'s collections.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Travel</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Artisans</span>
+                    <span class="text-[10px] uppercase tracking-wider font-bold border border-gray-200 px-3 py-1 rounded-full">Heritage</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         NEWSLETTER: GAZETTE SUBSCRIPTION
+         ========================================================================= -->
+    <section class="mx-3 sm:mx-6 md:mx-16 mb-16 sm:mb-24 bg-black text-white overflow-hidden reveal" id="blog-newsletter">
+        <div class="relative flex flex-col lg:flex-row items-center">
+            <!-- Image side -->
+            <div class="w-full lg:w-2/5 h-[220px] sm:h-[300px] lg:h-auto shrink-0 overflow-hidden">
+                <img src="assets/images/Biella Virgin Wool.webp" 
+                     class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-700" 
+                     alt="The Atelier Gazette" />
+            </div>
+            <!-- Content side -->
+            <div class="relative z-10 flex-1 p-6 sm:p-12 md:p-16 lg:p-20">
+                <p class="cat-label text-gray-400 mb-3 sm:mb-5">The Atelier Gazette</p>
+                <h2 class="font-serif-luxury text-3xl sm:text-4xl md:text-5xl italic leading-tight mb-4 sm:mb-6 break-words">
+                    Receive the<br>Gazette, privately.
+                </h2>
+                <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10 max-w-sm">
+                    Runway reports, artisan portraits, and exclusive seasonal manifestos — delivered to your inbox before anyone else sees them.
+                </p>
+                <form class="flex flex-col sm:flex-row gap-4" id="blog-newsletter-form" onsubmit="return window.validateNewsletter(event, this)">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your e-mail address" 
+                        class="newsletter-input flex-1 bg-white/10 border border-white/20 text-white placeholder-gray-500 px-4 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm focus:bg-white/15 transition-colors" 
+                        required 
+                    />
+                    <button type="submit" class="bg-white text-black px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors shrink-0">
+                        Subscribe
+                    </button>
+                </form>
+                <p class="text-gray-600 text-[10px] sm:text-[11px] mt-4 uppercase tracking-wider">No spam. Cancel anytime. Zero compromise on privacy.</p>
+            </div>
+            <!-- Decorative number -->
+            <div class="absolute right-8 top-1/2 -translate-y-1/2 text-[200px] font-black text-white/5 leading-none select-none pointer-events-none hidden lg:block">26</div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         FOOTER
+         ========================================================================= -->
+    <footer class="container mx-auto px-4 sm:px-8 md:px-16 py-16 sm:py-20 flex flex-col lg:flex-row justify-between gap-12 sm:gap-16">
+        
+        <!-- Col 1: Brand & Socials -->
+        <div class="w-full lg:w-1/4">
+            <a href="index.html" class="inline-block mb-6 select-none" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0">
+            </a>
+            <p class="text-gray-500 mb-8 text-sm leading-relaxed max-w-sm">Architectural tailoring and bespoke couture ready-to-wear located at MMR Complex, Chinnatirupathi, Salem.</p>
+            <div class="flex gap-4">
+                <a href="404.html" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="Facebook">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="404.html" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="Instagram">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="404.html" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="X (Twitter)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Col 2: Links -->
+        <div class="w-full lg:w-auto flex flex-wrap gap-10 sm:gap-20">
+            <div>
+                <h4 class="font-bold mb-6 text-[15px]">Menu</h4>
+                <ul class="flex flex-col gap-3 text-gray-500 text-sm">
+                    <li><a href="index.html" class="hover:text-black transition-colors">Home</a></li>
+                    <li><a href="about.html" class="hover:text-black transition-colors">About</a></li>
+                    <li><a href="products.html" class="hover:text-black transition-colors">Products</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-[15px]">Explore</h4>
+                <ul class="flex flex-col gap-3 text-gray-500 text-sm">
+                    <li><a href="blog.html" class="text-black font-semibold">Blog</a></li>
+                    <li><a href="contact.html" class="hover:text-black transition-colors">Contact</a></li>
+                    <li><a href="login.html" class="hover:text-black transition-colors">Login</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Col 3: Newsletter -->
+        <div class="w-full lg:w-1/3 flex flex-col sm:flex-row gap-6 sm:gap-8 bg-[#f8f8f8] p-6 items-center rounded-xl">
+            <img src="assets/images/footer image right.webp" class="w-20 sm:w-28 h-20 sm:h-28 object-cover shrink-0 rounded" alt="Newsletter Image" />
+            <div class="flex flex-col justify-center w-full">
+                <h4 class="font-bold mb-1 text-sm uppercase tracking-wider">The Atelier Gazette</h4>
+                <p class="text-gray-500 text-xs mb-4 leading-relaxed">Private runway invites and bespoke seasonal previews.</p>
+                <form class="flex border-b border-gray-300 pb-2 w-full" onsubmit="return window.validateNewsletter(event, this)">
+                    <input type="email" placeholder="Type your e-mail" class="outline-none w-full text-xs bg-transparent placeholder-gray-400" required />
+                    <button type="submit" class="font-bold text-xs uppercase tracking-wider pl-2 hover:text-gray-500 shrink-0">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Footer Bottom Bar -->
+    <div class="container mx-auto px-4 sm:px-8 md:px-16 py-8 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+        <p class="text-xs text-gray-400 font-medium tracking-wide">© 2026 / stackly. All Rights Reserved</p>
+        <p class="text-xs text-gray-400 font-medium tracking-wide">MMR Complex, Chinnatirupathi, Salem</p>
+    </div>
+
+    <!-- =========================================================================
+         CART DRAWER
+         ========================================================================= -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0" aria-hidden="true">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+        <div id="cart-panel" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-out z-10">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold uppercase tracking-tight">Shopping Bag</h3>
+                    <p class="text-xs text-gray-400 font-medium tracking-wider mt-0.5"><span id="cart-total-qty">0</span> creations selected</p>
+                </div>
+                <button id="close-cart-btn" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="Close Shopping Bag">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
+                <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wider mb-2">
+                    <span id="shipping-progress-text">Add $1,500 for Free Express Courier</span>
+                    <span id="shipping-progress-pct" class="text-gray-400">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="shipping-progress-bar" class="bg-black h-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+            <div id="cart-items-list" class="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-5">
+                <div id="cart-empty-msg" class="flex flex-col items-center justify-center h-full text-center py-16">
+                    <svg class="mb-4 text-gray-200" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <p class="font-semibold text-sm mb-1">Your bag is empty</p>
+                    <p class="text-xs text-gray-400">Discover our latest couture creations</p>
+                    <a href="products.html" class="mt-6 bg-black text-white text-xs font-bold uppercase tracking-widest px-7 py-3">Shop Now</a>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-bold text-sm uppercase tracking-wider">Total</span>
+                    <span id="cart-total-price" class="font-black text-xl">$0</span>
+                </div>
+                <button class="w-full bg-black text-white py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-900 transition-colors mb-3">Proceed to Checkout</button>
+                <button onclick="document.getElementById('cart-drawer').classList.remove('open')" class="w-full border border-gray-200 py-3.5 text-xs font-semibold uppercase tracking-wider hover:border-black transition-colors">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         WISHLIST DRAWER
+         ========================================================================= -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0" aria-hidden="true">
+        <div id="wishlist-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div id="wishlist-panel" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-500 ease-out z-10">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold uppercase tracking-tight">Wishlist</h3>
+                    <p class="text-xs text-gray-400 font-medium tracking-wider mt-0.5"><span id="wishlist-total-qty">0</span> saved creations</p>
+                </div>
+                <button id="close-wishlist-btn" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="Close Wishlist">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="wishlist-items-list" class="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-4">
+                <div id="wishlist-empty-msg" class="flex flex-col items-center justify-center h-full text-center py-16">
+                    <svg class="mb-4 text-gray-200" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <p class="font-semibold text-sm mb-1">No saved items</p>
+                    <p class="text-xs text-gray-400">Heart any creation to save it here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         SEARCH MODAL
+         ========================================================================= -->
+    <div id="search-modal" class="fixed inset-0 bg-white z-50 flex flex-col p-4 sm:p-8 md:p-16 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8 sm:mb-16">
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Search The Gazette</span>
+            <button id="close-search-btn" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300" aria-label="Close Search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="flex-1 flex flex-col justify-center max-w-3xl mx-auto w-full">
+            <div class="flex items-end gap-3 sm:gap-5 border-b-2 border-black pb-3 sm:pb-5 mb-8 sm:mb-12">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 text-gray-400 mb-1"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Search articles, topics…" 
+                    class="flex-1 text-xl sm:text-3xl md:text-5xl font-light outline-none placeholder-gray-300 min-w-0"
+                    oninput="liveSearch(this.value)"
+                />
+            </div>
+            <div>
+                <p class="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 mb-4 sm:mb-5">Popular Topics</p>
+                <div class="flex flex-wrap gap-2 sm:gap-3">
+                    <button onclick="quickSearch('Runway')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">Runway</button>
+                    <button onclick="quickSearch('Cashmere')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">Cashmere</button>
+                    <button onclick="quickSearch('Salem')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">Salem</button>
+                    <button onclick="quickSearch('AW26')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">AW26</button>
+                    <button onclick="quickSearch('Artisan')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">Artisan</button>
+                    <button onclick="quickSearch('Milan')" class="px-3.5 sm:px-5 py-2 sm:py-2.5 border border-gray-200 text-xs sm:text-sm font-medium hover:border-black hover:bg-black hover:text-white transition-all">Milan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         POST DETAIL MODAL (Read Article)
+         ========================================================================= -->
+    <div id="post-modal" class="fixed inset-0 bg-white z-[60] overflow-y-auto transform translate-y-full transition-transform duration-700 ease-out" aria-hidden="true">
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
+            <div class="flex items-center justify-between mb-8 sm:mb-12">
+                <a href="blog.html" class="text-2xl sm:text-3xl font-black lowercase">stackly.</a>
+                <button onclick="closePost()" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300" aria-label="Close Article">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div id="post-content">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         JAVASCRIPT
+         ========================================================================= -->
+    <script>
+    // ── TOAST SYSTEM ────────────────────────────────────────────────────────────
+    window.showToast = function(title, message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div class="toast-icon"></div>
+            <div>
+                <div style="font-size:13px;font-weight:700;margin-bottom:2px;">${title}</div>
+                <div style="font-size:11px;color:#6b7280;font-weight:500;">${message}</div>
+            </div>`;
+        container.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 500);
+        }, 4000);
+    };
+
+    // ── FULLSCREEN MENU ─────────────────────────────────────────────────────────
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu');
+    const fullMenu = document.getElementById('full-menu');
+
+    menuBtn.addEventListener('click', () => {
+        fullMenu.style.transform = 'translateY(0)';
+        document.body.style.overflow = 'hidden';
+    });
+    closeMenu.addEventListener('click', () => {
+        fullMenu.style.transform = 'translateY(-100%)';
+        document.body.style.overflow = '';
+    });
+
+    // ── HEADER SCROLL ───────────────────────────────────────────────────────────
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('shadow-md');
+        } else {
+            header.classList.remove('shadow-md');
+        }
+    }, { passive: true });
+
+    // ── READING PROGRESS BAR ────────────────────────────────────────────────────
+    const readingBar = document.getElementById('reading-bar');
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        readingBar.style.width = progress + '%';
+    }, { passive: true });
+
+    // ── REVEAL ANIMATIONS ───────────────────────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // ── CATEGORY FILTER ─────────────────────────────────────────────────────────
+    window.filterPosts = function(cat, btn) {
+        // Update active pill
+        document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+
+        const posts = document.querySelectorAll('#posts-grid [data-category]');
+        posts.forEach(post => {
+            if (cat === 'all' || post.dataset.category === cat || post.dataset.category === 'all') {
+                post.style.display = '';
+                post.style.opacity = '1';
+            } else {
+                post.style.display = 'none';
+            }
+        });
+        showToast('Filter Applied', `Showing ${cat === 'all' ? 'all stories' : cat + ' stories'}.`, 'info');
+    };
+
+    // ── SEARCH ──────────────────────────────────────────────────────────────────
+    const searchModal = document.getElementById('search-modal');
+    const searchInput = document.getElementById('search-input');
+    document.getElementById('search-nav-btn').addEventListener('click', () => {
+        searchModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => searchInput.focus(), 300);
+    });
+    document.getElementById('close-search-btn').addEventListener('click', () => {
+        searchModal.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+    window.liveSearch = function(val) {
+        // Animate search input
+    };
+    window.quickSearch = function(term) {
+        searchInput.value = term;
+        searchInput.focus();
+        showToast('Searching…', `Filtering for "${term}" stories`, 'info');
+    };
+
+    // ── CART / WISHLIST STATE ───────────────────────────────────────────────────
+    let cart = JSON.parse(localStorage.getItem('stackly_cart') || '[]');
+    let wishlist = JSON.parse(localStorage.getItem('stackly_wishlist') || '[]');
+
+    function saveCart() { localStorage.setItem('stackly_cart', JSON.stringify(cart)); }
+    function saveWishlist() { localStorage.setItem('stackly_wishlist', JSON.stringify(wishlist)); }
+
+    function renderCart() {
+        const list = document.getElementById('cart-items-list');
+        const emptyMsg = document.getElementById('cart-empty-msg');
+        const countBadge = document.getElementById('cart-count-badge');
+        const totalQty = document.getElementById('cart-total-qty');
+        const totalPrice = document.getElementById('cart-total-price');
+        const shippingText = document.getElementById('shipping-progress-text');
+        const shippingPct = document.getElementById('shipping-progress-pct');
+        const shippingBar = document.getElementById('shipping-progress-bar');
+
+        const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+        const totalVal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+        totalQty.textContent = totalCount;
+        totalPrice.textContent = '$' + totalVal.toLocaleString();
+
+        if (totalCount > 0) {
+            countBadge.textContent = totalCount;
+            countBadge.classList.remove('scale-0');
+        } else {
+            countBadge.classList.add('scale-0');
+        }
+
+        const FREE_SHIP = 1500;
+        const pct = Math.min(100, Math.round((totalVal / FREE_SHIP) * 100));
+        shippingBar.style.width = pct + '%';
+        shippingPct.textContent = pct + '%';
+        shippingText.textContent = totalVal >= FREE_SHIP
+            ? '🎉 Free Express Courier Unlocked!'
+            : `Add $${(FREE_SHIP - totalVal).toLocaleString()} for Free Express Courier`;
+
+        // Clear old items (keep empty msg)
+        Array.from(list.children).forEach(c => { if (c.id !== 'cart-empty-msg') c.remove(); });
+
+        if (cart.length === 0) {
+            emptyMsg.style.display = '';
+        } else {
+            emptyMsg.style.display = 'none';
+            cart.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'flex gap-4 items-start border-b border-gray-50 pb-5';
+                div.innerHTML = `
+                    <div class="w-20 h-24 bg-gray-100 shrink-0 overflow-hidden">
+                        <img src="${item.img}" class="w-full h-full object-cover" alt="${item.name}" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-semibold text-sm mb-0.5 truncate">${item.name}</h4>
+                        <p class="text-gray-400 text-xs mb-2">${item.size || 'M'}</p>
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQty(${idx}, -1)" class="w-6 h-6 border border-gray-200 flex items-center justify-center text-sm hover:bg-black hover:text-white transition-colors">−</button>
+                            <span class="text-sm font-semibold">${item.qty}</span>
+                            <button onclick="updateQty(${idx}, 1)" class="w-6 h-6 border border-gray-200 flex items-center justify-center text-sm hover:bg-black hover:text-white transition-colors">+</button>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <p class="font-bold text-sm mb-3">$${(item.price * item.qty).toLocaleString()}</p>
+                        <button onclick="removeFromCart(${idx})" class="text-gray-400 hover:text-red-500 transition-colors text-xs">Remove</button>
+                    </div>`;
+                list.appendChild(div);
+            });
+        }
+    }
+
+    window.updateQty = function(idx, delta) {
+        cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+        saveCart(); renderCart();
+    };
+    window.removeFromCart = function(idx) {
+        const removed = cart.splice(idx, 1)[0];
+        saveCart(); renderCart();
+        showToast('Removed', `${removed.name} removed from your bag.`, 'info');
+    };
+
+    function renderWishlist() {
+        const list = document.getElementById('wishlist-items-list');
+        const emptyMsg = document.getElementById('wishlist-empty-msg');
+        const badge = document.getElementById('wishlist-count-badge');
+        const qty = document.getElementById('wishlist-total-qty');
+
+        qty.textContent = wishlist.length;
+        if (wishlist.length > 0) {
+            badge.textContent = wishlist.length;
+            badge.classList.remove('scale-0');
+        } else {
+            badge.classList.add('scale-0');
+        }
+
+        Array.from(list.children).forEach(c => { if (c.id !== 'wishlist-empty-msg') c.remove(); });
+
+        if (wishlist.length === 0) {
+            emptyMsg.style.display = '';
+        } else {
+            emptyMsg.style.display = 'none';
+            wishlist.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'flex gap-4 items-start border-b border-gray-50 pb-4';
+                div.innerHTML = `
+                    <div class="w-16 h-20 bg-gray-100 shrink-0 overflow-hidden">
+                        <img src="${item.img}" class="w-full h-full object-cover" alt="${item.name}" />
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-sm mb-0.5">${item.name}</h4>
+                        <p class="font-bold text-sm mb-3">$${item.price.toLocaleString()}</p>
+                        <button onclick="moveToCart(${idx})" class="text-xs font-bold uppercase tracking-wider border border-black px-4 py-1.5 hover:bg-black hover:text-white transition-colors">Move to Bag</button>
+                    </div>
+                    <button onclick="removeWishlist(${idx})" class="text-gray-400 hover:text-red-500 transition-colors mt-1" aria-label="Remove">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>`;
+                list.appendChild(div);
+            });
+        }
+    }
+
+    window.removeWishlist = function(idx) {
+        wishlist.splice(idx, 1);
+        saveWishlist(); renderWishlist();
+    };
+    window.moveToCart = function(idx) {
+        const item = wishlist.splice(idx, 1)[0];
+        const existing = cart.find(c => c.id === item.id);
+        if (existing) { existing.qty++; } else { cart.push({ ...item, qty: 1 }); }
+        saveCart(); saveWishlist(); renderCart(); renderWishlist();
+        showToast('Moved to Bag', `${item.name} added to your bag.`, 'success');
+    };
+
+    // Cart drawer open/close
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartPanel = document.getElementById('cart-panel');
+    const cartBackdrop = document.getElementById('cart-backdrop');
+
+    document.getElementById('open-cart-btn').addEventListener('click', () => {
+        cartDrawer.style.opacity = '1';
+        cartDrawer.style.pointerEvents = 'all';
+        cartPanel.style.transform = 'translateX(0)';
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('close-cart-btn').addEventListener('click', closeCartDrawer);
+    cartBackdrop.addEventListener('click', closeCartDrawer);
+    function closeCartDrawer() {
+        cartDrawer.style.opacity = '0';
+        cartDrawer.style.pointerEvents = 'none';
+        cartPanel.style.transform = 'translateX(100%)';
+        document.body.style.overflow = '';
+    }
+
+    // Wishlist drawer
+    const wishlistDrawer = document.getElementById('wishlist-drawer');
+    const wishlistPanel = document.getElementById('wishlist-panel');
+    const wishlistBackdrop = document.getElementById('wishlist-backdrop');
+
+    document.getElementById('open-wishlist-btn').addEventListener('click', () => {
+        wishlistDrawer.style.opacity = '1';
+        wishlistDrawer.style.pointerEvents = 'all';
+        wishlistPanel.style.transform = 'translateX(0)';
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('close-wishlist-btn').addEventListener('click', closeWishlistDrawer);
+    wishlistBackdrop.addEventListener('click', closeWishlistDrawer);
+    function closeWishlistDrawer() {
+        wishlistDrawer.style.opacity = '0';
+        wishlistDrawer.style.pointerEvents = 'none';
+        wishlistPanel.style.transform = 'translateX(100%)';
+        document.body.style.overflow = '';
+    }
+
+    // Init render
+    renderCart();
+    renderWishlist();
+
+    // ── LOAD MORE ───────────────────────────────────────────────────────────────
+    let loadCount = 0;
+    window.loadMore = function() {
+        loadCount++;
+        const btn = document.getElementById('load-more-btn');
+        btn.textContent = 'Loading…';
+        btn.disabled = true;
+        setTimeout(() => {
+            showToast('All Caught Up', 'You have reached the end of the Gazette archive.', 'info');
+            btn.innerHTML = `All Stories Loaded <svg style="display:inline;vertical-align:middle;margin-left:8px" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+        }, 1200);
+    };
+
+    // ── POST MODAL ──────────────────────────────────────────────────────────────
+    const postData = {
+        1: {
+            title: "The Architecture of Light & Drape — AW26 Unveiled",
+            category: "Runway Review",
+            date: "Sep 18, 2026",
+            readTime: "8 min read",
+            author: "Priya Muthukrishnan",
+            role: "Creative Director",
+            authorImg: "assets/images/p1.webp",
+            heroImg: "assets/images/The Architecture of Light & Drape - AW26 Unveiled.webp",
+            body: `<p class="text-lg leading-relaxed mb-6">When the lights dimmed at the MMR Complex rooftop in Salem on a rare cool September evening, what followed was not a fashion show in any conventional sense. It was an architectural proposition — a series of 22 silhouettes that dissolved the boundary between garment and building.</p>
+            <p class="leading-relaxed text-gray-600 mb-6">stackly.'s Autumn/Winter 2026 collection, titled <em>Threshold</em>, drew from two seemingly incompatible traditions: the structural rigidity of Milanese tailoring geometry and the fluid, breathing nature of Salem's handloom weaves. The result was a vocabulary that had never quite been articulated before in Indian couture.</p>
+            <h3 class="font-serif-luxury text-2xl italic mb-4 mt-10">The Silhouette Language</h3>
+            <p class="leading-relaxed text-gray-600 mb-6">Each look explored a different structural principle. Look 1, a cream virgin cashmere longline coat with exaggerated shoulder architecture, referenced the Gothic flying buttress. Look 8, a moss-green hand-loomed silk column dress with asymmetric drape panels, was pure liquid geometry. Nothing was accidental. Every seam carried intention.</p>
+            <p class="leading-relaxed text-gray-600 mb-6">The palette was monastic in its restraint: warm ivory, ash, deep slate, and a single chromatic departure — a burnt sienna that appeared in look 14 and was immediately the most photographed piece of the evening.</p>
+            <h3 class="font-serif-luxury text-2xl italic mb-4 mt-10">Salem in Every Thread</h3>
+            <p class="leading-relaxed text-gray-600 mb-6">What separated this collection from the purely academic was its grounding in place. Every fabric told a story of origin — the mulberry silk came from sericulture farms 12 kilometres from the atelier. The handloom artisans who wove the base cloths were present at the show, seated in the front row.</p>`
+        },
+        2: {
+            title: "Salem's Mulberry Silk: The Thread That Binds Two Worlds",
+            category: "Material Study",
+            date: "Sep 12, 2026",
+            readTime: "5 min read",
+            author: "Aarthi Selvam",
+            role: "Textile Correspondent",
+            authorImg: "assets/images/p2.webp",
+            heroImg: "assets/images/The Dual-Heritage Manifesto.webp",
+            body: `<p class="text-lg leading-relaxed mb-6">Salem has been synonymous with silk for over two centuries. Yet few outside of Tamil Nadu truly understand what makes Salem's mulberry silk distinct from every other silk on the planet — and why stackly. considers it irreplaceable.</p>
+            <p class="leading-relaxed text-gray-600 mb-6">It begins with the climate. The Shevaroy hills create a microclimate that produces mulberry leaves of unusual nutritional density, which in turn produces cocoons whose silk filaments are longer, finer, and more lustrous than those from the Deccan plateau or Bihar's sericulture belts.</p>
+            <h3 class="font-serif-luxury text-2xl italic mb-4 mt-10">Hand-Reeling: The Vanishing Art</h3>
+            <p class="leading-relaxed text-gray-600 mb-6">Most modern silk production has shifted to machine reeling for speed and consistency. stackly. is among the last fashion houses in India to insist on hand-reeled silk for its evening silhouettes. The process is slower — a single reeler can produce perhaps 150 grams of thread per day — but the resulting yarn has a quality that no machine can replicate.</p>`
+        },
+        3: {
+            title: "Master Krishnamurthy: 40 Years Behind the Shears",
+            category: "Artisan Chronicle",
+            date: "Sep 7, 2026",
+            readTime: "6 min read",
+            author: "Rajan Iyer",
+            role: "Travel & Artisan Chronicler",
+            authorImg: "assets/images/p3.webp",
+            heroImg: "assets/images/photo-1553361371-9b22f78e8b1d.webp",
+            body: `<p class="text-lg leading-relaxed mb-6">He arrives at 6:30am every morning. Not because he has to — stackly.'s in-house atelier doesn't officially open until 9 — but because that is when the light is best, and Master Krishnamurthy has always believed that great tailoring begins with great light.</p>
+            <p class="leading-relaxed text-gray-600 mb-6">At 64, Krishnamurthy is the patriarch of stackly.'s pattern-cutting department, and arguably one of the finest tailors in South India. His CV is deceptively simple: 40 years of cutting cloth in Salem. No Savile Row apprenticeship. No Parisian atelier training. Just four decades of devotion to a craft he learned from his father, who learned it from his.</p>
+            <h3 class="font-serif-luxury text-2xl italic mb-4 mt-10">The Shears as Language</h3>
+            <p class="leading-relaxed text-gray-600 mb-6">"A pattern is a conversation," he tells me, his Tamil precise and unhurried, hands moving over a length of dove-grey cashmere as he speaks. "When I cut, I am listening to what the fabric wants to become. My job is not to impose — it is to allow."</p>`
+        }
+    };
+
+    window.openPost = function(id) {
+        const data = postData[id];
+        if (!data) {
+            showToast('Coming Soon', 'This article is being prepared by our editorial team.', 'info');
+            return;
+        }
+        const content = document.getElementById('post-content');
+        content.innerHTML = `
+            <div class="mb-8">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="cat-label text-gray-400">${data.category}</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">${data.date}</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                    <span class="cat-label text-gray-400">${data.readTime}</span>
+                </div>
+                <h1 class="font-serif-luxury text-4xl md:text-5xl italic leading-tight mb-6">${data.title}</h1>
+                <div class="flex items-center gap-4 pb-6 border-b border-gray-100 mb-8">
+                    <img src="${data.authorImg}" class="w-10 h-10 rounded-full object-cover" alt="${data.author}">
+                    <div>
+                        <p class="text-sm font-semibold">${data.author}</p>
+                        <p class="text-xs text-gray-400">${data.role}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-hidden mb-10 aspect-video bg-gray-100">
+                <img src="${data.heroImg}" class="w-full h-full object-cover" alt="${data.title}" />
+            </div>
+            <div class="prose max-w-none text-base">${data.body}</div>
+            <div class="mt-12 pt-8 border-t border-gray-100 flex items-center justify-between">
+                <a href="products.html" class="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest hover:text-gray-500 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:-translate-x-1 transition-transform"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Shop The Collection
+                </a>
+                <button onclick="closePost()" class="text-xs font-bold uppercase tracking-widest hover:text-gray-500 transition-colors">← Back to Gazette</button>
+            </div>`;
+        const modal = document.getElementById('post-modal');
+        modal.style.transform = 'translateY(0)';
+        modal.setAttribute('aria-hidden', 'false');
+        modal.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closePost = function() {
+        const modal = document.getElementById('post-modal');
+        modal.style.transform = 'translateY(100%)';
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    };
+
+    // Escape key support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closePost();
+            searchModal.classList.remove('open');
+            closeCartDrawer();
+            closeWishlistDrawer();
+            document.body.style.overflow = '';
+        }
+    });
+
+    </script>
+</body>
+</html>

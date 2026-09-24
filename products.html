@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haute Couture & Ready-to-Wear Creations — stackly. Fashion Store</title>
+    <meta name="description" content="Explore the Autumn/Winter 2026 collection by stackly. Architectural silhouettes, Virgin Italian Cashmere, Tuscan leather bags, and Salem mulberry silk evening wear.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <script src="validations.js"></script>
+
+    <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+        *, ::before, ::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif-luxury {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px black;
+        }
+
+        .text-outline-light {
+            color: transparent;
+            -webkit-text-stroke: 1.5px #e5e7eb;
+        }
+
+        .text-outline-white {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee {
+            animation: marquee 24s linear infinite;
+            display: inline-flex;
+            white-space: nowrap;
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .glass-panel-dark {
+            background: rgba(18, 18, 18, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        @keyframes heart-bounce {
+            0% { transform: scale(1); }
+            35% { transform: scale(1.35); }
+            65% { transform: scale(0.85); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-heart-bounce {
+            animation: heart-bounce 0.45s ease-out;
+        }
+
+        /* Product Card Animation */
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- ========================================================================= -->
+    <!-- NAVIGATION HEADER                                                         -->
+    <!-- ========================================================================= -->
+    <header class="fixed top-0 w-full px-4 sm:px-8 md:px-16 py-4 sm:py-5 flex justify-between items-center z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300" id="main-header">
+        <a href="index.html" class="flex items-center select-none" aria-label="stackly home">
+            <img src="assets/images/stackly logo.webp" alt="stackly." class="h-7 sm:h-8 w-auto object-contain brightness-0" />
+        </a>
+        
+        <nav class="hidden lg:flex gap-8 text-xs font-semibold uppercase tracking-widest items-center">
+            <a href="index.html" class="text-gray-500 hover:text-black transition-colors">Home</a>
+            <a href="about.html" class="text-gray-500 hover:text-black transition-colors">About</a>
+            <a href="products.html" class="text-black font-extrabold border-b-2 border-black pb-0.5">Products</a>
+            <a href="blog.html" class="text-gray-500 hover:text-black transition-colors">Blog</a>
+            <a href="contact.html" class="text-gray-500 hover:text-black transition-colors">Contact</a>
+            <a href="login.html" class="text-gray-500 hover:text-black transition-colors">Login</a>
+        </nav>
+        
+        <div class="flex items-center gap-3 sm:gap-5 md:gap-7">
+            <!-- Search Icon / Focus Input Trigger -->
+            <button id="search-nav-btn" class="p-1 hover:opacity-60 transition-opacity" title="Search Creations" aria-label="Search Collection">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+
+            <!-- Wishlist Heart Button with Counter -->
+            <button id="open-wishlist-btn" class="relative p-1 hover:opacity-60 transition-opacity" title="Saved Wishlist" aria-label="Open Wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span id="wishlist-count-badge" class="absolute -top-1.5 -right-1.5 bg-[#cc0000] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold scale-0 transition-transform duration-200">0</span>
+            </button>
+
+            <!-- Shopping Bag / Cart Button with Counter -->
+            <button id="open-cart-btn" class="relative p-1 hover:opacity-60 transition-opacity flex items-center gap-2 group" title="Shopping Bag" aria-label="Open Shopping Bag">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span id="cart-count-badge" class="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold scale-0 transition-transform duration-200">0</span>
+            </button>
+
+            <!-- Fullscreen Menu Button -->
+            <button id="menu-btn" class="w-9 h-9 sm:w-11 sm:h-11 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
+                <div class="flex flex-col gap-[3.5px] items-center">
+                    <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
+                    <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- FULLSCREEN SLIDE-DOWN MENU                                                -->
+    <!-- ========================================================================= -->
+    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full invisible pointer-events-none transition-all duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-6 sm:p-8 md:p-16 overflow-y-auto">
+        <div class="flex justify-between items-start">
+            <a href="index.html" class="flex items-center" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert" />
+            </a>
+            <button id="close-menu" class="w-10 h-10 sm:w-12 sm:h-12 border border-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300" aria-label="Close Menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end my-10 gap-10 mt-12 lg:mt-0">
+            <nav class="flex flex-col gap-3 sm:gap-4 md:gap-6 text-3xl sm:text-5xl md:text-[80px] lg:text-[92px] font-bold lowercase tracking-tight leading-none">
+                <a href="index.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 hover:text-gray-300 transition-colors w-max">
+                    home
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="about.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 hover:text-gray-300 transition-colors w-max">
+                    about
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="products.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 text-gray-300 transition-colors w-max">
+                    products
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-100 transition-opacity"></span>
+                </a>
+                <a href="blog.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 hover:text-gray-300 transition-colors w-max">
+                    blog
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="contact.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 hover:text-gray-300 transition-colors w-max">
+                    contact
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+                <a href="login.html" class="menu-nav-link group flex items-center gap-4 sm:gap-6 hover:text-gray-300 transition-colors w-max">
+                    login
+                    <span class="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+            </nav>
+            <div class="w-full lg:w-1/4 text-xs md:text-sm text-gray-300 text-left uppercase tracking-widest leading-loose font-medium pb-4">
+                HIGH FASHION TAILORING.<br>
+                COMPLETE RUNWAY ARCHIVE.<br>
+                AUTUMN / WINTER 2026 EDITION.
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- HERO SECTION: THE COMPLETE COLLECTION                                    -->
+    <!-- ========================================================================= -->
+    <section class="relative pt-32 sm:pt-36 md:pt-44 pb-12 sm:pb-14 overflow-hidden bg-white border-b border-gray-100">
+        <!-- Giant background watermark -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 pointer-events-none z-0 select-none overflow-hidden opacity-30 w-full text-center">
+            <span class="text-[60px] sm:text-[140px] md:text-[220px] lg:text-[340px] font-black uppercase text-outline-light tracking-tighter leading-none block">
+                CREATIONS
+            </span>
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 relative z-10">
+            <!-- Breadcrumbs & Edition Tag -->
+            <div class="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <div class="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] text-gray-400 font-semibold">
+                    <a href="index.html" class="hover:text-black transition-colors">Home</a>
+                    <span>/</span>
+                    <span class="text-black">Runway Atelier Archive</span>
+                </div>
+                <div class="inline-flex items-center gap-2 bg-neutral-100 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black border border-gray-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>16 Pieces Hand-Tailored • A/W 2026</span>
+                </div>
+            </div>
+
+            <!-- Main Title & Subtitle -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-end">
+                <div class="lg:col-span-8">
+                    <h1 class="text-2xl sm:text-5xl md:text-8xl font-black uppercase tracking-tight leading-[0.95] sm:leading-[0.9] text-black break-words">
+                        AUTUMN / WINTER<br>
+                        <span class="text-outline">THE ARCHIVE.</span>
+                    </h1>
+                </div>
+                <div class="lg:col-span-4 pb-2">
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed font-light">
+                        Explore our complete haute couture and ready-to-wear catalog. Sculpted in Biella virgin wool, Tuscan box calfskin, and hand-reeled Salem silks.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Category Quick-Jump Chips with Counts -->
+            <div class="mt-8 sm:mt-10 flex flex-nowrap sm:flex-wrap overflow-x-auto pb-2 sm:pb-0 gap-2 pt-6 border-t border-gray-100 text-xs no-scrollbar">
+                <button class="quick-jump-chip whitespace-nowrap shrink-0 px-3.5 sm:px-4 py-2 rounded-lg bg-black text-white font-bold uppercase tracking-wider text-[10px] sm:text-[11px] transition-all" data-category="all">
+                    All Creations (<span id="count-all">16</span>)
+                </button>
+                <button class="quick-jump-chip whitespace-nowrap shrink-0 px-3.5 sm:px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold uppercase tracking-wider text-[10px] sm:text-[11px] transition-all" data-category="ready-to-wear">
+                    Ready-to-Wear (<span id="count-rtw">5</span>)
+                </button>
+                <button class="quick-jump-chip whitespace-nowrap shrink-0 px-3.5 sm:px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold uppercase tracking-wider text-[10px] sm:text-[11px] transition-all" data-category="bags">
+                    Luxury Handbags (<span id="count-bags">4</span>)
+                </button>
+                <button class="quick-jump-chip whitespace-nowrap shrink-0 px-3.5 sm:px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold uppercase tracking-wider text-[10px] sm:text-[11px] transition-all" data-category="shoes">
+                    Runway Footwear (<span id="count-shoes">4</span>)
+                </button>
+                <button class="quick-jump-chip whitespace-nowrap shrink-0 px-3.5 sm:px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 font-semibold uppercase tracking-wider text-[10px] sm:text-[11px] transition-all" data-category="accessories">
+                    Fine Accessories (<span id="count-acc">3</span>)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- INTERACTIVE CONTROL & FILTER TOOLBAR (STICKY CAPABLE)                     -->
+    <!-- ========================================================================= -->
+    <div class="sticky top-[65px] sm:top-[73px] z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 py-3 sm:py-4 shadow-sm" id="catalog-controls">
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 sm:gap-4">
+            
+            <!-- Left: Search & Price Filter -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full lg:w-auto">
+                <!-- Live Search Box -->
+                <div class="relative w-full sm:w-64">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="catalog-search" placeholder="Search creations, fabrics..." class="w-full pl-9 pr-8 py-2 border border-gray-200 rounded-lg text-xs outline-none focus:border-black transition-colors" />
+                    <button id="clear-search-btn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black text-xs hidden" aria-label="Clear Search">✕</button>
+                </div>
+
+                <!-- Price Range Dropdown -->
+                <div class="relative w-full sm:w-auto">
+                    <select id="price-filter-select" class="w-full sm:w-auto border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-700 outline-none focus:border-black bg-white cursor-pointer">
+                        <option value="all">All Prices</option>
+                        <option value="under-1000">Under $1,000</option>
+                        <option value="1000-2000">$1,000 – $2,000</option>
+                        <option value="over-2000">Above $2,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Right: Sort & Grid View Switcher -->
+            <div class="flex items-center justify-between lg:justify-end gap-2 sm:gap-3 w-full lg:w-auto">
+                <!-- Sort Dropdown -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider flex-1 sm:flex-initial">
+                    <span class="hidden sm:inline">Sort:</span>
+                    <select id="sort-select" class="w-full sm:w-auto border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider text-black outline-none focus:border-black bg-white cursor-pointer">
+                        <option value="featured">Featured Runway</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A – Z</option>
+                    </select>
+                </div>
+
+                <!-- Layout View Switcher Buttons -->
+                <div class="flex items-center border border-gray-200 rounded-lg p-0.5 bg-gray-50 shrink-0">
+                    <!-- 3-Col Editorial View -->
+                    <button class="view-mode-btn active p-1.5 rounded bg-white text-black shadow-sm" data-view="3-col" title="3-Column Editorial Grid" aria-label="3-Column View">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"></rect><rect x="10" y="3" width="5" height="18" rx="1"></rect><rect x="17" y="3" width="5" height="18" rx="1"></rect></svg>
+                    </button>
+                    <!-- 4-Col Compact View -->
+                    <button class="view-mode-btn p-1.5 rounded text-gray-400 hover:text-black transition-colors" data-view="4-col" title="4-Column Compact Grid" aria-label="4-Column View">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="8.5" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="14" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="19.5" y="3" width="3.5" height="18" rx="0.5"></rect></svg>
+                    </button>
+                    <!-- List View -->
+                    <button class="view-mode-btn p-1.5 rounded text-gray-400 hover:text-black transition-colors" data-view="list" title="Detailed List View" aria-label="List View">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Filter Status & Active Pills Bar -->
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span id="results-count-text" class="text-gray-500 font-medium">Showing 16 creations</span>
+                <div id="active-filter-tags" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <button id="reset-filters-btn" class="text-[11px] font-bold uppercase tracking-wider text-[#cc0000] hover:underline hidden">
+                Reset All Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MAIN PRODUCTS CATALOG SECTION                                             -->
+    <!-- ========================================================================= -->
+    <section class="py-12 sm:py-16 md:py-24 bg-white min-h-[700px]">
+        <div class="container mx-auto px-4 sm:px-8 md:px-16">
+            
+            <!-- Products Grid Container -->
+            <div id="products-catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 transition-all duration-300">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Empty Results Placeholder -->
+            <div id="no-results-panel" class="hidden text-center py-16 sm:py-24">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mx-auto mb-4">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black">No Creations Found</h3>
+                <p class="text-xs text-gray-500 max-w-sm mx-auto mt-2 mb-6">We could not locate pieces matching your filter criteria. Try clearing search keywords or selecting all categories.</p>
+                <button id="clear-all-empty-btn" class="bg-black text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition-colors">
+                    Reset All Filters
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- EDITORIAL INTERSTITIAL: CAPSULE WARDROBE BUNDLE SPOTLIGHT                -->
+    <!-- ========================================================================= -->
+    <section class="py-16 sm:py-24 md:py-32 bg-[#111] text-white relative overflow-hidden">
+        <!-- Giant background text -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 select-none overflow-hidden">
+            <span class="text-[80px] sm:text-[180px] md:text-[340px] font-black uppercase text-outline-white leading-none">
+                CAPSULE
+            </span>
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-8 md:px-16 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
+                <div class="lg:col-span-6">
+                    <div class="inline-flex items-center gap-2 bg-white/10 text-gray-300 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 sm:mb-6 border border-white/15">
+                        <span class="text-[#cc0000]">✦</span>
+                        <span>Seasonal Atelier Privilege</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight leading-tight mb-4 sm:mb-6">
+                        The Milanese Minimalist Capsule.
+                    </h2>
+                    <p class="text-gray-300 text-xs sm:text-sm font-light leading-relaxed mb-6 sm:mb-8 max-w-lg">
+                        Acquire the cohesive 3-piece runway silhouette: Double-Breasted Cashmere Trench, Sculptural Calfskin Tote, and Pointed Satin Mules. Styled together to form an architectural foundation for day and evening soirées.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-baseline gap-2 sm:gap-4 mb-6 sm:mb-8">
+                        <span class="text-[11px] sm:text-xs uppercase tracking-widest text-gray-400">Curated 3-Piece Total:</span>
+                        <span class="text-gray-500 line-through text-sm sm:text-base">$5,230</span>
+                        <span class="text-2xl sm:text-3xl font-black text-white">$4,790</span>
+                        <span class="bg-[#cc0000] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">Save 10%</span>
+                    </div>
+
+                    <button id="add-featured-capsule-btn" class="w-full sm:w-auto bg-white text-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-neutral-200 transition-colors shadow-2xl flex items-center justify-center gap-2 group">
+                        <span>Acquire Complete 3-Piece Capsule</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transform group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </div>
+
+                <!-- 3 Mini Preview Cards -->
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div class="bg-neutral-900 rounded-xl p-3 border border-white/10 flex sm:flex-col items-center sm:items-stretch gap-3 sm:gap-0 justify-between">
+                        <img src="assets/images/Double-Breasted Cashmere Trench.webp" alt="Cashmere Trench" class="w-20 sm:w-full aspect-[3/4] object-cover rounded sm:mb-2 shrink-0" />
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[11px] font-bold uppercase text-white truncate">Cashmere Trench</h4>
+                            <span class="text-[10px] text-gray-400 font-mono">$2,450</span>
+                        </div>
+                    </div>
+                    <div class="bg-neutral-900 rounded-xl p-3 border border-white/10 flex sm:flex-col items-center sm:items-stretch gap-3 sm:gap-0 justify-between">
+                        <img src="assets/images/Architectural Flap Shoulder Bag.webp" alt="Calfskin Tote" class="w-20 sm:w-full aspect-[3/4] object-cover rounded sm:mb-2 shrink-0" />
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[11px] font-bold uppercase text-white truncate">Calfskin Tote</h4>
+                            <span class="text-[10px] text-gray-400 font-mono">$1,890</span>
+                        </div>
+                    </div>
+                    <div class="bg-neutral-900 rounded-xl p-3 border border-white/10 flex sm:flex-col items-center sm:items-stretch gap-3 sm:gap-0 justify-between">
+                        <img src="assets/images/Pointed Satin Runway Mules.webp" alt="Satin Mules" class="w-20 sm:w-full aspect-[3/4] object-cover rounded sm:mb-2 shrink-0" />
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[11px] font-bold uppercase text-white truncate">Satin Mules</h4>
+                            <span class="text-[10px] text-gray-400 font-mono">$890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- GIANT MARQUEE                                                             -->
+    <!-- ========================================================================= -->
+    <div class="w-full overflow-hidden whitespace-nowrap py-8 sm:py-10 md:py-14 bg-white text-black relative z-10 border-t border-gray-100">
+        <div class="animate-marquee text-2xl sm:text-5xl md:text-7xl font-bold uppercase tracking-widest leading-none flex items-center gap-8 sm:gap-12 text-outline">
+            <span>HAUTE COUTURE</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+            <span>SALEM ATELIER</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+            <span>MILAN SARTORIA</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+            <span>VIRGIN CASHMERE</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+            <span>SLOW LUXURY</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+            <span>HAUTE COUTURE</span>
+            <span class="text-black text-xl sm:text-3xl">✦</span>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- FOOTER                                                                    -->
+    <!-- ========================================================================= -->
+    <footer class="container mx-auto px-4 sm:px-8 md:px-16 py-12 sm:py-16 md:py-20 flex flex-col lg:flex-row justify-between gap-10 sm:gap-16 border-t border-gray-100">
+        <div class="w-full lg:w-1/4">
+            <a href="index.html" class="flex items-center mb-4 sm:mb-6" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0" />
+            </a>
+            <p class="text-gray-500 mb-6 sm:mb-8 text-xs sm:text-sm leading-relaxed max-w-sm">Architectural tailoring and bespoke couture ready-to-wear located at MMR Complex, Chinnatirupathi, Salem.</p>
+            <div class="flex gap-3 sm:gap-4">
+                <a href="404.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="Facebook">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="404.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="404.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center hover:border-black hover:bg-black hover:text-white transition-all text-gray-500" aria-label="X (Twitter)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="w-full lg:w-auto flex flex-row gap-12 sm:gap-20">
+            <div>
+                <h4 class="font-bold mb-4 sm:mb-6 text-[14px] sm:text-[15px]">Menu</h4>
+                <ul class="flex flex-col gap-2.5 sm:gap-3 text-gray-500 text-xs sm:text-sm">
+                    <li><a href="index.html" class="hover:text-black transition-colors">Home</a></li>
+                    <li><a href="about.html" class="hover:text-black transition-colors">About</a></li>
+                    <li><a href="products.html" class="text-black font-bold">Products</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 sm:mb-6 text-[14px] sm:text-[15px]">Explore</h4>
+                <ul class="flex flex-col gap-2.5 sm:gap-3 text-gray-500 text-xs sm:text-sm">
+                    <li><a href="index.html#editorial-section" class="hover:text-black transition-colors">Blog</a></li>
+                    <li><a href="contact.html" class="hover:text-black transition-colors">Contact</a></li>
+                    <li><a href="login.html" class="hover:text-black transition-colors">Login</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/3 flex flex-col sm:flex-row gap-4 sm:gap-6 bg-[#f8f8f8] p-4 sm:p-6 items-center rounded-xl">
+            <img src="assets/images/footer image right.webp" class="w-20 h-20 sm:w-24 sm:h-24 object-cover shrink-0 rounded" alt="Newsletter Image" />
+            <div class="flex flex-col justify-center w-full">
+                <h4 class="font-bold mb-1 text-xs sm:text-sm uppercase tracking-wider">The Atelier Gazette</h4>
+                <p class="text-gray-500 text-[11px] sm:text-xs mb-3 sm:mb-4 leading-relaxed">Private runway invites and bespoke seasonal previews.</p>
+                <form class="flex border-b border-gray-300 pb-2 w-full" id="newsletter-form" onsubmit="return window.validateNewsletter(event, this)">
+                    <input type="email" placeholder="Type your e-mail" class="outline-none w-full text-xs bg-transparent placeholder-gray-400" required />
+                    <button type="submit" class="font-bold text-xs uppercase tracking-wider pl-2 hover:text-gray-500 shrink-0">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="container mx-auto px-4 sm:px-8 md:px-16 py-6 sm:py-8 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-center sm:text-left">
+        <p class="text-xs text-gray-400 font-medium tracking-wide">© 2026 / stackly. All Rights Reserved</p>
+        <p class="text-xs text-gray-400 font-medium tracking-wide">MMR Complex, Chinnatirupathi, Salem</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE-OVER: SHOPPING CART DRAWER                                          -->
+    <!-- ========================================================================= -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0" aria-hidden="true">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+        
+        <div id="cart-panel" class="absolute right-0 top-0 bottom-0 w-full max-w-full sm:max-w-md bg-white shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-out z-10">
+            <div class="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg sm:text-xl font-bold uppercase tracking-tight">Shopping Bag</h3>
+                    <p class="text-xs text-gray-400 font-medium tracking-wider mt-0.5"><span id="cart-total-qty">0</span> creations selected</p>
+                </div>
+                <button id="close-cart-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="Close Shopping Bag">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-b border-gray-100">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
+                    <span id="shipping-progress-text">Add $1,500 for Free Express Courier</span>
+                    <span id="shipping-progress-pct" class="text-gray-400">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                    <div id="shipping-progress-bar" class="bg-black h-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 divide-y divide-gray-100" id="cart-items-container"></div>
+
+            <div class="p-4 sm:p-6 border-t border-gray-100 bg-white space-y-3 sm:space-y-4" id="cart-footer">
+                <div class="flex gap-2">
+                    <input type="text" id="promo-code-input" placeholder="Promo code (STACKLY10)" class="flex-1 min-w-0 border border-gray-200 px-3 py-2 text-xs uppercase tracking-wider rounded outline-none focus:border-black" />
+                    <button id="apply-promo-btn" class="bg-gray-100 px-3 sm:px-4 py-2 text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white rounded transition-colors shrink-0">Apply</button>
+                </div>
+
+                <div class="space-y-1.5 text-xs">
+                    <div class="flex justify-between text-gray-500">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="text-black font-semibold">$0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-500" id="promo-discount-row" style="display: none;">
+                        <span>VIP Privilege (10%)</span>
+                        <span id="cart-discount" class="text-[#cc0000] font-semibold">-$0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-500">
+                        <span>White-Glove Shipping</span>
+                        <span id="cart-shipping-cost" class="text-black font-semibold">$45</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold text-black pt-2 border-t border-gray-100">
+                        <span>Estimated Total</span>
+                        <span id="cart-grand-total">$0</span>
+                    </div>
+                </div>
+
+                <button id="checkout-btn" class="w-full bg-black text-white py-3.5 sm:py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 group">
+                    <span>Proceed to Checkout</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transform group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+
+                <p class="text-[9px] sm:text-[10px] text-center text-gray-400 uppercase tracking-widest">
+                    🔒 256-Bit Encrypted Atelier Checkout • 30-Day Returns
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE-OVER: WISHLIST DRAWER                                               -->
+    <!-- ========================================================================= -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0" aria-hidden="true">
+        <div id="wishlist-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+        
+        <div id="wishlist-panel" class="absolute right-0 top-0 bottom-0 w-full max-w-full sm:max-w-md bg-white shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-out z-10">
+            <div class="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg sm:text-xl font-bold uppercase tracking-tight flex items-center gap-2">
+                        <span>Saved Wishlist</span>
+                        <span class="text-[#cc0000]">♥</span>
+                    </h3>
+                    <p class="text-xs text-gray-400 font-medium tracking-wider mt-0.5"><span id="wishlist-total-qty">0</span> pieces saved</p>
+                </div>
+                <button id="close-wishlist-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="Close Wishlist">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 divide-y divide-gray-100" id="wishlist-items-container"></div>
+
+            <div class="p-4 sm:p-6 border-t border-gray-100 bg-white">
+                <button id="move-all-to-bag-btn" class="w-full bg-black text-white py-3.5 sm:py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-neutral-800 transition-colors">
+                    Move All Available to Bag
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: QUICK VIEW                                                         -->
+    <!-- ========================================================================= -->
+    <div id="quickview-modal" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 flex items-center justify-center p-2.5 sm:p-4" aria-hidden="true">
+        <div id="quickview-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"></div>
+
+        <div id="quickview-panel" class="relative bg-white w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl z-10 transform scale-95 transition-transform duration-300 max-h-[92vh] sm:max-h-[90vh] flex flex-col md:flex-row">
+            <button id="close-quickview-btn" class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 backdrop-blur-sm text-black flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="Close Quick View">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+            <!-- Image Column -->
+            <div class="w-full md:w-1/2 bg-gray-100 relative min-h-[220px] sm:min-h-[300px] md:min-h-[500px]">
+                <img id="qv-image" src="" alt="Product Image" class="w-full h-full object-cover">
+                <span id="qv-tag" class="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 sm:px-3 py-1 rounded-full"></span>
+            </div>
+
+            <!-- Info Column -->
+            <div class="w-full md:w-1/2 p-4 sm:p-6 md:p-8 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <span id="qv-category" class="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 block mb-1"></span>
+                    <h3 id="qv-title" class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black mb-2"></h3>
+                    <p id="qv-price" class="text-lg sm:text-xl font-bold text-black mb-3 sm:mb-4"></p>
+                    <p id="qv-desc" class="text-xs text-gray-600 leading-relaxed mb-4 sm:mb-6"></p>
+
+                    <!-- Size Selector -->
+                    <div class="mb-4 sm:mb-6">
+                        <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider mb-2">
+                            <span>Select Atelier Size</span>
+                            <span class="text-gray-400 text-[10px] font-medium">Italian Sizing</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 sm:gap-2" id="qv-sizes">
+                            <button class="qv-size-btn px-3 py-1.5 sm:px-3.5 sm:py-2 border border-black bg-black text-white text-xs font-semibold rounded transition-colors" data-size="XS">XS</button>
+                            <button class="qv-size-btn px-3 py-1.5 sm:px-3.5 sm:py-2 border border-gray-200 text-black text-xs font-semibold rounded hover:border-black transition-colors" data-size="S">S</button>
+                            <button class="qv-size-btn px-3 py-1.5 sm:px-3.5 sm:py-2 border border-gray-200 text-black text-xs font-semibold rounded hover:border-black transition-colors" data-size="M">M</button>
+                            <button class="qv-size-btn px-3 py-1.5 sm:px-3.5 sm:py-2 border border-gray-200 text-black text-xs font-semibold rounded hover:border-black transition-colors" data-size="L">L</button>
+                            <button class="qv-size-btn px-3 py-1.5 sm:px-3.5 sm:py-2 border border-gray-200 text-black text-xs font-semibold rounded hover:border-black transition-colors" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-3 pt-3 sm:pt-4 border-t border-gray-100">
+                    <div class="flex gap-2 sm:gap-3">
+                        <button id="qv-add-cart-btn" class="flex-1 bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold uppercase text-[11px] sm:text-xs tracking-widest hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2">
+                            <span>Add to Shopping Bag</span>
+                        </button>
+                        <button id="qv-like-btn" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl border border-gray-200 flex items-center justify-center hover:border-black transition-colors shrink-0" aria-label="Toggle Wishlist">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="qv-heart-icon">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-[9px] sm:text-[10px] text-gray-400 text-center uppercase tracking-widest">
+                        Ships via White-Glove Courier within 24h
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT: COMPLETE CATALOG LOGIC & STATE PERSISTENCE                    -->
+    <!-- ========================================================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- DATA SOURCE: 16 CURATED PRODUCTS ---
+            const products = [
+                {
+                    id: 'prod-1',
+                    name: 'Double-Breasted Cashmere Trench',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 2450,
+                    tag: 'RUNWAY FINALE',
+                    image: 'assets/images/Double-Breasted Cashmere Trench.webp',
+                    desc: 'Tailored from double-faced Italian virgin cashmere with signature horn buttons, a structured storm flap, and removable self-tie belt.',
+                    material: 'Biella 100% Virgin Cashmere'
+                },
+                {
+                    id: 'prod-2',
+                    name: 'Sculptural Calfskin Tote',
+                    category: 'bags',
+                    categoryLabel: 'Luxury Handbags',
+                    price: 1890,
+                    tag: 'ICONIC ATELIER',
+                    image: 'assets/images/bags.webp',
+                    desc: 'Geometric architectural tote rendered in Tuscan full-grain calfskin with raw hand-painted edging and concealed magnetic closure.',
+                    material: 'Tuscan Full-Grain Calfskin'
+                },
+                {
+                    id: 'prod-3',
+                    name: 'Pointed Satin Runway Mules',
+                    category: 'shoes',
+                    categoryLabel: 'Runway Footwear',
+                    price: 890,
+                    tag: 'NEW SEASON',
+                    image: 'assets/images/Pointed Satin Runway Mules.webp',
+                    desc: 'Sculpted 85mm stiletto mules crafted from lustrous midnight silk satin with padded Italian nappa lining for all-evening poise.',
+                    material: 'Como Silk Satin & Nappa Lining'
+                },
+                {
+                    id: 'prod-4',
+                    name: 'Asymmetric Pleated Gown',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 3200,
+                    tag: 'HAUTE COUTURE',
+                    image: 'assets/images/Asymmetric Pleated Gown.webp',
+                    desc: 'Hand-pleated midnight crepe de chine cascading into an asymmetrical high-slit silhouette with hand-finished interior seams.',
+                    material: 'Lake Como Mulberry Silk Crepe'
+                },
+                {
+                    id: 'prod-5',
+                    name: 'Architectural Flap Shoulder Bag',
+                    category: 'bags',
+                    categoryLabel: 'Luxury Handbags',
+                    price: 1450,
+                    tag: 'LIMITED EDITION',
+                    image: 'assets/images/Architectural Flap Shoulder Bag.webp',
+                    desc: 'Minimalist envelope bag in box calf leather featuring custom palladium hardware and an adjustable crossbody strap.',
+                    material: 'Box Calf Leather & Palladium'
+                },
+                {
+                    id: 'prod-6',
+                    name: 'Tailored Tuxedo Blazer',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 1750,
+                    tag: 'ESSENTIAL',
+                    image: 'assets/images/Tailored Tuxedo Blazer.webp',
+                    desc: 'Sharp, padded-shoulder wool-mohair jacket featuring silk satin peak lapels and a single horn button closure.',
+                    material: 'Wool-Mohair & Silk Satin Lapels'
+                },
+                {
+                    id: 'prod-7',
+                    name: 'Chunky Gilded Collar Necklace',
+                    category: 'accessories',
+                    categoryLabel: 'Jewelry & Acc',
+                    price: 580,
+                    tag: 'RUNWAY ACC',
+                    image: 'assets/images/Chunky Gilded Collar Necklace.webp',
+                    desc: 'Heavyweight brass link collar finished with 24k micro-gold plating and an invisible integrated push-clasp.',
+                    material: '24k Micro-Gold Plated Brass'
+                },
+                {
+                    id: 'prod-8',
+                    name: 'Minimalist Vitello Chelsea Boots',
+                    category: 'shoes',
+                    categoryLabel: 'Runway Footwear',
+                    price: 1120,
+                    tag: 'BESTSELLER',
+                    image: 'assets/images/Minimalist Vitello Chelsea Boots.webp',
+                    desc: 'Clean square-toe boots tailored from supple vitello leather with beveled welt sole and tonal elastic side insets.',
+                    material: 'Italian Vitello Leather'
+                },
+                {
+                    id: 'prod-9',
+                    name: 'Silk Organza Evening Cape',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 2100,
+                    tag: 'COUTURE SHOWPIECE',
+                    image: 'assets/images/home dress.webp',
+                    desc: 'Sheer structural cocoon cape woven on vintage Salem looms with hand-rolled silk organza hems and concealed mandarin collar hook.',
+                    material: 'Pure Salem Handwoven Silk Organza'
+                },
+                {
+                    id: 'prod-10',
+                    name: 'Structured Leather Corset Belt',
+                    category: 'accessories',
+                    categoryLabel: 'Jewelry & Acc',
+                    price: 640,
+                    tag: 'ATELIER LEATHER',
+                    image: 'assets/images/hero_accessories.webp',
+                    desc: 'Architectural waist cincher crafted from vegetable-tanned saddle leather with brushed gunmetal dual-buckle hardware.',
+                    material: 'Vegetable-Tanned Saddle Leather'
+                },
+                {
+                    id: 'prod-11',
+                    name: 'Biella Wool Pleated Trousers',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 980,
+                    tag: 'SARTORIAL BASE',
+                    image: 'assets/images/Biella Virgin Wool.webp',
+                    desc: 'High-rise wide-leg trousers cut from 260 GSM Italian virgin wool flannel with double reverse pleats and side tab adjusters.',
+                    material: '100% Biella Virgin Wool Flannel'
+                },
+                {
+                    id: 'prod-12',
+                    name: 'Handwoven Salem Mulberry Silk Stole',
+                    category: 'accessories',
+                    categoryLabel: 'Jewelry & Acc',
+                    price: 420,
+                    tag: 'SALEM HERITAGE',
+                    image: 'assets/images/The Dual-Heritage Manifesto.webp',
+                    desc: 'Artisanal silk stole hand-reeled in Salem, Tamil Nadu. Dyed in deep organic charcoal with delicate eyelash fringe finishing.',
+                    material: 'Salem Organic Mulberry Silk'
+                },
+                {
+                    id: 'prod-13',
+                    name: 'Geometric Brass Minaudière Clutch',
+                    category: 'bags',
+                    categoryLabel: 'Luxury Handbags',
+                    price: 1650,
+                    tag: 'COLLECTOR PIECE',
+                    image: 'assets/images/hero_bag.webp',
+                    desc: 'Solid-brass handheld evening minaudière with multifaceted architectural geometry and padded Italian velvet interior lining.',
+                    material: 'Hand-Polished Solid Brass & Velvet'
+                },
+                {
+                    id: 'prod-14',
+                    name: 'Sculpted Vitello Square-Toe Loafers',
+                    category: 'shoes',
+                    categoryLabel: 'Runway Footwear',
+                    price: 920,
+                    tag: 'RUNWAY FINISH',
+                    image: 'assets/images/loafers.webp',
+                    desc: 'Contemporary square-toe loafers crafted from hand-buffed calfskin with an architectural 35mm stacked leather Cuban heel.',
+                    material: 'Buffed Calfskin & Stacked Leather'
+                },
+                {
+                    id: 'prod-15',
+                    name: 'Double-Faced Cashmere Belted Robe Coat',
+                    category: 'ready-to-wear',
+                    categoryLabel: 'Ready-to-Wear',
+                    price: 2850,
+                    tag: 'VIP ATELIER',
+                    image: 'assets/images/ouble-Faced Cashmere Belted Robe Coat.webp',
+                    desc: 'Fluid shawl-collar wrap coat tailored without interior linings. Split-seam hand construction with deep patch pockets.',
+                    material: 'Biella Virgin Cashmere (520 GSM)'
+                },
+                {
+                    id: 'prod-16',
+                    name: 'Architectural Strappy Runway Sandals',
+                    category: 'shoes',
+                    categoryLabel: 'Runway Footwear',
+                    price: 850,
+                    tag: 'NEW ARRIVAL',
+                    image: 'assets/images/Architectural Strappy Runway Sandals.webp',
+                    desc: 'Geometric asymmetrical ankle-wrap sandals with 90mm sculptural fluted heel and cushioned leather footbed.',
+                    material: 'Tuscan Vitello Nappa & Leather Sole'
+                }
+            ];
+
+            // --- STATE MANAGEMENT ---
+            let cart = JSON.parse(localStorage.getItem('stackly_cart') || '[]');
+            let wishlist = JSON.parse(localStorage.getItem('stackly_wishlist') || '[]');
+            let activePromo = null;
+
+            let currentCategory = 'all';
+            let currentSearch = '';
+            let currentPriceFilter = 'all';
+            let currentSort = 'featured';
+            let currentViewMode = '3-col';
+
+            function saveState() {
+                localStorage.setItem('stackly_cart', JSON.stringify(cart));
+                localStorage.setItem('stackly_wishlist', JSON.stringify(wishlist));
+                updateHeaderBadges();
+            }
+
+            // --- TOAST NOTIFICATIONS ---
+            window.showToast = function(title, message, type = 'cart') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'glass-panel-dark text-white px-5 py-3.5 rounded-xl shadow-2xl border border-white/20 flex items-center gap-3 transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto max-w-sm';
+                
+                const icon = type === 'wishlist' 
+                    ? '<span class="text-[#cc0000] text-lg font-bold">♥</span>'
+                    : '<span class="text-emerald-400 text-lg">✦</span>';
+
+                toast.innerHTML = `
+                    ${icon}
+                    <div>
+                        <h5 class="text-xs font-bold uppercase tracking-wider">${title}</h5>
+                        <p class="text-[11px] text-gray-300">${message}</p>
+                    </div>
+                `;
+
+                container.appendChild(toast);
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-y-4', 'opacity-0');
+                    toast.classList.add('translate-y-0', 'opacity-100');
+                });
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3200);
+            };
+
+            // --- HEADER BADGES ---
+            function updateHeaderBadges() {
+                const cartBadge = document.getElementById('cart-count-badge');
+                const wishlistBadge = document.getElementById('wishlist-count-badge');
+                
+                const totalCartQty = cart.reduce((acc, item) => acc + item.qty, 0);
+                const totalWishlistQty = wishlist.length;
+
+                if (totalCartQty > 0) {
+                    cartBadge.textContent = totalCartQty;
+                    cartBadge.classList.remove('scale-0');
+                    cartBadge.classList.add('scale-100');
+                } else {
+                    cartBadge.classList.remove('scale-100');
+                    cartBadge.classList.add('scale-0');
+                }
+
+                if (totalWishlistQty > 0) {
+                    wishlistBadge.textContent = totalWishlistQty;
+                    wishlistBadge.classList.remove('scale-0');
+                    wishlistBadge.classList.add('scale-100');
+                } else {
+                    wishlistBadge.classList.remove('scale-100');
+                    wishlistBadge.classList.add('scale-0');
+                }
+            }
+
+            // --- FILTERING & SORTING LOGIC ---
+            function getFilteredProducts() {
+                let list = [...products];
+
+                // Category filter
+                if (currentCategory !== 'all') {
+                    list = list.filter(p => p.category === currentCategory);
+                }
+
+                // Search filter
+                if (currentSearch.trim()) {
+                    const q = currentSearch.toLowerCase().trim();
+                    list = list.filter(p => 
+                        p.name.toLowerCase().includes(q) || 
+                        p.categoryLabel.toLowerCase().includes(q) || 
+                        p.desc.toLowerCase().includes(q) ||
+                        p.material.toLowerCase().includes(q) ||
+                        p.tag.toLowerCase().includes(q)
+                    );
+                }
+
+                // Price filter
+                if (currentPriceFilter === 'under-1000') {
+                    list = list.filter(p => p.price < 1000);
+                } else if (currentPriceFilter === '1000-2000') {
+                    list = list.filter(p => p.price >= 1000 && p.price <= 2000);
+                } else if (currentPriceFilter === 'over-2000') {
+                    list = list.filter(p => p.price > 2000);
+                }
+
+                // Sorting
+                if (currentSort === 'price-asc') {
+                    list.sort((a, b) => a.price - b.price);
+                } else if (currentSort === 'price-desc') {
+                    list.sort((a, b) => b.price - a.price);
+                } else if (currentSort === 'name-asc') {
+                    list.sort((a, b) => a.name.localeCompare(b.name));
+                }
+
+                return list;
+            }
+
+            // --- RENDER PRODUCTS CATALOG ---
+            function renderCatalog() {
+                const grid = document.getElementById('products-catalog-grid');
+                const noResults = document.getElementById('no-results-panel');
+                const countText = document.getElementById('results-count-text');
+                const resetBtn = document.getElementById('reset-filters-btn');
+                const activeTagsContainer = document.getElementById('active-filter-tags');
+
+                const filtered = getFilteredProducts();
+
+                // Update counts
+                countText.textContent = `Showing ${filtered.length} of ${products.length} creations`;
+
+                // Update active tags
+                activeTagsContainer.innerHTML = '';
+                const hasFilters = currentCategory !== 'all' || currentSearch.trim() !== '' || currentPriceFilter !== 'all' || currentSort !== 'featured';
+                
+                if (hasFilters) {
+                    resetBtn.classList.remove('hidden');
+
+                    if (currentCategory !== 'all') {
+                        activeTagsContainer.innerHTML += `
+                            <span class="inline-flex items-center gap-1 bg-black text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                                ${currentCategory} <button onclick="window.clearFilter('category')" class="hover:text-red-400">✕</button>
+                            </span>
+                        `;
+                    }
+                    if (currentSearch.trim()) {
+                        activeTagsContainer.innerHTML += `
+                            <span class="inline-flex items-center gap-1 bg-black text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                                "${currentSearch}" <button onclick="window.clearFilter('search')" class="hover:text-red-400">✕</button>
+                            </span>
+                        `;
+                    }
+                    if (currentPriceFilter !== 'all') {
+                        activeTagsContainer.innerHTML += `
+                            <span class="inline-flex items-center gap-1 bg-black text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                                ${currentPriceFilter} <button onclick="window.clearFilter('price')" class="hover:text-red-400">✕</button>
+                            </span>
+                        `;
+                    }
+                } else {
+                    resetBtn.classList.add('hidden');
+                }
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = '';
+                    noResults.classList.remove('hidden');
+                    return;
+                }
+
+                noResults.classList.add('hidden');
+                grid.innerHTML = '';
+
+                // Layout styling
+                if (currentViewMode === '4-col') {
+                    grid.className = 'grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 transition-all duration-300';
+                } else if (currentViewMode === 'list') {
+                    grid.className = 'grid grid-cols-1 gap-6 transition-all duration-300';
+                } else {
+                    grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 transition-all duration-300';
+                }
+
+                filtered.forEach(p => {
+                    const isLiked = wishlist.includes(p.id);
+                    const card = document.createElement('div');
+
+                    if (currentViewMode === 'list') {
+                        // Detailed List View Card
+                        card.className = 'product-card group bg-neutral-50 border border-gray-100 rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between';
+                        card.innerHTML = `
+                            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full md:w-auto">
+                                <div class="relative w-28 sm:w-32 h-36 sm:h-40 shrink-0 overflow-hidden rounded-xl bg-gray-100">
+                                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                                    <span class="absolute top-2 left-2 bg-black/80 text-white text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded">
+                                        ${p.tag}
+                                    </span>
+                                </div>
+                                <div class="space-y-1.5 text-center sm:text-left">
+                                    <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#cc0000]">${p.categoryLabel}</span>
+                                    <h3 class="text-base font-bold uppercase tracking-tight text-black">${p.name}</h3>
+                                    <p class="text-xs text-gray-500 max-w-md line-clamp-2">${p.desc}</p>
+                                    <span class="inline-block text-[11px] text-gray-400 font-mono font-medium">Fabric: ${p.material}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap sm:flex-col items-center sm:items-end justify-between w-full md:w-auto gap-3 pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-200">
+                                <span class="text-lg sm:text-xl font-black text-black">$${p.price.toLocaleString()}</span>
+                                <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                                    <button class="like-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-black hover:scale-105 transition-transform shrink-0" data-id="${p.id}" aria-label="Save to Wishlist">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="${isLiked ? '#cc0000' : 'none'}" stroke="${isLiked ? '#cc0000' : 'currentColor'}" stroke-width="2">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="quickview-trigger-btn flex-1 sm:flex-initial px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-gray-300 text-black text-[11px] sm:text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors" data-id="${p.id}">
+                                        Quick View
+                                    </button>
+                                    <button class="quick-add-btn flex-1 sm:flex-initial bg-black text-white px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition-colors shadow-sm" data-id="${p.id}">
+                                        + Bag
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // Standard Grid Card (3-Col or 4-Col)
+                        card.className = 'product-card group flex flex-col justify-between';
+                        card.innerHTML = `
+                            <div>
+                                <!-- Image Container -->
+                                <div class="relative overflow-hidden bg-gray-100 aspect-[3/4] rounded-xl shadow-sm">
+                                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="${p.name}" loading="lazy" />
+                                    
+                                    <!-- Badge -->
+                                    <span class="absolute top-3 left-3 bg-black/85 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">
+                                        ${p.tag}
+                                    </span>
+
+                                    <!-- Like Heart -->
+                                    <button class="like-btn absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-black hover:scale-110 transition-transform duration-200 z-10 shadow-sm" data-id="${p.id}" aria-label="Like product">
+                                        <svg width="17" height="17" viewBox="0 0 24 24" fill="${isLiked ? '#cc0000' : 'none'}" stroke="${isLiked ? '#cc0000' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${isLiked ? 'text-[#cc0000]' : ''}">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </button>
+
+                                    <!-- Hover Action Overlay -->
+                                    <div class="absolute inset-x-3 bottom-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-3 group-hover:translate-y-0 z-10 hidden sm:flex">
+                                        <button class="quick-add-btn w-full bg-black text-white text-xs font-bold uppercase tracking-wider py-3 rounded hover:bg-neutral-800 transition-colors shadow-lg flex items-center justify-center gap-2" data-id="${p.id}">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                                            <span>Add to Bag</span>
+                                        </button>
+                                        <button class="quickview-trigger-btn w-full glass-panel text-black text-[11px] font-semibold uppercase tracking-wider py-2 rounded hover:bg-white transition-colors" data-id="${p.id}">
+                                            Quick View
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Product Info -->
+                                <div class="mt-4 flex flex-col">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400">${p.categoryLabel}</span>
+                                        <span class="text-[9px] text-gray-400 font-mono truncate max-w-[120px]">${p.material.split(' ')[0]}</span>
+                                    </div>
+                                    <h3 class="text-sm font-bold uppercase tracking-tight text-black group-hover:text-gray-600 transition-colors leading-snug cursor-pointer quickview-trigger-btn" data-id="${p.id}">
+                                        ${p.name}
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between pt-2 border-t border-gray-100">
+                                <span class="text-base font-extrabold text-black">$${p.price.toLocaleString()}</span>
+                                <button class="quick-add-btn sm:hidden bg-black text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded" data-id="${p.id}">
+                                    + Bag
+                                </button>
+                            </div>
+                        `;
+                    }
+
+                    grid.appendChild(card);
+                });
+            }
+
+            // Global filter clear helper
+            window.clearFilter = function(type) {
+                if (type === 'category') {
+                    currentCategory = 'all';
+                    updateQuickJumpPills();
+                } else if (type === 'search') {
+                    currentSearch = '';
+                    document.getElementById('catalog-search').value = '';
+                    document.getElementById('clear-search-btn').classList.add('hidden');
+                } else if (type === 'price') {
+                    currentPriceFilter = 'all';
+                    document.getElementById('price-filter-select').value = 'all';
+                }
+                renderCatalog();
+            };
+
+            function updateQuickJumpPills() {
+                document.querySelectorAll('.quick-jump-chip').forEach(btn => {
+                    const cat = btn.getAttribute('data-category');
+                    if (cat === currentCategory) {
+                        btn.classList.remove('bg-gray-100', 'text-gray-700');
+                        btn.classList.add('bg-black', 'text-white', 'font-bold');
+                    } else {
+                        btn.classList.remove('bg-black', 'text-white', 'font-bold');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    }
+                });
+            }
+
+            // Quick Jump Category Chips
+            document.querySelectorAll('.quick-jump-chip').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentCategory = btn.getAttribute('data-category');
+                    updateQuickJumpPills();
+                    renderCatalog();
+                });
+            });
+
+            // Live Search Input with Clear Button
+            const searchInput = document.getElementById('catalog-search');
+            const clearSearchBtn = document.getElementById('clear-search-btn');
+
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                if (currentSearch.trim()) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+                renderCatalog();
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentSearch = '';
+                clearSearchBtn.classList.add('hidden');
+                renderCatalog();
+            });
+
+            // Price Range Dropdown
+            document.getElementById('price-filter-select').addEventListener('change', (e) => {
+                currentPriceFilter = e.target.value;
+                renderCatalog();
+            });
+
+            // Sort Dropdown
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                renderCatalog();
+            });
+
+            // View Mode Switcher
+            document.querySelectorAll('.view-mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-mode-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-white', 'text-black', 'shadow-sm');
+                        b.classList.add('text-gray-400');
+                    });
+                    btn.classList.add('active', 'bg-white', 'text-black', 'shadow-sm');
+                    btn.classList.remove('text-gray-400');
+
+                    currentViewMode = btn.getAttribute('data-view');
+                    renderCatalog();
+                });
+            });
+
+            // Reset All Filters Button
+            function resetAllFilters() {
+                currentCategory = 'all';
+                currentSearch = '';
+                currentPriceFilter = 'all';
+                currentSort = 'featured';
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                document.getElementById('price-filter-select').value = 'all';
+                document.getElementById('sort-select').value = 'featured';
+                updateQuickJumpPills();
+                renderCatalog();
+            }
+
+            document.getElementById('reset-filters-btn').addEventListener('click', resetAllFilters);
+            document.getElementById('clear-all-empty-btn').addEventListener('click', resetAllFilters);
+
+            // --- WISHLIST & CART CORE ACTIONS ---
+            function toggleWishlist(productId) {
+                const prod = products.find(p => p.id === productId);
+                if (!prod) return;
+
+                const index = wishlist.indexOf(productId);
+                if (index > -1) {
+                    wishlist.splice(index, 1);
+                    showToast('Removed', `${prod.name} removed from your wishlist.`, 'wishlist');
+                } else {
+                    wishlist.push(productId);
+                    showToast('Saved to Wishlist', `${prod.name} added to your private collection.`, 'wishlist');
+                }
+                saveState();
+                renderCatalog();
+                renderWishlist();
+            }
+
+            function addToCart(productId, size = 'M', qty = 1) {
+                const prod = products.find(p => p.id === productId);
+                if (!prod) return;
+
+                const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === size);
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].qty += qty;
+                } else {
+                    cart.push({
+                        id: prod.id,
+                        name: prod.name,
+                        price: prod.price,
+                        image: prod.image,
+                        categoryLabel: prod.categoryLabel,
+                        size: size,
+                        qty: qty
+                    });
+                }
+
+                saveState();
+                renderCart();
+                openCart();
+                showToast('Added to Shopping Bag', `${prod.name} (${size}) has been added.`, 'cart');
+            }
+
+            function updateCartQty(index, delta) {
+                if (!cart[index]) return;
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+                saveState();
+                renderCart();
+            }
+
+            function removeFromCart(index) {
+                if (!cart[index]) return;
+                const removedName = cart[index].name;
+                cart.splice(index, 1);
+                saveState();
+                renderCart();
+                showToast('Removed', `${removedName} removed from bag.`, 'cart');
+            }
+
+            // --- CART DRAWER RENDERING ---
+            function renderCart() {
+                const container = document.getElementById('cart-items-container');
+                const totalQtySpan = document.getElementById('cart-total-qty');
+                const subtotalSpan = document.getElementById('cart-subtotal');
+                const discountRow = document.getElementById('promo-discount-row');
+                const discountSpan = document.getElementById('cart-discount');
+                const shippingSpan = document.getElementById('cart-shipping-cost');
+                const grandTotalSpan = document.getElementById('cart-grand-total');
+                const progressText = document.getElementById('shipping-progress-text');
+                const progressPct = document.getElementById('shipping-progress-pct');
+                const progressBar = document.getElementById('shipping-progress-bar');
+                const cartFooter = document.getElementById('cart-footer');
+
+                const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+                totalQtySpan.textContent = totalQty;
+
+                if (cart.length === 0) {
+                    container.innerHTML = `
+                        <div class="h-full flex flex-col items-center justify-center text-center py-16">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                            </div>
+                            <h4 class="text-base font-bold uppercase tracking-tight text-black">Your Bag is Empty</h4>
+                            <p class="text-xs text-gray-500 max-w-xs mt-1 mb-6">Explore the runway catalog to curate your seasonal silhouette.</p>
+                        </div>
+                    `;
+                    cartFooter.classList.add('opacity-50', 'pointer-events-none');
+                    subtotalSpan.textContent = '$0';
+                    grandTotalSpan.textContent = '$0';
+                    progressBar.style.width = '0%';
+                    progressPct.textContent = '0%';
+                    progressText.textContent = 'Add $1,500 for Free Express Courier';
+                    return;
+                }
+
+                cartFooter.classList.remove('opacity-50', 'pointer-events-none');
+                container.innerHTML = '';
+
+                let subtotal = 0;
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.qty;
+                    subtotal += itemTotal;
+
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'py-4 flex gap-4 items-center';
+                    itemEl.innerHTML = `
+                        <img src="${item.image}" class="w-20 h-24 object-cover rounded-lg bg-gray-100 shrink-0" alt="${item.name}" />
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[9px] uppercase font-bold tracking-widest text-gray-400 block">${item.categoryLabel}</span>
+                            <h4 class="text-xs font-bold uppercase tracking-tight text-black truncate">${item.name}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-mono font-semibold">Size: ${item.size}</span>
+                                <span class="text-xs font-black text-black">$${item.price.toLocaleString()}</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex items-center border border-gray-200 rounded">
+                                    <button class="cart-qty-btn px-2.5 py-0.5 text-xs font-bold hover:bg-gray-100 transition-colors" data-index="${index}" data-delta="-1">-</button>
+                                    <span class="px-2 text-xs font-bold">${item.qty}</span>
+                                    <button class="cart-qty-btn px-2.5 py-0.5 text-xs font-bold hover:bg-gray-100 transition-colors" data-index="${index}" data-delta="1">+</button>
+                                </div>
+                                <button class="cart-remove-btn text-[11px] text-gray-400 hover:text-[#cc0000] font-semibold transition-colors" data-index="${index}">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(itemEl);
+                });
+
+                const freeShippingThreshold = 1500;
+                const shippingCost = subtotal >= freeShippingThreshold ? 0 : 45;
+                let discount = 0;
+
+                if (activePromo === 'STACKLY10' || activePromo === 'CLUTCH10') {
+                    discount = Math.round(subtotal * 0.10);
+                    discountRow.style.display = 'flex';
+                    discountSpan.textContent = `-$${discount.toLocaleString()}`;
+                } else {
+                    discountRow.style.display = 'none';
+                }
+
+                const grandTotal = subtotal - discount + shippingCost;
+                subtotalSpan.textContent = `$${subtotal.toLocaleString()}`;
+                shippingSpan.textContent = shippingCost === 0 ? 'COMPLIMENTARY' : `$${shippingCost}`;
+                grandTotalSpan.textContent = `$${grandTotal.toLocaleString()}`;
+
+                const pct = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
+                progressBar.style.width = `${pct}%`;
+                progressPct.textContent = `${pct}%`;
+
+                if (subtotal >= freeShippingThreshold) {
+                    progressText.textContent = '✓ Complimentary Express Courier Unlocked!';
+                    progressBar.classList.add('bg-emerald-600');
+                    progressBar.classList.remove('bg-black');
+                } else {
+                    const remaining = freeShippingThreshold - subtotal;
+                    progressText.textContent = `Add $${remaining.toLocaleString()} for Free Courier`;
+                    progressBar.classList.add('bg-black');
+                    progressBar.classList.remove('bg-emerald-600');
+                }
+            }
+
+            // --- WISHLIST DRAWER RENDERING ---
+            function renderWishlist() {
+                const container = document.getElementById('wishlist-items-container');
+                const totalQtySpan = document.getElementById('wishlist-total-qty');
+                
+                totalQtySpan.textContent = wishlist.length;
+
+                if (wishlist.length === 0) {
+                    container.innerHTML = `
+                        <div class="h-full flex flex-col items-center justify-center text-center py-16">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            </div>
+                            <h4 class="text-base font-bold uppercase tracking-tight text-black">Wishlist Is Empty</h4>
+                            <p class="text-xs text-gray-500 max-w-xs mt-1 mb-6">Tap the heart on any creation to save to your personal archive.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                wishlist.forEach(id => {
+                    const p = products.find(prod => prod.id === id);
+                    if (!p) return;
+
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'py-4 flex gap-4 items-center';
+                    itemEl.innerHTML = `
+                        <img src="${p.image}" class="w-20 h-24 object-cover rounded-lg bg-gray-100 shrink-0" alt="${p.name}" />
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[9px] uppercase font-bold tracking-widest text-gray-400 block">${p.categoryLabel}</span>
+                            <h4 class="text-xs font-bold uppercase tracking-tight text-black truncate">${p.name}</h4>
+                            <p class="text-xs font-black text-black mt-1">$${p.price.toLocaleString()}</p>
+                            
+                            <div class="flex items-center gap-3 mt-3">
+                                <button class="wishlist-move-to-bag-btn bg-black text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded hover:bg-neutral-800 transition-colors" data-id="${p.id}">
+                                    Move to Bag
+                                </button>
+                                <button class="wishlist-remove-btn text-[11px] text-gray-400 hover:text-[#cc0000] font-semibold transition-colors" data-id="${p.id}">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(itemEl);
+                });
+            }
+
+            // --- QUICK VIEW MODAL LOGIC ---
+            let currentQuickViewProduct = null;
+            let currentQuickViewSize = 'M';
+
+            function openQuickView(productId) {
+                const prod = products.find(p => p.id === productId);
+                if (!prod) return;
+
+                currentQuickViewProduct = prod;
+                currentQuickViewSize = 'M';
+
+                document.getElementById('qv-image').src = prod.image;
+                document.getElementById('qv-tag').textContent = prod.tag;
+                document.getElementById('qv-category').textContent = prod.categoryLabel;
+                document.getElementById('qv-title').textContent = prod.name;
+                document.getElementById('qv-price').textContent = `$${prod.price.toLocaleString()}`;
+                document.getElementById('qv-desc').textContent = `${prod.desc} Crafted in ${prod.material}.`;
+
+                document.querySelectorAll('.qv-size-btn').forEach(b => {
+                    if (b.getAttribute('data-size') === 'M') {
+                        b.classList.add('bg-black', 'text-white', 'border-black');
+                        b.classList.remove('border-gray-200', 'text-black');
+                    } else {
+                        b.classList.remove('bg-black', 'text-white', 'border-black');
+                        b.classList.add('border-gray-200', 'text-black');
+                    }
+                });
+
+                const modalHeart = document.querySelector('.qv-heart-icon');
+                const isLiked = wishlist.includes(prod.id);
+                modalHeart.setAttribute('fill', isLiked ? '#cc0000' : 'none');
+                modalHeart.setAttribute('stroke', isLiked ? '#cc0000' : 'currentColor');
+
+                const modal = document.getElementById('quickview-modal');
+                modal.classList.remove('pointer-events-none', 'opacity-0');
+                modal.classList.add('opacity-100');
+                modal.querySelector('#quickview-panel').classList.remove('scale-95');
+                modal.querySelector('#quickview-panel').classList.add('scale-100');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeQuickView() {
+                const modal = document.getElementById('quickview-modal');
+                modal.classList.remove('opacity-100');
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('#quickview-panel').classList.remove('scale-100');
+                modal.querySelector('#quickview-panel').classList.add('scale-95');
+                document.body.style.overflow = '';
+            }
+
+            document.getElementById('close-quickview-btn').addEventListener('click', closeQuickView);
+            document.getElementById('quickview-backdrop').addEventListener('click', closeQuickView);
+
+            document.querySelectorAll('.qv-size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.qv-size-btn').forEach(b => {
+                        b.classList.remove('bg-black', 'text-white', 'border-black');
+                        b.classList.add('border-gray-200', 'text-black');
+                    });
+                    btn.classList.add('bg-black', 'text-white', 'border-black');
+                    btn.classList.remove('border-gray-200', 'text-black');
+                    currentQuickViewSize = btn.getAttribute('data-size');
+                });
+            });
+
+            document.getElementById('qv-add-cart-btn').addEventListener('click', () => {
+                if (currentQuickViewProduct) {
+                    addToCart(currentQuickViewProduct.id, currentQuickViewSize, 1);
+                    closeQuickView();
+                }
+            });
+
+            document.getElementById('qv-like-btn').addEventListener('click', () => {
+                if (currentQuickViewProduct) {
+                    toggleWishlist(currentQuickViewProduct.id);
+                    const modalHeart = document.querySelector('.qv-heart-icon');
+                    const isLiked = wishlist.includes(currentQuickViewProduct.id);
+                    modalHeart.setAttribute('fill', isLiked ? '#cc0000' : 'none');
+                    modalHeart.setAttribute('stroke', isLiked ? '#cc0000' : 'currentColor');
+                }
+            });
+
+            // --- CART DRAWER OPEN / CLOSE ---
+            const cartDrawer = document.getElementById('cart-drawer');
+            const cartPanel = document.getElementById('cart-panel');
+            const cartBackdrop = document.getElementById('cart-backdrop');
+            const openCartBtn = document.getElementById('open-cart-btn');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+
+            function openCart() {
+                cartDrawer.classList.remove('pointer-events-none', 'opacity-0');
+                cartDrawer.classList.add('opacity-100');
+                cartPanel.classList.remove('translate-x-full');
+                cartPanel.classList.add('translate-x-0');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeCart() {
+                cartDrawer.classList.remove('opacity-100');
+                cartDrawer.classList.add('opacity-0', 'pointer-events-none');
+                cartPanel.classList.remove('translate-x-0');
+                cartPanel.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            }
+
+            openCartBtn.addEventListener('click', openCart);
+            closeCartBtn.addEventListener('click', closeCart);
+            cartBackdrop.addEventListener('click', closeCart);
+
+            // --- WISHLIST DRAWER OPEN / CLOSE ---
+            const wishlistDrawer = document.getElementById('wishlist-drawer');
+            const wishlistPanel = document.getElementById('wishlist-panel');
+            const wishlistBackdrop = document.getElementById('wishlist-backdrop');
+            const openWishlistBtn = document.getElementById('open-wishlist-btn');
+            const closeWishlistBtn = document.getElementById('close-wishlist-btn');
+
+            function openWishlist() {
+                wishlistDrawer.classList.remove('pointer-events-none', 'opacity-0');
+                wishlistDrawer.classList.add('opacity-100');
+                wishlistPanel.classList.remove('translate-x-full');
+                wishlistPanel.classList.add('translate-x-0');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeWishlist() {
+                wishlistDrawer.classList.remove('opacity-100');
+                wishlistDrawer.classList.add('opacity-0', 'pointer-events-none');
+                wishlistPanel.classList.remove('translate-x-0');
+                wishlistPanel.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            }
+
+            openWishlistBtn.addEventListener('click', openWishlist);
+            closeWishlistBtn.addEventListener('click', closeWishlist);
+            wishlistBackdrop.addEventListener('click', closeWishlist);
+
+            document.getElementById('move-all-to-bag-btn').addEventListener('click', () => {
+                if (wishlist.length === 0) return;
+                wishlist.forEach(id => addToCart(id, 'M', 1));
+                wishlist = [];
+                saveState();
+                renderWishlist();
+                renderCatalog();
+                closeWishlist();
+                openCart();
+                showToast('All Moved', 'All wishlist pieces moved to your bag.', 'cart');
+            });
+
+            // Promo code apply
+            document.getElementById('apply-promo-btn').addEventListener('click', () => {
+                const code = document.getElementById('promo-code-input').value.trim().toUpperCase();
+                if (code === 'STACKLY10' || code === 'CLUTCH10') {
+                    activePromo = 'STACKLY10';
+                    renderCart();
+                    showToast('Promo Applied', '10% VIP Privilege discount applied!', 'cart');
+                } else {
+                    showToast('Promo Notice', 'Please enter a valid code like STACKLY10.', 'cart');
+                }
+            });
+
+            // Checkout simulation
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                if (cart.length === 0) return;
+                const btn = document.getElementById('checkout-btn');
+                const orig = btn.innerHTML;
+                btn.innerHTML = 'Connecting to Atelier Gateway...';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    showToast('Order Reserved', 'Thank you! Your private couture advisor will contact you within 15 minutes.', 'cart');
+                    setTimeout(() => {
+                        cart = [];
+                        activePromo = null;
+                        saveState();
+                        renderCart();
+                        closeCart();
+                        btn.innerHTML = orig;
+                        btn.disabled = false;
+                    }, 2000);
+                }, 1200);
+            });
+
+            // --- FULLSCREEN MENU TOGGLE ---
+            const menuBtn = document.getElementById('menu-btn');
+            const closeBtn = document.getElementById('close-menu');
+            const fullMenu = document.getElementById('full-menu');
+            const header = document.getElementById('main-header');
+
+            menuBtn.addEventListener('click', () => {
+                fullMenu.classList.remove('-translate-y-full');
+                fullMenu.classList.add('translate-y-0');
+                header.style.opacity = '0';
+                document.body.style.overflow = 'hidden';
+            });
+
+            function closeFullscreenMenu() {
+                fullMenu.classList.remove('translate-y-0');
+                fullMenu.classList.add('-translate-y-full');
+                header.style.opacity = '1';
+                document.body.style.overflow = '';
+            }
+
+            closeBtn.addEventListener('click', closeFullscreenMenu);
+            document.querySelectorAll('.menu-nav-link').forEach(link => {
+                link.addEventListener('click', closeFullscreenMenu);
+            });
+
+            // --- CAPSULE 1-CLICK ADD ---
+            document.getElementById('add-featured-capsule-btn').addEventListener('click', () => {
+                addToCart('prod-1', 'M', 1);
+                addToCart('prod-2', 'One Size', 1);
+                addToCart('prod-3', '38 IT', 1);
+                showToast('Capsule Acquired', 'All 3 Milanese Minimalist pieces added to bag with privilege pricing!', 'cart');
+            });
+
+            // --- SEARCH NAV BUTTON BEHAVIOR ---
+            document.getElementById('search-nav-btn').addEventListener('click', () => {
+                searchInput.focus();
+                window.scrollTo({
+                    top: document.getElementById('catalog-controls').offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+
+            // --- EVENT DELEGATION FOR CATALOG & DRAWERS ---
+            document.body.addEventListener('click', (e) => {
+                // Like Button
+                const likeBtn = e.target.closest('.like-btn');
+                if (likeBtn) {
+                    const id = likeBtn.getAttribute('data-id');
+                    toggleWishlist(id);
+                    likeBtn.classList.add('animate-heart-bounce');
+                    setTimeout(() => likeBtn.classList.remove('animate-heart-bounce'), 500);
+                    return;
+                }
+
+                // Quick Add Button
+                const addBtn = e.target.closest('.quick-add-btn');
+                if (addBtn) {
+                    const id = addBtn.getAttribute('data-id');
+                    addToCart(id, 'M', 1);
+                    return;
+                }
+
+                // Quick View Trigger
+                const qvTrigger = e.target.closest('.quickview-trigger-btn');
+                if (qvTrigger) {
+                    const id = qvTrigger.getAttribute('data-id');
+                    openQuickView(id);
+                    return;
+                }
+
+                // Cart Qty
+                const qtyBtn = e.target.closest('.cart-qty-btn');
+                if (qtyBtn) {
+                    const idx = parseInt(qtyBtn.getAttribute('data-index'));
+                    const delta = parseInt(qtyBtn.getAttribute('data-delta'));
+                    updateCartQty(idx, delta);
+                    return;
+                }
+
+                // Cart Remove
+                const removeBtn = e.target.closest('.cart-remove-btn');
+                if (removeBtn) {
+                    const idx = parseInt(removeBtn.getAttribute('data-index'));
+                    removeFromCart(idx);
+                    return;
+                }
+
+                // Wishlist Move
+                const moveBtn = e.target.closest('.wishlist-move-to-bag-btn');
+                if (moveBtn) {
+                    const id = moveBtn.getAttribute('data-id');
+                    addToCart(id, 'M', 1);
+                    const idx = wishlist.indexOf(id);
+                    if (idx > -1) wishlist.splice(idx, 1);
+                    saveState();
+                    renderWishlist();
+                    renderCatalog();
+                    return;
+                }
+
+                // Wishlist Remove
+                const wishRemoveBtn = e.target.closest('.wishlist-remove-btn');
+                if (wishRemoveBtn) {
+                    const id = wishRemoveBtn.getAttribute('data-id');
+                    const idx = wishlist.indexOf(id);
+                    if (idx > -1) wishlist.splice(idx, 1);
+                    saveState();
+                    renderWishlist();
+                    renderCatalog();
+                    return;
+                }
+            });
+
+            // Initial Renders
+            renderCatalog();
+            renderCart();
+            renderWishlist();
+            updateHeaderBadges();
+        });
+    </script>
+</body>
+</html>

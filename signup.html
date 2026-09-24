@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account — stackly. Atelier</title>
+    <meta name="description" content="Register for a stackly. account to manage bespoke orders, book private consultations, and save your favourite runway pieces.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <script src="validations.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-serif-luxury { font-family: 'Playfair Display', serif; }
+        .text-outline { color: transparent; -webkit-text-stroke: 1.5px black; }
+        
+        /* Form input styles */
+        .form-input {
+            width: 100%;
+            border: 0;
+            border-bottom: 1.5px solid #e5e7eb;
+            padding: 14px 0 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+            outline: none;
+            transition: border-color 0.3s ease;
+            color: #000;
+        }
+        .form-input::placeholder { color: #9ca3af; font-weight: 400; }
+        .form-input:focus { border-color: #000; }
+        .form-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Toast */
+        #toast-container {
+            position: fixed; bottom: 2rem; right: 2rem;
+            z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem;
+        }
+        .toast {
+            display: flex; align-items: center; gap: 12px;
+            background: white; border: 1px solid #e5e7eb;
+            padding: 14px 20px; border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            font-size: 13px; font-weight: 600;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            min-width: 240px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+        .toast.success .toast-dot { background:#16a34a; }
+        .toast.error   .toast-dot { background:#dc2626; }
+        .toast.info    .toast-dot { background:#000; }
+        
+        .fade-in { animation: fadeIn 1.2s cubic-bezier(0.16,1,0.3,1) both; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen w-full flex flex-col md:flex-row overflow-x-hidden md:overflow-hidden">
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <!-- LEFT SIDE: IMAGE -->
+    <div class="hidden md:block md:w-1/2 lg:w-[50%] relative h-full min-h-screen bg-black">
+        <img src="assets/images/sign up.webp" class="w-full h-full object-cover object-center opacity-80" alt="stackly. Editorial Fashion" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+        
+        <div class="absolute top-10 left-12">
+            <a href="index.html" class="flex items-center text-white select-none" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert" />
+            </a>
+        </div>
+        
+        <div class="absolute bottom-12 left-12 right-12 fade-in">
+            <p class="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-3">Join The Maison</p>
+            <h2 class="font-serif-luxury text-4xl lg:text-5xl italic leading-tight text-white max-w-lg">
+                Exclusive access to private collections and bespoke tailoring.
+            </h2>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE: FORM -->
+    <div class="w-full md:w-1/2 lg:w-[50%] h-full flex flex-col justify-center px-4 sm:px-12 lg:px-20 bg-white relative overflow-y-auto py-8 md:py-12">
+        <!-- Mobile Logo -->
+        <div class="md:hidden mb-6 flex items-center justify-between">
+            <a href="index.html" class="flex items-center select-none" aria-label="stackly home">
+                <img src="assets/images/stackly logo.webp" alt="stackly." class="h-7 w-auto object-contain brightness-0" />
+            </a>
+            <a href="index.html" class="text-[10px] uppercase tracking-wider font-bold text-gray-400 hover:text-black">← Home</a>
+        </div>
+
+        <div class="fade-in max-w-md w-full mx-auto pb-6">
+            <!-- Role Selector Tabs -->
+            <div class="mb-6">
+                <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-red-600 mb-2.5 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    Account Type
+                </p>
+                <div class="flex items-center p-1 bg-gray-100 rounded-xl border border-gray-200/80 gap-1 shadow-inner">
+                    <button
+                        type="button"
+                        id="signup-tab-user"
+                        onclick="setSignupRole('user')"
+                        class="flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-white text-black shadow-sm border border-gray-200"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>VIP Client</span>
+                    </button>
+                    <button
+                        type="button"
+                        id="signup-tab-admin"
+                        onclick="setSignupRole('admin')"
+                        class="flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-gray-500 hover:text-black"
+                    >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Atelier Admin</span>
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-2" id="signup-badge">New Client Registration</p>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold uppercase leading-[0.9] tracking-tight mb-3 break-words" id="signup-heading">
+                CREATE<br><span class="text-outline">ACCOUNT</span>
+            </h1>
+            <p class="text-gray-500 text-xs sm:text-sm leading-relaxed mb-6" id="signup-description">
+                Register to gain access to our complete bespoke catalogue, manage your wishlist, and streamline your bookings.
+            </p>
+
+            <form id="signup-form" onsubmit="return window.validateSignupForm(event)" class="flex flex-col gap-4">
+                <input type="hidden" id="signup-role" value="user" />
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label" for="signup-fname">First Name</label>
+                        <input type="text" id="signup-fname" class="form-input focus:border-red-600" placeholder="Meera" />
+                    </div>
+                    <div>
+                        <label class="form-label" for="signup-lname">Last Name</label>
+                        <input type="text" id="signup-lname" class="form-input focus:border-red-600" placeholder="Sundaram" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label" for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" class="form-input focus:border-red-600" placeholder="client@example.com" />
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label" for="signup-password">Password</label>
+                        <input type="password" id="signup-password" class="form-input focus:border-red-600" placeholder="••••••••" />
+                    </div>
+                    <div>
+                        <label class="form-label" for="signup-confirm">Confirm</label>
+                        <input type="password" id="signup-confirm" class="form-input focus:border-red-600" placeholder="••••••••" />
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 mt-1">
+                    <input type="checkbox" id="signup-terms" class="mt-1 w-4 h-4 cursor-pointer accent-red-600 shrink-0" />
+                    <label for="signup-terms" class="text-xs text-gray-500 leading-relaxed cursor-pointer">
+                        I agree to the <a href="404.html" class="border-b border-gray-300 hover:border-red-600 hover:text-red-600 text-black">Terms of Service</a> and <a href="404.html" class="border-b border-gray-300 hover:border-red-600 hover:text-red-600 text-black">Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <button
+                    type="submit"
+                    id="signup-submit-btn"
+                    class="w-full flex items-center justify-center gap-3 bg-black hover:bg-red-600 text-white py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 group mt-2 shadow-lg shadow-black/10 hover:shadow-red-600/20"
+                >
+                    <span id="signup-btn-text">Create VIP Account</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-gray-100 flex flex-col items-center">
+                <p class="text-xs text-gray-500 mb-2">Already have a stackly. account?</p>
+                <a href="login.html" class="text-xs font-bold uppercase tracking-widest border-b border-black hover:border-red-600 hover:text-red-600 pb-0.5 transition-all">
+                    Sign In to Portal
+                </a>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="index.html" class="text-[10px] uppercase tracking-wider font-bold text-gray-400 hover:text-red-600 transition-colors">← Return to Runway</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function setSignupRole(role) {
+            const roleInput = document.getElementById('signup-role');
+            const tabUser = document.getElementById('signup-tab-user');
+            const tabAdmin = document.getElementById('signup-tab-admin');
+            const heading = document.getElementById('signup-heading');
+            const desc = document.getElementById('signup-description');
+            const badge = document.getElementById('signup-badge');
+            const btnText = document.getElementById('signup-btn-text');
+
+            roleInput.value = role;
+
+            if (role === 'admin') {
+                tabAdmin.className = "flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-red-600 text-white shadow-md";
+                tabUser.className = "flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-gray-500 hover:text-black";
+                heading.innerHTML = 'STAFF<br><span class="text-outline">REGISTER</span>';
+                badge.textContent = 'Atelier Administration Registration';
+                desc.textContent = 'Register an atelier staff account to manage orders, catalog inventory, appointments, and store settings.';
+                btnText.textContent = 'Create Staff Account';
+            } else {
+                tabUser.className = "flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-black text-white shadow-md";
+                tabAdmin.className = "flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-gray-500 hover:text-black";
+                heading.innerHTML = 'CREATE<br><span class="text-outline">ACCOUNT</span>';
+                badge.textContent = 'New Client Registration';
+                desc.textContent = 'Register to gain access to our complete bespoke catalogue, manage your wishlist, and streamline your bookings.';
+                btnText.textContent = 'Create VIP Account';
+            }
+        }
+
+        if (!window.showToast) {
+            window.showToast = function(title, message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `<div class="toast-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px;">${title}</div><div style="font-size:11px;color:#6b7280;font-weight:500;">${message}</div></div>`;
+                container.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.add('show'));
+                setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 4500);
+            };
+        }
+
+        // Auto-detect role from URL param
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const roleParam = urlParams.get('role');
+            if (roleParam === 'admin') {
+                setSignupRole('admin');
+            } else {
+                setSignupRole('user');
+            }
+        });
+    </script>
+</body>
+</html>
