@@ -482,52 +482,166 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
         html, body {
             max-width: 100vw;
             overflow-x: hidden;
         }
 
         /* Responsive Cards and Tables */
-        .card, .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .card {
             max-width: 100%;
         }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
         .data-table {
-            min-width: 520px;
+            width: 100%;
+            min-width: 620px;
+            border-collapse: collapse;
+        }
+        .data-table th, .data-table td {
+            white-space: nowrap;
+        }
+        .mobile-scroll-hint {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-light);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        @media(min-width: 769px) {
+            .mobile-scroll-hint { display: none !important; }
         }
 
-        /* Grid */
+        /* Filter Pills Scroll Container */
+        .filter-pills-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 6px;
+        }
+        .filter-pills-bar::-webkit-scrollbar { display: none; }
+
+        /* Grids */
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        @media(max-width:1280px){ .grid-4{grid-template-columns:repeat(2,1fr);} }
-        @media(max-width:900px) { .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;} #main-content{padding:16px;} }
+
+        /* Mobile Bottom Navigation Bar */
+        #mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 62px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            z-index: 95;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 6px;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+        }
+        .mob-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            background: none;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            position: relative;
+            flex: 1;
+            max-width: 72px;
+        }
+        .mob-nav-btn:hover, .mob-nav-btn.active {
+            color: var(--accent);
+            background: #fef2f2;
+        }
+        .mob-nav-btn svg { width: 19px; height: 19px; }
+        .mob-nav-badge {
+            position: absolute;
+            top: 2px;
+            right: 14px;
+            background: var(--accent);
+            color: white;
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 6px;
+            line-height: 1.2;
+        }
+
+        @media(max-width:1280px){ 
+            .grid-4 { grid-template-columns: repeat(2, 1fr); } 
+        }
+        @media(max-width:900px) { 
+            .grid-3, .grid-2 { grid-template-columns: 1fr; } 
+            #main-content { padding: 18px 14px; } 
+        }
         @media(max-width:768px){
-            #sidebar{transform:translateX(-100%); width:var(--sidebar-w) !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15);}
+            #sidebar{transform:translateX(-100%); width:280px !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);}
             #sidebar.mobile-open{transform:translateX(0);}
             .mobile-close-btn { display: flex !important; }
             #topbar,#main-content{left:0!important;margin-left:0!important;}
-            #topbar { padding: 0 12px; height: 56px; }
-            #main-content { margin-top: 56px; padding: 14px 10px !important; }
+            #topbar { padding: 0 14px; height: 58px; }
+            #main-content { margin-top: 58px; padding: 16px 12px 84px !important; }
             .search-box { display: none !important; }
             #page-breadcrumb { display: none !important; }
+            #mobile-bottom-nav { display: flex !important; }
+            .nav-item { padding: 13px 18px !important; font-size: 14px !important; }
+        }
+        @media(max-width:640px){
+            .grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+            .kpi-card { padding: 12px 10px !important; border-radius: 12px !important; }
+            .kpi-icon { width: 28px !important; height: 28px !important; margin-bottom: 6px !important; }
+            .kpi-icon svg { width: 14px !important; height: 14px !important; }
+            .kpi-value { font-size: 18px !important; letter-spacing: -0.5px !important; }
+            .kpi-label { font-size: 9px !important; }
+            .kpi-change { font-size: 9px !important; padding: 2px 5px !important; margin-top: 6px !important; }
+            .wishlist-card .h-64 { height: 160px !important; }
         }
         @media(max-width:480px){
-            #topbar { padding: 0 8px; }
+            #topbar { padding: 0 10px; }
             .topbar-left { gap: 8px; }
-            #page-title { font-size: 13px !important; max-width: 85px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-            .topbar-right { gap: 4px !important; }
+            #page-title { font-size: 14px !important; font-weight: 700 !important; color: #0f172a !important; white-space: nowrap !important; max-width: none !important; }
+            .topbar-right { gap: 6px !important; }
             .icon-btn span { display: none !important; }
-            .icon-btn { width: 30px !important; height: 30px !important; padding: 0 !important; }
-            #toggle-sidebar { width: 30px !important; height: 30px !important; }
-            #topbar-avatar { width: 28px !important; height: 28px !important; font-size: 10px !important; }
-            #main-content { padding: 12px 6px !important; }
-            .card { padding: 14px 10px !important; border-radius: 12px !important; }
-            .section-header { margin-bottom: 16px; gap: 8px; }
+            .icon-btn { width: 34px !important; height: 34px !important; padding: 0 !important; }
+            #toggle-sidebar { width: 34px !important; height: 34px !important; }
+            #topbar-avatar { width: 32px !important; height: 32px !important; font-size: 11px !important; }
+            #main-content { padding: 14px 10px 84px !important; }
+            .card { padding: 14px 12px !important; border-radius: 14px !important; }
+            .section-header { margin-bottom: 14px; gap: 8px; }
             .section-header h2 { font-size: 18px !important; }
-            .kpi-card { padding: 14px 12px !important; }
-            .kpi-value { font-size: 20px !important; }
+            .btn-primary, .btn-ghost { padding: 8px 12px !important; font-size: 11px !important; }
+            .data-table th, .data-table td { padding: 10px 10px !important; font-size: 11px !important; }
             .modal { padding: 20px 14px !important; border-radius: 16px !important; width: calc(100vw - 20px) !important; }
         }
     </style>
@@ -970,86 +1084,92 @@
             </button>
         </div>
 
-        <div class="flex gap-2 mb-4 flex-wrap">
+        <div class="filter-pills-bar">
             <button class="btn-primary text-xs py-1.5 px-4" id="order-filter-all" onclick="filterUserOrders('all', this)">All (3)</button>
             <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-active" onclick="filterUserOrders('active', this)">In Production (1)</button>
             <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-shipped" onclick="filterUserOrders('shipped', this)">Shipped (1)</button>
             <button class="btn-ghost text-xs py-1.5 px-4" id="order-filter-delivered" onclick="filterUserOrders('delivered', this)">Delivered (1)</button>
         </div>
 
-        <div class="card p-0 overflow-hidden">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Order Ref</th>
-                        <th>Garment / Silhouette</th>
-                        <th>Commission Date</th>
-                        <th>Specialist</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="user-orders-tbody">
-                    <tr data-status="active">
-                        <td class="font-bold text-red-600">#STK-4891</td>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <img src="assets/images/Double-Breasted Cashmere Trench.webp" class="w-10 h-10 object-cover rounded-lg">
-                                <div>
-                                    <div class="font-bold text-xs">Noir Cocoon Cape</div>
-                                    <div class="text-[11px] text-gray-500">Handwoven Salem Silk • Custom Fit</div>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <div class="mobile-scroll-hint">
+                <span>Swipe to view all columns</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table" style="min-width:680px;">
+                    <thead>
+                        <tr>
+                            <th>Order Ref</th>
+                            <th>Garment / Silhouette</th>
+                            <th>Commission Date</th>
+                            <th>Specialist</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-orders-tbody">
+                        <tr data-status="active">
+                            <td class="font-bold text-red-600">#STK-4891</td>
+                            <td>
+                                <div class="flex items-center gap-3" style="min-width:210px;">
+                                    <img src="assets/images/Double-Breasted Cashmere Trench.webp" class="w-10 h-10 object-cover rounded-lg flex-shrink-0">
+                                    <div>
+                                        <div class="font-bold text-xs">Noir Cocoon Cape</div>
+                                        <div class="text-[11px] text-gray-500">Handwoven Salem Silk • Custom Fit</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="text-xs text-gray-500">Sep 20, 2026</td>
-                        <td class="text-xs font-medium">Master Ramanathan</td>
-                        <td class="font-bold text-slate-900">₹18,500</td>
-                        <td><span class="badge processing">In Stitching</span></td>
-                        <td>
-                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Commission #4891','Stage: Hand-finishing in progress. Next fitting Sep 28.','info')">Track</button>
-                        </td>
-                    </tr>
-                    <tr data-status="shipped">
-                        <td class="font-bold text-slate-800">#STK-4812</td>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <img src="assets/images/bags.webp" class="w-10 h-10 object-cover rounded-lg">
-                                <div>
-                                    <div class="font-bold text-xs">Tuscan Calfskin Tote</div>
-                                    <div class="text-[11px] text-gray-500">Noir Box Calf • Hand burnished</div>
+                            </td>
+                            <td class="text-xs text-gray-500">Sep 20, 2026</td>
+                            <td class="text-xs font-medium">Master Ramanathan</td>
+                            <td class="font-bold text-slate-900">₹18,500</td>
+                            <td><span class="badge processing">In Stitching</span></td>
+                            <td>
+                                <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Commission #4891','Stage: Hand-finishing in progress. Next fitting Sep 28.','info')">Track</button>
+                            </td>
+                        </tr>
+                        <tr data-status="shipped">
+                            <td class="font-bold text-slate-800">#STK-4812</td>
+                            <td>
+                                <div class="flex items-center gap-3" style="min-width:210px;">
+                                    <img src="assets/images/bags.webp" class="w-10 h-10 object-cover rounded-lg flex-shrink-0">
+                                    <div>
+                                        <div class="font-bold text-xs">Tuscan Calfskin Tote</div>
+                                        <div class="text-[11px] text-gray-500">Noir Box Calf • Hand burnished</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="text-xs text-gray-500">Sep 14, 2026</td>
-                        <td class="text-xs font-medium">Leather Atelier</td>
-                        <td class="font-bold text-slate-900">₹23,400</td>
-                        <td><span class="badge shipped">In Transit</span></td>
-                        <td>
-                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Courier Tracking','Airway Bill: BLUEDART-99214. Arriving Tomorrow.','info')">Track</button>
-                        </td>
-                    </tr>
-                    <tr data-status="delivered">
-                        <td class="font-bold text-slate-800">#STK-4750</td>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <img src="assets/images/Milanese Structure × Salem Silk.webp" class="w-10 h-10 object-cover rounded-lg">
-                                <div>
-                                    <div class="font-bold text-xs">Salem Mulberry Stole</div>
-                                    <div class="text-[11px] text-gray-500">Organic Silk • Hand dyed</div>
+                            </td>
+                            <td class="text-xs text-gray-500">Sep 14, 2026</td>
+                            <td class="text-xs font-medium">Leather Atelier</td>
+                            <td class="font-bold text-slate-900">₹23,400</td>
+                            <td><span class="badge shipped">In Transit</span></td>
+                            <td>
+                                <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Courier Tracking','Airway Bill: BLUEDART-99214. Arriving Tomorrow.','info')">Track</button>
+                            </td>
+                        </tr>
+                        <tr data-status="delivered">
+                            <td class="font-bold text-slate-800">#STK-4750</td>
+                            <td>
+                                <div class="flex items-center gap-3" style="min-width:210px;">
+                                    <img src="assets/images/Milanese Structure × Salem Silk.webp" class="w-10 h-10 object-cover rounded-lg flex-shrink-0">
+                                    <div>
+                                        <div class="font-bold text-xs">Salem Mulberry Stole</div>
+                                        <div class="text-[11px] text-gray-500">Organic Silk • Hand dyed</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="text-xs text-gray-500">Aug 29, 2026</td>
-                        <td class="text-xs font-medium">Artisan Weavers</td>
-                        <td class="font-bold text-slate-900">₹9,800</td>
-                        <td><span class="badge confirmed">Delivered</span></td>
-                        <td>
-                            <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Invoice Downloaded','Invoice #STK-4750 downloaded successfully.','success')">Invoice</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                            <td class="text-xs text-gray-500">Aug 29, 2026</td>
+                            <td class="text-xs font-medium">Artisan Weavers</td>
+                            <td class="font-bold text-slate-900">₹9,800</td>
+                            <td><span class="badge confirmed">Delivered</span></td>
+                            <td>
+                                <button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Invoice Downloaded','Invoice #STK-4750 downloaded successfully.','success')">Invoice</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -1063,7 +1183,7 @@
             <button class="btn-ghost" onclick="showToast('Runway Catalogue','All seasonal creations are synchronized with your salon profile.','info')">Runway Sync ✓</button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="wishlist-grid">
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" id="wishlist-grid">
             <!-- Wishlist item 1 -->
             <div class="wishlist-card" id="wish-item-1">
                 <div class="h-64 relative overflow-hidden">
@@ -1144,7 +1264,6 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
 
     <!-- ──── SECTION 4: PRIVATE FITTINGS & APPOINTMENTS ──── -->
@@ -1183,38 +1302,44 @@
             </div>
         </div>
 
-        <div class="card">
-            <h3 class="text-base font-bold mb-4">Booked Sessions Log</h3>
-            <table class="data-table" id="appointments-table">
-                <thead>
-                    <tr>
-                        <th>Salon Location</th>
-                        <th>Session Type</th>
-                        <th>Date &amp; Time</th>
-                        <th>Master Tailor</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="user-fittings-tbody">
-                    <tr>
-                        <td class="font-semibold text-xs">Salem Flagship Atelier</td>
-                        <td class="text-xs">Bespoke Suit &amp; Coat Fitting</td>
-                        <td class="text-xs font-bold text-slate-900">Sep 28, 2026 • 11:30 AM</td>
-                        <td class="text-xs text-gray-600">Master Ramanathan</td>
-                        <td><span class="badge confirmed">Confirmed</span></td>
-                        <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Fitting Reminder','SMS & Calendar invite sent.','info')">Details</button></td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold text-xs">Virtual Bespoke Video</td>
-                        <td class="text-xs">Fabric Vault Inspection</td>
-                        <td class="text-xs font-bold text-slate-900">Aug 14, 2026 • 04:00 PM</td>
-                        <td class="text-xs text-gray-600">Lead Stylist Aarthi</td>
-                        <td><span class="badge confirmed">Completed</span></td>
-                        <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Notes','Session summary: Noir Silk Cape selected.','info')">View Notes</button></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card" style="padding:0;overflow:hidden;">
+            <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border-light);"><h3 class="text-base font-bold">Booked Sessions Log</h3></div>
+            <div class="mobile-scroll-hint">
+                <span>Swipe to view all columns</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table" id="appointments-table" style="min-width:620px;">
+                    <thead>
+                        <tr>
+                            <th>Salon Location</th>
+                            <th>Session Type</th>
+                            <th>Date &amp; Time</th>
+                            <th>Master Tailor</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-fittings-tbody">
+                        <tr>
+                            <td class="font-semibold text-xs">Salem Flagship Atelier</td>
+                            <td class="text-xs">Bespoke Suit &amp; Coat Fitting</td>
+                            <td class="text-xs font-bold text-slate-900">Sep 28, 2026 • 11:30 AM</td>
+                            <td class="text-xs text-gray-600">Master Ramanathan</td>
+                            <td><span class="badge confirmed">Confirmed</span></td>
+                            <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Fitting Reminder','SMS & Calendar invite sent.','info')">Details</button></td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-xs">Virtual Bespoke Video</td>
+                            <td class="text-xs">Fabric Vault Inspection</td>
+                            <td class="text-xs font-bold text-slate-900">Aug 14, 2026 • 04:00 PM</td>
+                            <td class="text-xs text-gray-600">Lead Stylist Aarthi</td>
+                            <td><span class="badge confirmed">Completed</span></td>
+                            <td><button class="btn-ghost py-1 px-3 text-[11px]" onclick="showToast('Notes','Session summary: Noir Silk Cape selected.','info')">View Notes</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -1432,6 +1557,32 @@
 
 </main>
 
+<!-- Mobile Bottom Navigation Bar -->
+<nav id="mobile-bottom-nav" aria-label="Client Navigation">
+    <button class="mob-nav-btn active" data-nav="overview" onclick="navigateUser('overview')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Atelier</span>
+    </button>
+    <button class="mob-nav-btn" data-nav="orders" onclick="navigateUser('orders')">
+        <span class="mob-nav-badge">2</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span>Orders</span>
+    </button>
+    <button class="mob-nav-btn" data-nav="wishlist" onclick="navigateUser('wishlist')">
+        <span class="mob-nav-badge">4</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Runway</span>
+    </button>
+    <button class="mob-nav-btn" data-nav="fittings" onclick="navigateUser('fittings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Fittings</span>
+    </button>
+    <button class="mob-nav-btn" onclick="openSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span>More</span>
+    </button>
+</nav>
+
 <script>
     // ── AUTHENTICATION & USER STATE ──
     const authData = JSON.parse(sessionStorage.getItem('stackly_auth') || '{}');
@@ -1514,13 +1665,18 @@
     function navigateUser(id, el) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.mob-nav-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-nav') === id);
+        });
         const sec = document.getElementById('section-' + id);
         if (sec) sec.classList.add('active');
-        if (el) el.classList.add('active');
+        const navItem = el || document.getElementById('nav-' + id);
+        if (navItem) navItem.classList.add('active');
         const meta = userSectionMeta[id] || [id, ''];
         document.getElementById('page-title').textContent = meta[0];
         document.getElementById('page-breadcrumb').textContent = meta[1];
         closeSidebar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // ── KPI ANIMATIONS ──

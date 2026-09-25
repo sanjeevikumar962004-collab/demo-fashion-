@@ -309,13 +309,13 @@
 
                 <!-- Layout View Switcher Buttons -->
                 <div class="flex items-center border border-gray-200 rounded-lg p-0.5 bg-gray-50 shrink-0">
-                    <!-- 3-Col Editorial View -->
-                    <button class="view-mode-btn active p-1.5 rounded bg-white text-black shadow-sm" data-view="3-col" title="3-Column Editorial Grid" aria-label="3-Column View">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"></rect><rect x="10" y="3" width="5" height="18" rx="1"></rect><rect x="17" y="3" width="5" height="18" rx="1"></rect></svg>
-                    </button>
-                    <!-- 4-Col Compact View -->
-                    <button class="view-mode-btn p-1.5 rounded text-gray-400 hover:text-black transition-colors" data-view="4-col" title="4-Column Compact Grid" aria-label="4-Column View">
+                    <!-- 4-Col Compact View (Default 4-Cards per row) -->
+                    <button class="view-mode-btn active p-1.5 rounded bg-white text-black shadow-sm" data-view="4-col" title="4-Column Grid (4 Cards Per Row)" aria-label="4-Column View">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="8.5" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="14" y="3" width="3.5" height="18" rx="0.5"></rect><rect x="19.5" y="3" width="3.5" height="18" rx="0.5"></rect></svg>
+                    </button>
+                    <!-- 3-Col Editorial View -->
+                    <button class="view-mode-btn p-1.5 rounded text-gray-400 hover:text-black transition-colors" data-view="3-col" title="3-Column Editorial Grid" aria-label="3-Column View">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"></rect><rect x="10" y="3" width="5" height="18" rx="1"></rect><rect x="17" y="3" width="5" height="18" rx="1"></rect></svg>
                     </button>
                     <!-- List View -->
                     <button class="view-mode-btn p-1.5 rounded text-gray-400 hover:text-black transition-colors" data-view="list" title="Detailed List View" aria-label="List View">
@@ -345,7 +345,7 @@
         <div class="container mx-auto px-4 sm:px-8 md:px-16">
             
             <!-- Products Grid Container -->
-            <div id="products-catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 transition-all duration-300">
+            <div id="products-catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 transition-all duration-300">
                 <!-- Dynamically populated via JS -->
             </div>
 
@@ -864,7 +864,7 @@
             let currentSearch = '';
             let currentPriceFilter = 'all';
             let currentSort = 'featured';
-            let currentViewMode = '3-col';
+            let currentViewMode = '4-col';
 
             function saveState() {
                 localStorage.setItem('stackly_cart', JSON.stringify(cart));
@@ -1027,7 +1027,7 @@
 
                 // Layout styling
                 if (currentViewMode === '4-col') {
-                    grid.className = 'grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 transition-all duration-300';
+                    grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 transition-all duration-300';
                 } else if (currentViewMode === 'list') {
                     grid.className = 'grid grid-cols-1 gap-6 transition-all duration-300';
                 } else {
@@ -1074,12 +1074,12 @@
                             </div>
                         `;
                     } else {
-                        // Standard Grid Card (3-Col or 4-Col)
-                        card.className = 'product-card group flex flex-col justify-between';
+                        // Standard Grid Card (4-Col or 3-Col) - Structured with h-full and consistent baseline
+                        card.className = 'product-card group flex flex-col justify-between h-full bg-white';
                         card.innerHTML = `
-                            <div>
+                            <div class="flex flex-col flex-1">
                                 <!-- Image Container -->
-                                <div class="relative overflow-hidden bg-gray-100 aspect-[3/4] rounded-xl shadow-sm">
+                                <div class="relative overflow-hidden bg-gray-100 aspect-[3/4] rounded-xl shadow-sm w-full shrink-0">
                                     <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="${p.name}" loading="lazy" />
                                     
                                     <!-- Badge -->
@@ -1106,19 +1106,22 @@
                                     </div>
                                 </div>
 
-                                <!-- Product Info -->
-                                <div class="mt-4 flex flex-col">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400">${p.categoryLabel}</span>
-                                        <span class="text-[9px] text-gray-400 font-mono truncate max-w-[120px]">${p.material.split(' ')[0]}</span>
+                                <!-- Product Info with consistent title height -->
+                                <div class="mt-4 flex flex-col flex-1 justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1 gap-2">
+                                            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-400 truncate">${p.categoryLabel}</span>
+                                            <span class="text-[9px] text-gray-400 font-mono truncate shrink-0 max-w-[110px]">${p.material.split(' ')[0]}</span>
+                                        </div>
+                                        <h3 class="text-sm font-bold uppercase tracking-tight text-black group-hover:text-gray-600 transition-colors leading-snug cursor-pointer quickview-trigger-btn line-clamp-2 min-h-[2.5rem] flex items-center" data-id="${p.id}" title="${p.name}">
+                                            ${p.name}
+                                        </h3>
                                     </div>
-                                    <h3 class="text-sm font-bold uppercase tracking-tight text-black group-hover:text-gray-600 transition-colors leading-snug cursor-pointer quickview-trigger-btn" data-id="${p.id}">
-                                        ${p.name}
-                                    </h3>
                                 </div>
                             </div>
 
-                            <div class="mt-3 flex items-center justify-between pt-2 border-t border-gray-100">
+                            <!-- Bottom Price & Action baseline pinned -->
+                            <div class="mt-4 flex items-center justify-between pt-2.5 border-t border-gray-100 w-full">
                                 <span class="text-base font-extrabold text-black">$${p.price.toLocaleString()}</span>
                                 <button class="quick-add-btn sm:hidden bg-black text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded" data-id="${p.id}">
                                     + Bag
