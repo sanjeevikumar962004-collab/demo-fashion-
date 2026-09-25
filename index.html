@@ -185,7 +185,7 @@
             </button>
 
             <!-- Fullscreen Menu Button -->
-            <button id="menu-btn" class="w-9 h-9 sm:w-11 sm:h-11 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
+            <button id="menu-btn" class="w-9 h-9 sm:w-11 sm:h-11 border border-black rounded-full flex lg:hidden items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
                 <div class="flex flex-col gap-[3.5px] items-center">
                     <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
                     <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
@@ -195,7 +195,7 @@
     </header>
 
     <!-- Fullscreen Menu (Slides from Top) -->
-    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full transition-all duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-5 sm:p-8 md:p-16 max-h-screen overflow-y-auto invisible pointer-events-none">
+    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full transition-all duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-5 sm:p-8 md:p-16 max-h-screen overflow-y-auto invisible pointer-events-none lg:hidden">
         <div class="flex justify-between items-start">
             <a href="index.html" class="flex items-center select-none" aria-label="stackly home">
                 <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert" />
@@ -801,20 +801,20 @@
 
   
     <!-- Help / CTA Section -->
-    <section class="container mx-auto px-4 sm:px-8 md:px-16 py-12 sm:py-20 pb-20 sm:pb-40">
-        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-10 sm:gap-16 md:gap-0 border-b border-gray-200 pb-12 sm:pb-20">
+    <section class="container mx-auto px-4 sm:px-8 md:px-16 py-12 sm:py-20">
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-10 sm:gap-16 md:gap-0">
             <h2 class="text-4xl sm:text-7xl md:text-[140px] font-bold uppercase leading-[0.85] tracking-tight text-center md:text-left">
                 CAN WE<br>
                 <span class="text-outline">HELP YOU?</span>
             </h2>
-            <button onclick="window.location.href='contact.html'" class="w-[140px] h-[140px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] shrink-0 rounded-full bg-black text-white uppercase font-bold tracking-widest text-xs sm:text-sm hover:scale-105 transition-transform duration-300 -mb-6 md:mb-0">
+            <button onclick="window.location.href='contact.html'" class="w-[140px] h-[140px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] shrink-0 rounded-full bg-black text-white uppercase font-bold tracking-widest text-xs sm:text-sm hover:scale-105 transition-transform duration-300">
                 Contact Us
             </button>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="container mx-auto px-4 sm:px-8 md:px-16 py-12 sm:py-20 flex flex-col lg:flex-row justify-between gap-10 sm:gap-16">
+    <footer class="container mx-auto px-4 sm:px-8 md:px-16 py-12 sm:py-20 flex flex-col lg:flex-row justify-between gap-10 sm:gap-16 border-t border-gray-100">
         
         <!-- Col 1: Brand & Socials -->
         <div class="w-full lg:w-1/4">
@@ -2009,6 +2009,9 @@
             closeBtn.addEventListener('click', closeFullscreenMenu);
             document.querySelectorAll('.menu-nav-link').forEach(link => {
                 link.addEventListener('click', closeFullscreenMenu);
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeFullscreenMenu();
             });
 
             // --- HERO SLIDER LOGIC SETUP ---

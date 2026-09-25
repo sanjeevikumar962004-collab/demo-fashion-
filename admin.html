@@ -39,6 +39,41 @@
         }
 
         /* SIDEBAR */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 990;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-close-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .mobile-close-btn:hover {
+            background: #fee2e2;
+            color: var(--accent);
+        }
+
         #sidebar {
             position: fixed; top: 0; left: 0;
             width: var(--sidebar-w);
@@ -46,8 +81,8 @@
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
             display: flex; flex-direction: column;
-            transition: width 0.35s cubic-bezier(0.16,1,0.3,1);
-            z-index: 100;
+            transition: width 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
+            z-index: 1000;
             overflow: hidden;
             box-shadow: 2px 0 12px rgba(0,0,0,0.03);
         }
@@ -57,8 +92,9 @@
         #sidebar.collapsed .user-info { 
             opacity: 0; width: 0; overflow: hidden; white-space: nowrap;
         }
-        #sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; }
-        #sidebar.collapsed .nav-badge { opacity: 0; width: 0; }
+        #sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; margin: 2px 4px; }
+        #sidebar.collapsed .nav-badge { opacity: 0; width: 0; overflow: hidden; }
+        #sidebar.collapsed .nav-item svg { min-width: 20px; flex-shrink: 0; }
 
         .brand-area {
             padding: 24px 20px 20px;
@@ -455,8 +491,9 @@
         .stagger > *:nth-child(4){animation-delay:0.20s}
 
         @media(max-width:768px){
-            #sidebar{transform:translateX(-100%); width:var(--sidebar-w) !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15);}
+            #sidebar{transform:translateX(-100%); width:var(--sidebar-w) !important; z-index: 1000 !important; box-shadow: 4px 0 24px rgba(0,0,0,0.15); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);}
             #sidebar.mobile-open{transform:translateX(0);}
+            .mobile-close-btn { display: flex !important; }
             #topbar,#main-content{left:0!important;margin-left:0!important;}
             #topbar { padding: 0 12px; height: 56px; }
             #main-content { margin-top: 56px; padding: 14px 10px !important; }
@@ -509,12 +546,18 @@
     </div>
 </div>
 
+<!-- Mobile Sidebar Overlay Backdrop -->
+<div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <!-- ═══════ SIDEBAR ═══════ -->
 <aside id="sidebar">
     <div class="brand-area">
         <a href="index.html" class="flex items-center gap-2" aria-label="stackly home">
             <img src="assets/images/stackly logo.webp" alt="stackly." class="h-7 w-auto object-contain brightness-0">
         </a>
+        <button id="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close menu" class="mobile-close-btn ml-auto">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
     </div>
 
     <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0;">
@@ -789,7 +832,7 @@
                 <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Cashmere Drape Coat</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Virgin Italian Cashmere</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹42,000</span><span style="font-size:11px;color:#ca8a04;font-weight:700;">3 units</span></div></div>
             </div>
             <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Architectural Trench','Opening product editor…','info')">
-                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Milanese Structure x Salem Silk.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Architectural Trench"/><span class="badge instock" style="position:absolute;top:12px;right:12px;">In Stock</span></div>
+                <div style="height:180px;position:relative;overflow:hidden;"><img src="assets/images/Milanese Structure × Salem Silk.webp" style="width:100%;height:100%;object-fit:cover;opacity:0.85;" alt="Architectural Trench"/><span class="badge instock" style="position:absolute;top:12px;right:12px;">In Stock</span></div>
                 <div style="padding:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Architectural Trench</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Biella Virgin Wool</div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:16px;font-weight:800;">₹67,500</span><span style="font-size:11px;color:var(--text-muted);">8 units</span></div></div>
             </div>
             <div class="card" style="padding:0;overflow:hidden;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showToast('Salem Mulberry Stole','Opening product editor…','info')">
@@ -989,18 +1032,53 @@
     const sn = document.getElementById('settings-name'); if(sn) sn.value = adminName;
     const se = document.getElementById('settings-email'); if(se) se.value = authData.email || '';
 
-    // ── SIDEBAR TOGGLE ──
+    // ── SIDEBAR CONTROLS ──
     let collapsed = false;
+
+    function openSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (sidebar) sidebar.classList.add('mobile-open');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (sidebar) sidebar.classList.remove('mobile-open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
     function toggleSidebar() {
         if (window.innerWidth <= 768) {
-            document.getElementById('sidebar').classList.toggle('mobile-open');
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && sidebar.classList.contains('mobile-open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
         } else {
             collapsed = !collapsed;
-            document.getElementById('sidebar').classList.toggle('collapsed', collapsed);
-            document.getElementById('topbar').classList.toggle('collapsed', collapsed);
-            document.getElementById('main-content').classList.toggle('collapsed', collapsed);
+            const sidebar = document.getElementById('sidebar');
+            const topbar = document.getElementById('topbar');
+            const main = document.getElementById('main-content');
+            if (sidebar) sidebar.classList.toggle('collapsed', collapsed);
+            if (topbar) topbar.classList.toggle('collapsed', collapsed);
+            if (main) main.classList.toggle('collapsed', collapsed);
         }
     }
+
+    window.openSidebar = openSidebar;
+    window.closeSidebar = closeSidebar;
+    window.toggleSidebar = toggleSidebar;
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            closeSidebar();
+        }
+    });
 
     // ── NAVIGATION ──
     const sectionMeta = {
@@ -1024,7 +1102,7 @@
         document.getElementById('page-title').textContent = meta[0];
         document.getElementById('page-breadcrumb').textContent = meta[1];
         if (id === 'dashboard') animateKPIs();
-        if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('mobile-open');
+        closeSidebar();
     }
 
     // ── KPI COUNTERS ──
@@ -1128,15 +1206,11 @@
     // ── KEYBOARD ──
     document.addEventListener('keydown', e => {
         if ((e.ctrlKey||e.metaKey) && e.key==='k') { e.preventDefault(); document.getElementById('global-search').focus(); }
-        if (e.key === 'Escape') document.getElementById('logout-modal').classList.remove('open');
+        if (e.key === 'Escape') {
+            closeSidebar();
+            document.getElementById('logout-modal')?.classList.remove('open');
+        }
     });
-
-    // ── MOBILE ──
-    if (window.innerWidth < 768) {
-        document.getElementById('toggle-sidebar').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('mobile-open');
-        });
-    }
 </script>
 </body>
 </html>

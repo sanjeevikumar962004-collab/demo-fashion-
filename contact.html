@@ -294,7 +294,7 @@
                 <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 <span id="cart-count-badge" class="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold scale-0 transition-transform duration-200">0</span>
             </button>
-            <button id="menu-btn" class="w-11 h-11 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
+            <button id="menu-btn" class="w-11 h-11 border border-black rounded-full flex lg:hidden items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
                 <div class="flex flex-col gap-[4px] items-center">
                     <div class="w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
                     <div class="w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
@@ -306,7 +306,7 @@
     <!-- =========================================================================
          FULLSCREEN SLIDE-DOWN MENU
          ========================================================================= -->
-    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full transition-transform duration-700 flex flex-col justify-between p-8 md:p-16">
+    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full invisible pointer-events-none transition-all duration-700 flex flex-col justify-between p-6 sm:p-8 md:p-16 overflow-y-auto max-h-screen lg:hidden">
         <div class="flex justify-between items-start">
             <a href="index.html" class="flex items-center" aria-label="stackly home">
                 <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert">
@@ -872,61 +872,7 @@
         </div>
     </section>
 
-    <!-- =========================================================================
-         SOCIAL / FOLLOW STRIP
-         ========================================================================= -->
-    <section class="container mx-auto px-4 sm:px-8 md:px-16 py-16 sm:py-24 md:py-28">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-12 reveal">
-            <div>
-                <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-3">Follow the Atelier</p>
-                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold uppercase leading-[0.88] tracking-tight break-words">
-                    STAY<br><span class="text-outline">CONNECTED</span>
-                </h2>
-            </div>
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-                <div class="flex gap-4">
-                    <a href="404.html" class="social-link" aria-label="Instagram">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href="404.html" class="social-link" aria-label="Facebook">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
-                    <a href="404.html" class="social-link" aria-label="X (Twitter)">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a href="404.html" class="social-link" aria-label="YouTube">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
-                    </a>
-                    <a href="404.html" class="social-link" aria-label="WhatsApp">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    </a>
-                </div>
-                <div class="text-sm text-gray-400 text-center sm:text-left">
-                    <p class="font-semibold text-black">@stackly.atelier</p>
-                    <p class="text-xs">Behind-the-scenes, seasonal stories & new arrivals</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- 5-image social gallery -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-12 reveal">
-            <div class="overflow-hidden aspect-square bg-gray-100 group cursor-pointer">
-                <img src="assets/images/The Architecture of Light & Drape - AW26 Unveiled.webp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram 1" />
-            </div>
-            <div class="overflow-hidden aspect-square bg-gray-100 group cursor-pointer">
-                <img src="assets/images/The Dual-Heritage Manifesto.webp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram 2" />
-            </div>
-            <div class="overflow-hidden aspect-square bg-gray-100 group cursor-pointer">
-                <img src="assets/images/photo-1445205170230-053b83016050.webp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram 3" />
-            </div>
-            <div class="overflow-hidden aspect-square bg-gray-100 group cursor-pointer hidden sm:block">
-                <img src="assets/images/photo-1469334031218-e382a71b716b.webp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram 4" />
-            </div>
-            <div class="overflow-hidden aspect-square bg-gray-100 group cursor-pointer hidden md:block">
-                <img src="assets/images/Milanese Structure x Salem Silk.webp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Instagram 5" />
-            </div>
-        </div>
-    </section>
 
     <!-- =========================================================================
          FOOTER
@@ -1108,13 +1054,31 @@
     };
 
     // ── FULLSCREEN MENU ─────────────────────────────────────────────────────────
-    document.getElementById('menu-btn').addEventListener('click', () => {
-        document.getElementById('full-menu').style.transform = 'translateY(0)';
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu');
+    const fullMenu = document.getElementById('full-menu');
+    const header = document.getElementById('main-header');
+
+    function openFullscreenMenu() {
+        fullMenu.classList.remove('-translate-y-full', 'invisible', 'pointer-events-none');
+        fullMenu.classList.add('translate-y-0');
+        fullMenu.style.transform = 'translateY(0)';
+        header.style.opacity = '0';
         document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('close-menu').addEventListener('click', () => {
-        document.getElementById('full-menu').style.transform = 'translateY(-100%)';
+    }
+
+    function closeFullscreenMenu() {
+        fullMenu.classList.remove('translate-y-0');
+        fullMenu.classList.add('-translate-y-full', 'invisible', 'pointer-events-none');
+        fullMenu.style.transform = 'translateY(-100%)';
+        header.style.opacity = '1';
         document.body.style.overflow = '';
+    }
+
+    menuBtn.addEventListener('click', openFullscreenMenu);
+    closeMenu.addEventListener('click', closeFullscreenMenu);
+    document.querySelectorAll('.menu-nav-link').forEach(link => {
+        link.addEventListener('click', closeFullscreenMenu);
     });
 
     // ── HEADER SCROLL SHADOW ────────────────────────────────────────────────────
@@ -1640,7 +1604,7 @@
     // Escape key
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-            document.getElementById('full-menu').style.transform = 'translateY(-100%)';
+            closeFullscreenMenu();
             searchModal.classList.remove('open');
             closeCartDrawer(); closeWishlistDrawer();
             document.body.style.overflow = '';

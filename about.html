@@ -184,7 +184,7 @@
             </button>
 
             <!-- Fullscreen Menu Button -->
-            <button id="menu-btn" class="w-9 h-9 sm:w-11 sm:h-11 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
+            <button id="menu-btn" class="w-9 h-9 sm:w-11 sm:h-11 border border-black rounded-full flex lg:hidden items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group" aria-label="Open Navigation Menu">
                 <div class="flex flex-col gap-[3.5px] items-center">
                     <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
                     <div class="w-3.5 sm:w-4 h-[1.5px] bg-black group-hover:bg-white transition-colors"></div>
@@ -196,7 +196,7 @@
     <!-- ========================================================================= -->
     <!-- FULLSCREEN SLIDE-DOWN MENU                                                -->
     <!-- ========================================================================= -->
-    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full invisible pointer-events-none transition-transform duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-6 sm:p-8 md:p-16 overflow-y-auto max-h-screen">
+    <div id="full-menu" class="fixed inset-0 bg-black text-white z-50 transform -translate-y-full invisible pointer-events-none transition-transform duration-700 cubic-bezier(0.85, 0, 0.15, 1) flex flex-col justify-between p-6 sm:p-8 md:p-16 overflow-y-auto max-h-screen lg:hidden">
         <div class="flex justify-between items-start shrink-0">
             <a href="index.html" class="flex items-center select-none" aria-label="stackly home">
                 <img src="assets/images/stackly logo.webp" alt="stackly." class="h-8 w-auto object-contain brightness-0 invert" />
@@ -268,13 +268,13 @@
 
             <!-- Main Title Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-end">
-                <div class="lg:col-span-8">
-                    <h1 class="text-3xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight leading-[0.9] text-black">
+                <div class="lg:col-span-8 min-w-0 overflow-hidden">
+                    <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-[68px] xl:text-[84px] font-black uppercase tracking-tight leading-[1.0] text-black break-words">
                         THE ARCHITECTURE<br>
                         <span class="text-outline">OF ATELIER.</span>
                     </h1>
                 </div>
-                <div class="lg:col-span-4 pb-2">
+                <div class="lg:col-span-4 pb-2 min-w-0">
                     <p class="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed font-light mb-6">
                         We sculpt form out of void. Founded in Salem with Italian sartorial DNA, <strong class="text-black font-semibold">stackly.</strong> is an architectural maison dedicated to bespoke tailoring, virgin fibers, and transcendent silhouettes.
                     </p>
@@ -304,7 +304,7 @@
 
                 <!-- Frame 2: Runway Finale (Centerpiece Large) -->
                 <div class="md:col-span-5 relative group overflow-hidden rounded-xl bg-gray-100 aspect-[3/4] shadow-2xl md:-mt-10 z-20">
-                    <img src="assets/images/Milanese Structure × Salem Silk.webp" 
+                    <img src="assets/images/Milanese Structure x Salem Silk.webp" 
                          alt="Editorial Runway Model in Black Gown" 
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-8 text-white">
@@ -1540,6 +1540,9 @@
             closeBtn.addEventListener('click', closeFullscreenMenu);
             document.querySelectorAll('.menu-nav-link').forEach(link => {
                 link.addEventListener('click', closeFullscreenMenu);
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeFullscreenMenu();
             });
 
             // --- FABRIC ARCHIVE VISUALIZER DATA & SWITCHER ---
